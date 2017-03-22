@@ -54,7 +54,7 @@ class EndNim(CombinatorialGame):
 		ans+=str(self.piles[-1])
 		return ans
 
-	def __db_rep__(self):
+	def __db_repr__(self):
 		if self.piles[0]>self.piles[-1]:
 			self.piles.reverse()
 		return self.__repr__()
@@ -72,10 +72,8 @@ class EndNim(CombinatorialGame):
 				result=self.piles[0]^self.piles[1]
 				
 			else:
-				moves=self.possible_Moves()
-				values=[i.find_Nim_Value() for i in moves]
-				result=mex(values)
-			self.__record_value__(self.__db_rep__(),result)
+				result = self.__tree_search__()
+			self.__record_value__(self.__db_repr__(),result)
 		return result
 
 

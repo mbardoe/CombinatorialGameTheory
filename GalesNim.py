@@ -12,7 +12,7 @@ class GalesNim(CombinatorialGame):
 		self.number_Of_Zero_Piles=number_Of_Zero_Piles
 		self.k=k
 		self.__validate__()
-		self.filename="galesnim.db"
+		self.__filename__="galesnim.db"
 		self.__get_dictionary__()
 
 
@@ -25,19 +25,14 @@ class GalesNim(CombinatorialGame):
 
 	def find_Nim_Value(self):
 		'''A method to find the nim value of the game'''
-		
-		## case 1 if there are only a player can make one pile zero and win.
-		if len(self.piles) - self.k ==1:
-			sol=max(self.piles)
-			return max(self.piles)
-		## recursive cases
-		else:
-			## dictionary cases
-			self.lookup_Value()
-			## start the search
-
-			## add to the dictionary
-
+		result=self.lookup_Value()
+		if result<0:
+			if len(self.piles) - self.k ==0:
+				result=0				
+			else:
+				result = self.__tree_search__()
+			self.__record_value__(self.__db_repr__(),result)
+		return result
 
 
 	def possible_Moves(self):
@@ -49,7 +44,6 @@ class GalesNim(CombinatorialGame):
 				ans.add(GalesNim(newPiles, self.number_Of_Zero_Piles,self.k))
 		return ans
 
-
 	def __repr__(self):
 		ans="Game ends when all but "+str(self.k)+" are empty.\n"
 		for i in range(len(self.piles)):
@@ -58,14 +52,14 @@ class GalesNim(CombinatorialGame):
 			ans+="0  "
 		return ans.strip()
 
-	def __db_repr(self):
-		ans=str(self.k)+" "
+	def __db_repr__(self):
+		ans=str(self.k)+"_"
 		new_Piles=list(self.piles)
 		new_Piles.sort()
 		for value in new_Piles:
-			ans+=str(value)+" "
-		for i in range(self.number_Of_Zero_Piles):
-			ans+="0 "
+			ans+=str(value)+"_"
+		#for i in range(self.number_Of_Zero_Piles):
+		#	ans+="0 "
 		return ans.strip()
 
 	def __eq__(self, other):
