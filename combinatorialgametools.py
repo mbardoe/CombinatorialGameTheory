@@ -44,7 +44,7 @@ class CombinatorialGame(object):
 			print("Get Dictionary. Looks like no database. :-(")
 
 	def lookup_Value(self):
-		game_id=self.__db_rep__()
+		game_id=self.__db_repr__()
 		#print game_id
 		try:
 			record=Query()
@@ -60,13 +60,13 @@ class CombinatorialGame(object):
 
 	def __record_value__(self, game_id,ans):
 		'''Store values in the database.'''
-		#game_id=self.__db_rep__()
+		#game_id=self.__db_repr__()
 		try:
 			self.__db__.insert({'id': game_id, 'value':ans})
 		except:
 			pass
 
-	def __db_rep__(self):
+	def __db_repr__(self):
 		'''A representation that will be unique and used as the lookup in the database.'''
 		ans=0
 		for i in range(len(self.piles)):
@@ -98,10 +98,14 @@ class CombinatorialGame(object):
 				newPiles[i]=j
 				ans.add(CombinatorialGame(newPiles))
 		return ans
-
+	def __tree_search__(self):
+		moves=self.possible_Moves()
+		values=[i.find_Nim_Value() for i in moves]
+		result=mex(values)
+		return result
 	def __repr__(self):
 		'''How the game will be represented in python print statements.'''
-		return str(self.__db_rep__())
+		return str(self.__db_repr__())
 
 
 
