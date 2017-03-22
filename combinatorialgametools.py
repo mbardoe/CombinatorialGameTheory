@@ -1,4 +1,7 @@
-from tinydb import TinyDB, Query 
+try:
+	from tinydb import TinyDB, Query 
+except:
+	pass
 
 def mex(mylist):
 	current=0
@@ -14,10 +17,10 @@ def mex(mylist):
 
 class CombinatorialGame(object):
 
-	def __init__(self, mylist):
+	def __init__(self, mylist, filename='combinatorialGame.db'):
 		'''We init with a list of values for the piles.'''
 		self.piles=list(mylist)
-		self.__filename__='combinatorialGame.db'
+		self.__filename__=filename
 		self.__validate__()
 		self.__get_dictionary__()
 
@@ -35,17 +38,49 @@ class CombinatorialGame(object):
 
 	def __get_dictionary__(self):
 		'''Set up the database file for this game. The path is stored as __filename__.'''
-		self.__db__=TinyDB(self.__filename__)
+		try:
+			self.__db__=TinyDB(self.__filename__)
+		except:
+			print("Get Dictionary. Looks like no database. :-(")
+
+	def lookup_Value(self):
+		game_id=self.__db_rep__()
+		#print game_id
+		try:
+			record=Query()
+			result=self.__db__.search(record.id==game_id)
+			#print result
+		except:
+			result=[]
+		if len(result)>0:
+			#print("Found in db.")
+			return result[0]['value']
+		else:
+			return -1 
+
+	def __record_value__(self, game_id,ans):
+		'''Store values in the database.'''
+		#game_id=self.__db_rep__()
+		try:
+			self.__db__.insert({'id': game_id, 'value':ans})
+		except:
+			pass
+
+	def __db_rep__(self):
+		'''A representation that will be unique and used as the lookup in the database.'''
+		ans=0
+		for i in range(len(self.piles)):
+			ans+=self.piles[i]*10**i
+		return ans
 
 	def find_Nim_Value(self):
 		'''Utilize a database of previously constructed values to speed computation.'''
 		# look up in db
-		game_id=self.__db_rep__()
-		record=Query()
-		result=self.__db__.search(record.id==game_id)
-		if len(result)>0:
+		
+		result=self.lookup_Value()
+		if result>0:
 			#print("Used database")
-			ans=result[0]['value']
+			ans=result
 		else:
 
 			ans=0
@@ -53,12 +88,6 @@ class CombinatorialGame(object):
 				ans=ans^i
 			self.__record_value__(game_id,ans)
 		return ans
-	
-	def __record_value__(self, game_id,ans):
-		'''Store values in the database.'''
-		game_id=self.__db_rep__()
-		self.__db__.insert({'id': game_id, 'value':ans})
-
 
 	def possible_Moves(self):
 		'''Compute all other games that are possible moves from this position.'''
@@ -68,13 +97,6 @@ class CombinatorialGame(object):
 				newPiles=list(self.piles)
 				newPiles[i]=j
 				ans.add(CombinatorialGame(newPiles))
-		return ans
-
-	def __db_rep__(self):
-		'''A representation that will be unique and used as the lookup in the database.'''
-		ans=0
-		for i in range(len(self.piles)):
-			ans+=self.piles[i]*10**i
 		return ans
 
 	def __repr__(self):

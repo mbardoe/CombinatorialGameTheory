@@ -1,29 +1,19 @@
 
-from combinatorialgametools import mex
-#try:
-#   import cPickle as pickle
-#except:
-#   import pickle
+from combinatorialgametools import mex, CombinatorialGame
+try:
+	from tinydb import TinyDB, Query 
+except:
+	pass
 
-class GalesNim(object):
+class GalesNim(CombinatorialGame):
 
 	def __init__(self,mylist, number_Of_Zero_Piles=0, k=1):
 		self.piles=list(mylist)
 		self.number_Of_Zero_Piles=number_Of_Zero_Piles
 		self.k=k
 		self.__validate__()
-		#self.set_Dictionary_File("galesNimDic.db")
-
-	#def set_Dictionary_File(self, filename):
-	#	self.__filename__=filename
-	#def get_Dictionary(self):
-		## Try to open the dictionary
-	#	try:
-	#		self.nim_Values=pickle.load( open( self.__filename__, "rb" ) )
-	#	except:
-	#		print "Dictionary of values is missing creating a new one."
-	#		newDictionary={}
-
+		self.filename="galesnim.db"
+		self.__get_dictionary__()
 
 
 	def __validate__(self):
@@ -35,13 +25,15 @@ class GalesNim(object):
 
 	def find_Nim_Value(self):
 		'''A method to find the nim value of the game'''
-		pass
+		
 		## case 1 if there are only a player can make one pile zero and win.
-
+		if len(self.piles) - self.k ==1:
+			sol=max(self.piles)
+			return max(self.piles)
 		## recursive cases
-
+		else:
 			## dictionary cases
-
+			self.lookup_Value()
 			## start the search
 
 			## add to the dictionary
@@ -64,6 +56,16 @@ class GalesNim(object):
 			ans+=str(self.piles[i])+"  "
 		for i in range(self.number_Of_Zero_Piles):
 			ans+="0  "
+		return ans.strip()
+
+	def __db_repr(self):
+		ans=str(self.k)+" "
+		new_Piles=list(self.piles)
+		new_Piles.sort()
+		for value in new_Piles:
+			ans+=str(value)+" "
+		for i in range(self.number_Of_Zero_Piles):
+			ans+="0 "
 		return ans.strip()
 
 	def __eq__(self, other):
