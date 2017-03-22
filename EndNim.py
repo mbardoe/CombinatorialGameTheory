@@ -1,4 +1,4 @@
-class LinearGame(object):
+class EndNim(object):
 	'''A class that will represent an EndNim Game.
 	It has takes in an ordered list [a,b,c,...,z]
 	and makes it into a game of the form 
@@ -32,12 +32,12 @@ class LinearGame(object):
 		for i in range(self.values[0]):
 			mylist[0]=i
 			#print "Test front"+str(mylist)
-			ans.append(LinearGame(mylist))
+			ans.append(EndNim(mylist))
 		mylist[0]=originalFront
 		for i in range(self.values[-1]):
 			mylist[-1]=i
 			#print "Test back"+str(mylist)
-			ans.append(LinearGame(mylist))
+			ans.append(EndNim(mylist))
 		return ans
 
 	def __repr__(self):
@@ -86,7 +86,7 @@ def mex(mylist):
 def main():
 	m=15
 	for i in range(10):
-		x=LinearGame([1,m,i+1])
+		x=EndNim([1,m,i+1])
 		print str(x)+"  "+str(x.find_Nim_Value())
 
 
