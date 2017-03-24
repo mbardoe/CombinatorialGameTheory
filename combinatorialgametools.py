@@ -1,7 +1,12 @@
+import sys
 try:
-	import sqlite3 
+	from tinydb import TinyDB, Query 
 except:
-	pass
+	try:
+		import sqlite3 
+	except:
+		pass
+	
 
 def mex(mylist):
 	current=0
@@ -17,10 +22,13 @@ def mex(mylist):
 
 class CombinatorialGame(object):
 
-	def __init__(self, mylist, filename='combinatorialGameSQL.db'):
+	def __init__(self, mylist, filename='combinatorialGame.db'):
 		'''We init with a list of values for the piles.'''
 		self.piles=list(mylist)
-		self.__filename__=filename
+		if 'tinydb' in sys.modules:
+			self.__filename__=filename
+		else:
+			self.__filename__=filename[:-3]+"SQL.db"
 		self.__validate__()
 		self.__get_dictionary__()
 
@@ -38,68 +46,85 @@ class CombinatorialGame(object):
 
 	def __get_dictionary__(self):
 		'''Set up the database file for this game. The path is stored as __filename__.'''
-
-		try:
-			self.__db__ = sqlite3.connect(self.__filename__)
-			#print self.__db__
-			self.cursor=self.__db__.cursor()
-			#print self.cursor
-			#Do we have the proper table.
-			numTables=self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-			#print numTables
-			record=numTables.fetchall()
-			newRecord=[str(x[0]) for x in record]
-			#print newRecord
-			if 'nimValues' not in newRecord:
-				self.cursor.execute('''CREATE TABLE nimValues(id text, value int)''')
-    			#self.__db__=TinyDB(self.__filename__) #old tinyDB code
-		except:
-			print("Get Dictionary. Looks like no database. :-(")
-		finally:
-			self.__db__.close()
-	def lookup_Value(self):
-		game_id=self.__db_repr__()
-		gamelookup={"id":game_id}
-		#print gamelookup
-		try:
-			self.__db__ = sqlite3.connect(self.__filename__)
-			#print self.__db__
-			self.cursor=self.__db__.cursor()
-			query=self.cursor.execute('SELECT value FROM nimValues WHERE id=:id', gamelookup)
-			#print query
-			self.__db__.commit()
-			record = query.fetchone()
-			#print record
-			result = [record[0]]
-			#record=Query()
-			#result=self.__db__.search(record.id==game_id)
-			#print result
-		except:
-			result=[]
-		finally:
-			self.__db__.close()
-		if len(result)>0:
-			#print("Found in db.")
-			return result[0]
+		if 'tinydb' in sys.modules:
+			try:
+				self.__db__=TinyDB(self.__filename__)
+			except:
+				print("Get Dictionary. Looks like no database. :-(")
 		else:
-			return -1 
+			try:
+				self.__db__ = sqlite3.connect(self.__filename__)
+				self.cursor=self.__db__.cursor()
+				numTables=self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+				record=numTables.fetchall()
+				newRecord=[str(x[0]) for x in record]
+				if 'nimValues' not in newRecord:
+					self.cursor.execute('''CREATE TABLE nimValues(id text, value int)''')
+			except:
+				print("Get Dictionary. Looks like no database. :-(")
+			finally:
+				self.__db__.close()
+	def lookup_Value(self):
+		if 'tinydb' in sys.modules:
+			game_id=self.__db_repr__()
+			#print game_id
+			try:
+				record=Query()
+				result=self.__db__.search(record.id==game_id)
+				#print result
+			except:
+				result=[]
+			if len(result)>0:
+			#print("Found in db.")
+				return result[0]['value']
+			else:
+				return -1 
+		else: #sqlite3
+			game_id=self.__db_repr__()
+			gamelookup={"id":game_id}
+			#print gamelookup
+			try:
+				self.__db__ = sqlite3.connect(self.__filename__)
+				#print self.__db__
+				self.cursor=self.__db__.cursor()
+				query=self.cursor.execute('SELECT value FROM nimValues WHERE id=:id', gamelookup)
+				#print query
+				self.__db__.commit()
+				record = query.fetchone()
+				#print record
+				result = [record[0]]
+				#record=Query()
+				#result=self.__db__.search(record.id==game_id)
+				#print result
+			except:
+				result=[]
+			finally:
+				self.__db__.close()
+			if len(result)>0:
+				#print("Found in db.")
+				return result[0]
+			else:
+				return -1 
 
 	def __record_value__(self, game_id,ans):
 		'''Store values in the database.'''
 		#game_id=self.__db_repr__()
-		try:
-			self.__db__ = sqlite3.connect(self.__filename__)
-			#print self.__db__
-			self.cursor=self.__db__.cursor()
-			sqlstring="INSERT INTO nimValues VALUES('"+str(game_id)+"', "+str(ans)+")"
-			#print sqlstring
-			self.cursor.execute(sqlstring)
-			self.__db__.commit()
-			#self.__db__.insert({'id': game_id, 'value':ans})
-		except:
-			pass
-		finally:
-			self.__db__.close()
+		if 'tinydb' in sys.modules:
+			try:
+				self.__db__.insert({'id': game_id, 'value':ans})
+			except:
+				pass
+		else: #sqlite3
+			try: 
+				self.__db__ = sqlite3.connect(self.__filename__)
+				self.cursor=self.__db__.cursor()
+				sqlstring="INSERT INTO nimValues VALUES('"+str(game_id)+"', "+str(ans)+")"
+				self.cursor.execute(sqlstring)
+				self.__db__.commit()
+			except:
+				pass
+			finally:
+				self.__db__.close()
 
 	def __db_repr__(self):
 		'''A string representation that will be unique and used as the lookup in the database.'''
