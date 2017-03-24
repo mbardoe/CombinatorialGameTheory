@@ -1,5 +1,5 @@
 try:
-	from tinydb import TinyDB, Query 
+	import sqlite3 
 except:
 	pass
 
@@ -17,7 +17,7 @@ def mex(mylist):
 
 class CombinatorialGame(object):
 
-	def __init__(self, mylist, filename='combinatorialGame.db'):
+	def __init__(self, mylist, filename='combinatorialGameSQL.db'):
 		'''We init with a list of values for the piles.'''
 		self.piles=list(mylist)
 		self.__filename__=filename
@@ -38,23 +38,49 @@ class CombinatorialGame(object):
 
 	def __get_dictionary__(self):
 		'''Set up the database file for this game. The path is stored as __filename__.'''
+
 		try:
-			self.__db__=TinyDB(self.__filename__)
+			self.__db__ = sqlite3.connect(self.__filename__)
+			#print self.__db__
+			self.cursor=self.__db__.cursor()
+			#print self.cursor
+			#Do we have the proper table.
+			numTables=self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+			#print numTables
+			record=numTables.fetchall()
+			newRecord=[str(x[0]) for x in record]
+			#print newRecord
+			if 'nimValues' not in newRecord:
+				self.cursor.execute('''CREATE TABLE nimValues(id text, value int)''')
+    			#self.__db__=TinyDB(self.__filename__) #old tinyDB code
 		except:
 			print("Get Dictionary. Looks like no database. :-(")
-
+		finally:
+			self.__db__.close()
 	def lookup_Value(self):
 		game_id=self.__db_repr__()
-		#print game_id
+		gamelookup={"id":game_id}
+		#print gamelookup
 		try:
-			record=Query()
-			result=self.__db__.search(record.id==game_id)
+			self.__db__ = sqlite3.connect(self.__filename__)
+			#print self.__db__
+			self.cursor=self.__db__.cursor()
+			query=self.cursor.execute('SELECT value FROM nimValues WHERE id=:id', gamelookup)
+			#print query
+			self.__db__.commit()
+			record = query.fetchone()
+			#print record
+			result = [record[0]]
+			#record=Query()
+			#result=self.__db__.search(record.id==game_id)
 			#print result
 		except:
 			result=[]
+		finally:
+			self.__db__.close()
 		if len(result)>0:
 			#print("Found in db.")
-			return result[0]['value']
+			return result[0]
 		else:
 			return -1 
 
@@ -62,24 +88,33 @@ class CombinatorialGame(object):
 		'''Store values in the database.'''
 		#game_id=self.__db_repr__()
 		try:
-			self.__db__.insert({'id': game_id, 'value':ans})
+			self.__db__ = sqlite3.connect(self.__filename__)
+			#print self.__db__
+			self.cursor=self.__db__.cursor()
+			sqlstring="INSERT INTO nimValues VALUES('"+str(game_id)+"', "+str(ans)+")"
+			#print sqlstring
+			self.cursor.execute(sqlstring)
+			self.__db__.commit()
+			#self.__db__.insert({'id': game_id, 'value':ans})
 		except:
 			pass
+		finally:
+			self.__db__.close()
 
 	def __db_repr__(self):
-		'''A representation that will be unique and used as the lookup in the database.'''
+		'''A string representation that will be unique and used as the lookup in the database.'''
 		ans=0
 		for i in range(len(self.piles)):
 			ans+=self.piles[i]*10**i
-		return ans
+		return str(ans)
 
 	def find_Nim_Value(self):
 		'''Utilize a database of previously constructed values to speed computation.'''
 		# look up in db
-		
+		game_id=self.__db_repr__()
 		result=self.lookup_Value()
 		if result>0:
-			#print("Used database")
+			print("Used database")
 			ans=result
 		else:
 
