@@ -167,6 +167,17 @@ class CombinatorialGame(object):
 		'''How the game will be represented in python print statements.'''
 		return str(self.__db_repr__())
 
+	def find_Move_With_Value(self, n):
+		if self.lookup_Value()<0:
+			self.find_Nim_Value()
+		if n<self.lookup_Value():
+
+			moves=self.possible_Moves()
+			for move in moves:
+				if move.lookup_Value()==n:
+					return move
+		else:
+			return None
 
 
 
