@@ -6,7 +6,12 @@ The storage mechanisms require TinyDB. You can download and install it here: htt
 ## Gale's Nim
 
 ### Gale's Nim positions with value 0
+ #### Two Pile games
+ 
+ (Conjecture) The value of a two pile game a b is (a-1)^(b-1)+1
+ 
  There are no two pile games with value 0.
+ 
  #### Three pile games with value 0
  1 a a
  
@@ -49,9 +54,9 @@ The storage mechanisms require TinyDB. You can download and install it here: htt
  
  2 3 5 8
  
- 2 7 9 12
+ 2 3 9 12 
  
- 2 11 13 14 *
+ 
  
  
 ## Dependencies
