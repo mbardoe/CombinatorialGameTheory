@@ -11,31 +11,46 @@ The storage mechanisms require TinyDB. You can download and install it here: htt
  1 a a
  
  2 3 4
+ 
  2 5 6
+ 
  2 7 8
+ 
  2 9 10
+ 
  ....
  
  3 5 7
+ 
  3 6 8
+ 
  3 9 11
+ 
  3 10 12
+ 
  3 13 15
+ 
  ...
  
  #### Four Pile games with value 0
  All specific values with a * have NOT been verified by calculations using these programs.
+ 
  a a b b
  
  1 1 2 3
+ 
  1 3 5 6
+ 
  1 1 4 5
  
  Conj: 1 a b c where a^b^c=0 (^ := Nim-sum)
  
  Also
+ 
  2 3 5 8
+ 
  2 7 9 12
+ 
  2 11 13 14 *
  
  
