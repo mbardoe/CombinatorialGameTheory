@@ -38,7 +38,7 @@ class GalesNim(CombinatorialGame):
 		return result
 
 
-	def possible_Moves(self):
+	def possible_moves(self):
 		ans=set([])
 		for i in range(len(self.piles)):
 			for j in range(self.piles[i]):
@@ -75,7 +75,7 @@ class GalesNim(CombinatorialGame):
 def main():
 	game=GalesNim([3,4,5],0,1)
 	print game
-	possMoves=game.possible_Moves()
+	possMoves=game.possible_moves()
 	for mygame in possMoves:
 		print mygame
 

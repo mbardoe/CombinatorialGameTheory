@@ -9,28 +9,31 @@ except:
 
 class SpokeAndHub(Graph, CombinatorialGame):
 
-	def __init__(self, vertices, edges, piles):
+	def __init__(self):
 		self.__filename__="spokeandhub.db"
 		self.__get_dictionary__()
 		
 
 
 	def __db_repr__(self):
-		return str(self.__mod_prufer_code__())
+		return str(self.__mod_prufer_code__())+str(self.vs['piles'])
 		## Prufer algorithm 
 
 	def __repr__(self):
 		### what about super when you inherit from 2 classes?
 		return super.__repr__()
 
-	def possible_Moves(self):
+	def possible_moves(self):
 		## this needs to be tested
 		moves=[]
 		leaves = self.find_leaves()
 		for leaf in leaves:
 			for i in range(self.vs[leaf]['piles']):
+				g=SpokeAndHub()
+				g.add_vertices(len(self.vcount()))
+				g.add_edges(self.edges())
 
-		pass
+		
 
 	def __validate__(self):
 		## make sure that no piles are zero.
@@ -52,21 +55,24 @@ class SpokeAndHub(Graph, CombinatorialGame):
 
 
 	def __eq__(self, other):
-		pass
+		return self.__db_repr__()==other.__db_repr__()
+		
 
-	def find_Nim_Value(self):
+	def find_nim_value(self):
 		result=self.lookup_Value()
 		if result<0:
 			## Here will calculate the base cases by hand 
-			pass
-			result=0
+			if self.linear():
+				endnimgame=self.convert_To_EndNim()
+				result = endnimgame.find_nim_value()
 			## Here we will use a breadth search
 
-			#else:
-			#	result = self.__tree_search__()
-			#self.__record_value__(self.__db_repr__(),result)
+			else:
+				result = self.__tree_search__()
+			self.__record_value__(self.__db_repr__(),result)
 		return result
-	##### Graph Algorigthms
+
+	##### Graph Algorithms #######
 
 	def find_leaves(self):
     	return [i for i,val in enumerate(self.degree()) if val==1]
@@ -154,7 +160,7 @@ def main():
 	x.add_edges([(0,1),(0,2),(0,3)])
 	x.vs['piles']=[3,3,3,3]
 	x.vs['names']=[0,1,2,3]
-	x.find_Nim_Value()
+	x.find_nim_value()
 
 
 if __name__ == '__main__':

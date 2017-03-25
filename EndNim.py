@@ -3,7 +3,10 @@ from combinatorialgametools import mex, CombinatorialGame
 try:
 	from tinydb import TinyDB, Query 
 except:
-	pass
+	try:
+		import sqlite3 
+	except:
+		pass
 
 class EndNim(CombinatorialGame):
 	'''A class that will represent an EndNim Game.
@@ -11,8 +14,8 @@ class EndNim(CombinatorialGame):
 	and makes it into a game of the form 
 			a--b--c---...---z. 
 	Methods:
-		possible_Moves - finds the list of possible moves
-		find_Nim_Value - finds the nim Value of the position
+		possible_moves - finds the list of possible moves
+		find_nim_value - finds the nim Value of the position
 	'''
 	def __init__(self,mylist):
 		self.piles=mylist
@@ -29,7 +32,7 @@ class EndNim(CombinatorialGame):
 		'''How long is the strand.'''
 		return len(self.piles)
 
-	def possible_Moves(self):
+	def possible_moves(self):
 		'''Creates a list of possible moves from the given game.'''
 		ans=set([])
 
@@ -62,8 +65,8 @@ class EndNim(CombinatorialGame):
 	def __eq__(self, other):
 		return self.piles==other.values or self.piles.reverse()==other.values
 
-	def find_Nim_Value(self):
-		result=self.lookup_Value()
+	def find_nim_value(self):
+		result=self.lookup_value()
 		if result<0:
 			if self.len()==1:
 				result=self.piles[0]
@@ -81,7 +84,7 @@ def main():
 	m=15
 	for i in range(10):
 		x=EndNim([1,m,i+1])
-		print str(x)+"  "+str(x.find_Nim_Value())
+		print str(x)+"  "+str(x.find_nim_value())
 
 
 
