@@ -9,23 +9,45 @@ except:
 
 class SpokeAndHub(Graph, CombinatorialGame):
 
-	def __init__(self):
+	def __init__(self, vertices, edges, piles):
 		self.__filename__="spokeandhub.db"
 		self.__get_dictionary__()
 		
 
 
 	def __db_repr__(self):
-		pass
+		return str(self.__mod_prufer_code__())
 		## Prufer algorithm 
 
 	def __repr__(self):
-		pass
+		### what about super when you inherit from 2 classes?
+		return super.__repr__()
 
 	def possible_Moves(self):
+		## this needs to be tested
+		moves=[]
+		leaves = self.find_leaves()
+		for leaf in leaves:
+			for i in range(self.vs[leaf]['piles']):
+
 		pass
 
 	def __validate__(self):
+		## make sure that no piles are zero.
+		## this needs to be tested.
+		try:
+			newPiles = [i for i in self.vs['piles'] if i!=0]
+			while len(newPiles)>self.vcount:
+				### remove the vertex... relabel the graph with smaller numbers
+				index=self.vs['piles'].index(0)
+				name=self.vs[index]['names']
+				self.delete_vertices(index)
+				fix_Names_Indices = [i for i in range(self.vcount()) if self.vs[i]['names']>=name]
+				for i in fix_Names_Indices:
+					self.vs[i]['names']-=1
+				newPiles = [i for i in self.vs['piles'] if i!=0]
+		except:
+			pass
 		self.__rename_names__()
 
 
@@ -96,6 +118,35 @@ class SpokeAndHub(Graph, CombinatorialGame):
 
 	 	else:
 	 		return None
+
+	 	def __mod_prufer_code__(self):
+		    """Returns with the Prufer code
+
+		    Returns
+		    -------
+		    With a Prufer code as a list of vertex names if
+		    the network is a tree, else with None.
+
+		    """
+		    #net = self.copy()
+		    g=self.copy()
+		    prufer_code = []
+		    # Check if it is a tree
+		    vc = g.vcount()
+		    ec = g.ecount()
+		    if ec == vc -1 and g.is_connected():
+		        # Now that we know it is a tree. 
+		        while g.vcount() > 1:
+		            ## find a leaf with minimum label.
+		            # leaf = net.degree().index(1)
+		            leaf = g.find_leaf_with_minimum_label()
+		            neig = g.neighbors(leaf)[0]
+		            name = int(g.vs[neig]["names"])
+		            neig_info=(name,g.vs[neig]['piles'])
+		            leaf_info=(int(g.vs[leaf]["names"]), g.vs[leaf]['piles'])
+		            prufer_code.append((neig_info, leaf_info))
+		            g.delete_vertices(leaf)
+		        return prufer_code
 
 def main():
 	x=SpokeAndHub()
