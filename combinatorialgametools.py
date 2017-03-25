@@ -174,7 +174,7 @@ class CombinatorialGame(object):
 
 			moves=self.possible_Moves()
 			for move in moves:
-				if move.lookup_Value()==n:
+				if move.find_Nim_Value()==n:
 					return move
 		else:
 			return None

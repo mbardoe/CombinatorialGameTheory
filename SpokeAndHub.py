@@ -26,7 +26,8 @@ class SpokeAndHub(Graph, CombinatorialGame):
 		pass
 
 	def __validate__(self):
-		pass
+		self.__rename_names__()
+
 
 	def __eq__(self, other):
 		pass
@@ -53,9 +54,48 @@ class SpokeAndHub(Graph, CombinatorialGame):
 	    label.'''
 	    leaf_positions = self.find_leaves()
 	    labels_of_leaves = [g.vs[i]['piles'] for i in leaf_positions]
-	    
 	    return leaf_positions[labels_of_leaves.index(min(labels_of_leaves))]
 
+	def __rename_names__(self):
+		'''Changes the labelling of the vertices so that they correspond to 
+		smaller number indicate a leaf with small pile numbers.'''
+	    g=mygraph.copy()
+	    #copy_g=mygraph.copy()
+	    while g.vcount()>1:
+	        leaf_position=g.find_leaf_with_minimum_label()
+	        curname=g.vs[leaf_position]['names']
+	        copy_g_leaf_position=self.vs['names'].index(curname)
+	        min_name=min(g.vs['names'])
+	        index_min=self.vs['names'].index(min_name)
+	        #if g.vs[leaf_position]['piles']==copy_g.vs[index_min]['piles']:
+
+	        self.vs[index_min]['names']=curname
+	        self.vs[copy_g_leaf_position]['names']=min_name
+	        g.vs[index_min]['names']=curname
+	        g.delete_vertices(leaf_position)
+	    #return copy_g
+
+	 def linear(self):
+	 	'''determine if the graph is a linear graph. Returns a boolean.'''
+	 	return g.degree()[1]==2 and g.degree()[2]=g.vcount()-2
+
+	 def convert_To_EndNim(self):
+	 	if self.linear():
+	 		
+	 		current=self.find_leaves()[0];
+	 		last=None
+	 		ans=[start]
+	 		while len(ans)<self.vcount():
+	 			neigh=g.neighbors(current)
+	 			if neigh[0] in ans:
+	 				ans.append(neigh[1])
+	 			else:
+	 				ans.append(neigh[0])
+	 		piles=[g.vs[i]['piles'] for i in ans]
+	 		return EndNim(piles)
+
+	 	else:
+	 		return None
 
 def main():
 	x=SpokeAndHub()
