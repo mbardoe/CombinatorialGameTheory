@@ -3,7 +3,10 @@ from combinatorialgametools import mex, CombinatorialGame
 try:
 	from tinydb import TinyDB, Query 
 except:
-	pass
+	try:
+		import sqlite3 
+	except:
+		pass
 
 class GalesNim(CombinatorialGame):
 
