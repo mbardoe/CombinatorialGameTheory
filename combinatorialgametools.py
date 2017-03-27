@@ -56,7 +56,7 @@ class CombinatorialGame(object):
 
     """
 
-    def __init__(self, filename="combinatorialgame.db"):
+    def __init__(self, myfilename):
         """
         Args:
             mylist: the list of piles sizes for the game
@@ -64,10 +64,9 @@ class CombinatorialGame(object):
             __filename__.
         """
         #self.piles=list(mylist)
-        if 'tinydb' in sys.modules:
-            self.__filename__ = filename
-        else:
-            self.__filename__=filename[:-3]+"SQL.db"
+        self.__filename = myfilename
+        if 'tinydb' not in sys.modules:
+            self.__filename__=self.__filename__[:-3]+"SQL.db"
         #self.__validate__()
         self.__get_dictionary__()
 
@@ -208,7 +207,7 @@ class CombinatorialGame(object):
             A set of the games that are all the possible moves from the given
             game."""
 
-        pass
+        return set([])
 
     def __tree_search__(self):
         """A function that does the depth search when we are calculating nim
@@ -245,13 +244,12 @@ class CombinatorialGame(object):
             >>> print x.find_move_with_value(0)
             33
         """
-        if self.lookup_value()<0:
-            self.nim_value()
-        if n < self.lookup_value():
+        if n < self.nim_value:
 
             moves=self.possible_moves()
             for move in moves:
-                if move.find_nim_value ==n:
+                if move.find_nim_value == n:
+                    assert isinstance(move, CombinatorialGame)
                     return move
         else:
             return None
