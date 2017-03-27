@@ -46,28 +46,29 @@ class CombinatorialGame(object):
 	is to make the computation of larger games much faster. This particular
 	base class is really a standard nim game.
 
-	:Example:
-
+    Example:
         >>> import combinatorialgametools
-        >>> a = combinatorialgametools.CombinatorialGame([1,2,4])
+        >>> a = combinatorialgametools.CombinatorialGame([])
+        >>> a.piles=[1,2,4]
+        >>> a.__validate__()
         >>> a.find_nim_value()
         7
-		
+
 	"""
 
-	def __init__(self, mylist, filename='combinatorialGame.db'):
+	def __init__(self, filename):
 		"""
 		Args:
 			mylist: the list of piles sizes for the game
 			filename: the path for the database file. To be saved in 
 			__filename__.
 		"""
-		self.piles=list(mylist)
+		#self.piles=list(mylist)
 		if 'tinydb' in sys.modules:
 			self.__filename__=filename
 		else:
 			self.__filename__=filename[:-3]+"SQL.db"
-		self.__validate__()
+		#self.__validate__()
 		self.__get_dictionary__()
 
 	def __validate__(self):
@@ -174,8 +175,7 @@ class CombinatorialGame(object):
 			try: 
 				self.__db__ = sqlite3.connect(self.__filename__)
 				self.cursor=self.__db__.cursor()
-				sqlstring="INSERT INTO nimValues VALUES('"
-					+str(game_id)+"', "+str(ans)+")"
+				sqlstring="INSERT INTO nimValues VALUES('"+str(game_id)+"', "+str(ans)+")"
 				self.cursor.execute(sqlstring)
 				self.__db__.commit()
 			except:

@@ -9,14 +9,14 @@ except:
 		pass
 
 class EndNim(CombinatorialGame):
-	'''A class that will represent an EndNim Game.
+	"""A class that will represent an EndNim Game.
 	It has takes in an ordered list [a,b,c,...,z]
 	and makes it into a game of the form 
 			a--b--c---...---z. 
 	Methods:
 		possible_moves - finds the list of possible moves
 		find_nim_value - finds the nim Value of the position
-	'''
+	"""
 	def __init__(self,mylist):
 		self.piles=mylist
 		self.__validate__()
@@ -33,7 +33,7 @@ class EndNim(CombinatorialGame):
 		return len(self.piles)
 
 	def possible_moves(self):
-		'''Creates a list of possible moves from the given game.'''
+		"""Creates a list of possible moves from the given game."""
 		ans=set([])
 
 		mylist=list(self.piles)
