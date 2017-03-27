@@ -20,14 +20,14 @@ class GalesNim(CombinatorialGame):
 
 
 	def __validate__(self):
-		'''__validate is designed to take the zeroes out of the piles. Should we 
-		keep the zeroes, or keep track of how many zero piles there are.''' 
+		"""__validate is designed to take the zeroes out of the piles. Should we
+		keep the zeroes, or keep track of how many zero piles there are."""
 		newPiles=[x for x in self.piles if x != 0 ]
 		self.number_Of_Zero_Piles+=len(self.piles)-len(newPiles)
 		self.piles=newPiles
 
 	def find_Nim_Value(self):
-		'''A method to find the nim value of the game'''
+		"""A method to find the nim value of the game"""
 		result=self.lookup_Value()
 		if result<0:
 			if len(self.piles) - self.k ==0:
@@ -39,6 +39,11 @@ class GalesNim(CombinatorialGame):
 
 
 	def possible_moves(self):
+        """Compute all other games that are possible moves from this position.
+
+		Returns:
+			A set of the games that are all the possible moves from the given
+			game."""
 		ans=set([])
 		for i in range(len(self.piles)):
 			for j in range(self.piles[i]):
@@ -66,6 +71,14 @@ class GalesNim(CombinatorialGame):
 		return ans.strip()
 
 	def __eq__(self, other):
+        """Determine if to GalesNim games are equivalent.
+
+        Args:
+            other: Another GalesNim game.
+
+        Result:
+            This gives a boolean describing if the two games are equal.
+        """
 		myPiles=list(self.piles)
 		theirPiles=list(other.piles)
 		myPiles.sort()
