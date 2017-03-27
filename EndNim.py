@@ -17,7 +17,7 @@ class EndNim(CombinatorialGame):
 		possible_moves - finds the list of possible moves
 		find_nim_value - finds the nim Value of the position
 	"""
-	def __init__(self,mylist):
+	def __init__(self, mylist):
 		self.piles=mylist
 		self.__validate__()
 		self.__filename__="endNim.db"
@@ -65,7 +65,7 @@ class EndNim(CombinatorialGame):
 	def __eq__(self, other):
 		return self.piles==other.values or self.piles.reverse()==other.values
 
-	def find_nim_value(self):
+	def nim_value(self):
 		result=self.lookup_value()
 		if result<0:
 			if self.len()==1:

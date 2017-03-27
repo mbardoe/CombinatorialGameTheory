@@ -64,8 +64,8 @@ class SpokeAndHub(Graph, CombinatorialGame):
 			## Here will calculate the base cases by hand 
 			if self.linear():
 				endnimgame=self.convert_To_EndNim()
-				result = endnimgame.find_nim_value()
-			## Here we will use a breadth search
+				result = endnimgame.find_nim_value
+            ## Here we will use a breadth search
 
 			else:
 				result = self.__tree_search__()

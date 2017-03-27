@@ -13,7 +13,7 @@ class GalesNim(CombinatorialGame):
     def __init__(self, mylist, number_of_zero_piles=0, k=1):
         super(CombinatorialGame, self).__init__()
         self.piles = list(mylist)
-        self.number_Of_Zero_Piles = number_of_zero_piles
+        self.number_Of_zero_piles = number_of_zero_piles
         self.k = k
         self.__validate__()
         #self.__filename__ = "galesnim.db"
@@ -28,7 +28,7 @@ class GalesNim(CombinatorialGame):
         self.piles = newPiles
 
     @property
-    def find_Nim_Value(self):
+    def nim_value(self):
         """A method to find the nim value of the game"""
         result = self.lookup_value()
         if result < 0:
