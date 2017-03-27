@@ -1,2 +1,4 @@
 *.pyc
 yourmom.db
+.idea
+.idea/*
