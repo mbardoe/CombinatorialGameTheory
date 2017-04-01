@@ -45,18 +45,10 @@ class CombinatorialGame(object):
     sqlite3 to record the values of games that have been computed. The goal
     is to make the computation of larger games much faster. This particular
     base class is really a standard nim game.
-
-    Example:
-        >>> import combinatorialgametools
-        >>> a = combinatorialgametools.CombinatorialGame([])
-        >>> a.piles=[1,2,4]
-        >>> a.__validate__()
-        >>> a.find_nim_value
-        7
-
     """
 
-    def __init__(self, myfilename):
+    def __init__(self, **kwargs):
+        #def __init__(self, myfilename):
         """
         Args:
             mylist: the list of piles sizes for the game
@@ -64,7 +56,13 @@ class CombinatorialGame(object):
             __filename__.
         """
         #self.piles=list(mylist)
-        self.__filename = myfilename
+
+        if 'filename' in kwargs.keys():
+            self.__filename__=kwargs['filename']
+        else:
+            raise SyntaxError('Need at least a filename argument')
+
+
         if 'tinydb' not in sys.modules:
             self.__filename__=self.__filename__[:-3]+"SQL.db"
         #self.__validate__()
@@ -84,6 +82,7 @@ class CombinatorialGame(object):
         if 'tinydb' in sys.modules:
             try:
                 self.__db__=TinyDB(self.__filename__)
+                print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
         else:
@@ -107,22 +106,24 @@ class CombinatorialGame(object):
         If the game has not been computed already, then the function returns
         -1.
 
+        :rtype : int
         Returns:
             The value of the game that is list in the database or -1 if it
             can't be found in the database.
 
         """
         if 'tinydb' in sys.modules:
+            print 'tinydb lookup'
             game_id=self.__db_repr__()
             #print game_id
             try:
                 record=Query()
                 result=self.__db__.search(record.id==game_id)
-                #print result
+                print result
             except:
                 result=[]
             if len(result)>0:
-            #print("Found in db.")
+                print("Found in db.")
                 return result[0]['value']
             else:
                 return -1
@@ -162,10 +163,11 @@ class CombinatorialGame(object):
         """
         #game_id=self.__db_repr__()
         if 'tinydb' in sys.modules:
-            try:
-                self.__db__.insert({'id': game_id, 'value':ans})
-            except:
-                pass
+            #try:
+            self.__db__.insert({'id': game_id, 'value':ans})
+            #except Exception:
+            #    print Exception
+            #   pass
         else: #sqlite3
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
@@ -219,7 +221,7 @@ class CombinatorialGame(object):
 
         """
         moves=self.possible_moves()
-        values=[i.find_nim_value for i in moves]
+        values=[i.nim_value for i in moves]
         result=mex(values)
         return result
 
@@ -235,20 +237,12 @@ class CombinatorialGame(object):
                 current game.
         Returns:
             A game of the that has the given value.
-
-        Example:
-            >>> import combinatorialgametools
-            >>> x=combinatorialgametools.CombinatorialGame([3,8])
-            >>> x.nim_value()
-            11
-            >>> print x.find_move_with_value(0)
-            33
         """
         if n < self.nim_value:
 
             moves=self.possible_moves()
             for move in moves:
-                if move.find_nim_value == n:
+                if move.nim_value == n:
                     assert isinstance(move, CombinatorialGame)
                     return move
         else:

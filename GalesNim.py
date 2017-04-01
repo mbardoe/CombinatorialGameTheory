@@ -1,4 +1,4 @@
-from combinatorialgametools import mex, CombinatorialGame
+from combinatorialgametools import CombinatorialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -10,21 +10,46 @@ except:
 
 
 class GalesNim(CombinatorialGame):
-    def __init__(self, mylist, number_of_zero_piles=0, k=1):
-        super(CombinatorialGame, self).__init__()
-        self.piles = list(mylist)
-        self.number_Of_zero_piles = number_of_zero_piles
-        self.k = k
+    def __init__(self, *args, **kwargs):
+        """
+
+        :param args: piles, num_zero_piles, k, filename
+        :param kwargs: piles, num_zero_piles, k, filename
+        """
+        self.number_Of_zero_piles = 0
+        self.k = 1
+        self.__filename__ = 'galesnim.db'
+
+        if len(args) > 0:
+            self.piles = list(args[0])
+        if len(args) > 1:
+            self.number_Of_zero_piles = int(args[1])
+        if len(args) > 2:
+            self.k = int(args[2])
+        if len(args) > 3:
+            self.__filename__ = str(args[3])
+
+
+        if 'piles' in kwargs.keys():
+            self.piles = kwargs['piles']
+        if 'num_zero_piles' in kwargs.keys():
+            self.number_Of_zero_piles = kwargs['num_zero_piles']
+        if 'k' in kwargs.keys():
+            self.k = kwargs['k']
+
+        #self.piles = list(mylist)
+        #self.number_Of_zero_piles = number_of_zero_piles
+        #self.k = k
+        super(GalesNim, self).__init__(**{'filename':self.__filename__})
         self.__validate__()
         #self.__filename__ = "galesnim.db"
         #self.__get_dictionary__()
-
 
     def __validate__(self):
         """__validate is designed to take the zeroes out of the piles. Should we
 		keep the zeroes, or keep track of how many zero piles there are."""
         newPiles = [x for x in self.piles if x != 0]
-        self.number_Of_Zero_Piles += len(self.piles) - len(newPiles)
+        self.number_Of_zero_piles += len(self.piles) - len(newPiles)
         self.piles = newPiles
 
     @property
@@ -49,9 +74,9 @@ class GalesNim(CombinatorialGame):
         ans = set([])
         for i in range(len(self.piles)):
             for j in range(self.piles[i]):
-                newPiles = list(self.piles)
-                newPiles[i] = j
-                ans.add(GalesNim(newPiles, self.number_Of_Zero_Piles, self.k))
+                new_piles = list(self.piles)
+                new_piles[i] = j
+                ans.add(GalesNim(new_piles, self.number_Of_zero_piles, self.k))
         return ans
 
 
@@ -59,7 +84,7 @@ class GalesNim(CombinatorialGame):
         ans = "Game ends when all but " + str(self.k) + " are empty.\n"
         for i in range(len(self.piles)):
             ans += str(self.piles[i]) + "  "
-        for i in range(self.number_Of_Zero_Piles):
+        for i in range(self.number_Of_zero_piles):
             ans += "0  "
         return ans.strip()
 
@@ -76,8 +101,6 @@ class GalesNim(CombinatorialGame):
 
 
     def __eq__(self, other):
-
-
         """Determine if to GalesNim games are equivalent.
 
             Args:
@@ -90,7 +113,8 @@ class GalesNim(CombinatorialGame):
         theirPiles = list(other.piles)
         myPiles.sort()
         theirPiles.sort()
-        return self.k == other.k and self.number_Of_Zero_Piles == other.number_Of_Zero_Piles and myPiles == theirPiles
+        return self.k == other.k and self.number_Of_zero_piles == \
+                        other.number_Of_zero_piles and myPiles == theirPiles
 
 
 def main():

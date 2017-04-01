@@ -2,20 +2,22 @@ from combinatorialgametools import CombinatorialGame
 
 
 class Nim(CombinatorialGame):
-    """ A Nim game.
-    """
     def __init__(self, *args, **kwargs):
-        """
-
-
-        :rtype : object
-        :param piles: A list of the pile sizes for this game.
-        :param filename: A filename where we can find the database of values for previously computed games.
-        """
-
-        self.__filename__ = filename
-        super(CombinatorialGame, self).__init__(filename)
-        self.piles = list(piles)
+        if len(args)==1 and len(kwargs)==1:
+            self.piles=list(args[0])
+            self.__filename__=str(kwargs['filename'])
+        elif len(args)==2:
+            self.piles=list(args[0])
+            self.__filename__=str(args[1])
+        elif 'filename' in kwargs.keys() and 'piles' in kwargs.keys():
+            self.__filename__=str(kwargs['filename'])
+            self.piles = list(kwargs['piles'])
+        elif len(args)==1 and len(kwargs.keys())==0:
+            self.piles=list(args[0])
+            self.__filename__="nim.db"
+        kwargs = {'filename': self.__filename__}
+        args=[]
+        super(Nim,self).__init__( **kwargs)
         self.__validate__()
 
     def __validate__(self):

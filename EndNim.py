@@ -1,4 +1,4 @@
-from combinatorialgametools import mex, CombinatorialGame
+from combinatorialgametools import CombinatorialGame
 
 try:
 	from tinydb import TinyDB, Query 
@@ -17,11 +17,26 @@ class EndNim(CombinatorialGame):
 		possible_moves - finds the list of possible moves
 		find_nim_value - finds the nim Value of the position
 	"""
-	def __init__(self, mylist):
-		self.piles=mylist
+
+	def __init__(self, *args, **kwargs):
+		if args and len(kwargs)==1:
+			self.piles=list(args[0])
+			self.__filename__=str(kwargs['filename'])
+		elif len(args)==2:
+			self.piles=list(args[0])
+			self.__filename__=str(args[1])
+		elif 'filename' in kwargs.keys() and 'piles' in kwargs.keys():
+			self.__filename__=str(kwargs['filename'])
+			self.piles = list(kwargs['piles'])
+		elif len(args)==1 and len(kwargs.keys())==0:
+			self.piles=list(args[0])
+			self.__filename__="endNim.db"
+		kwargs = {'filename': self.__filename__}
+		args=[]
+		if len(args)==1:
+			self.piles=list(*args[0])
+		super(EndNim,self).__init__(**{'filename':self.__filename__})
 		self.__validate__()
-		self.__filename__="endNim.db"
-		self.__get_dictionary__()
 		
 		
 	def __validate__(self):
@@ -63,7 +78,7 @@ class EndNim(CombinatorialGame):
 		return self.__repr__()
 
 	def __eq__(self, other):
-		return self.piles==other.values or self.piles.reverse()==other.values
+		return self.piles==other.piles or self.piles.reverse()==other.piles
 
 	def nim_value(self):
 		result=self.lookup_value()
@@ -77,14 +92,14 @@ class EndNim(CombinatorialGame):
 			else:
 				result = self.__tree_search__()
 			self.__record_value__(self.__db_repr__(),result)
-		return result
+		return int(result)
 
 
 def main():
 	m=15
 	for i in range(10):
 		x=EndNim([1,m,i+1])
-		print str(x)+"  "+str(x.find_nim_value())
+		print str(x)+"  "+str(x.nim_value())
 
 
 
