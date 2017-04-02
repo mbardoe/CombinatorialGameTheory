@@ -1,6 +1,7 @@
 from combinatorialgametools import CombinatorialGame
-from EndNim import EndNim
-from igraph import *
+import networkx as nx
+import networkx.algorithms.isomorphism as iso
+import copy
 try:
     from tinydb import TinyDB, Query
 except:
@@ -9,26 +10,29 @@ except:
     except:
         pass
 
-class SpokeAndHub(CombinatorialGame, Graph):
+class SpokeAndHub(CombinatorialGame):
 
-    def __init__(self):
-        self.__filename__="spokeandhub.db"
+    def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
+        self.__filename__=filename
         super(SpokeAndHub,self).__init__(**{'filename': self.__filename__})
+        self.graph=nx.Graph()
+        self.graph.add_nodes_from(range(num_nodes))
+        self.graph.add_edges_from(edges)
+        for i in range(num_nodes):
+            self.graph.node[i]['piles']=piles[i]
 
-    def create(self, num_vertices, edges, piles):
-        self.add_vertices(num_vertices)
-        self.add_edges(edges)
-        self.vs['piles']=list(piles)
-        self.vs['names']=range(num_vertices)
 
-
-    def __db_repr__(self):
-        return str(self.__mod_prufer_code__())+str(self.vs['piles'])
-        ## Prufer algorithm
 
     def __repr__(self):
+        return "".join([str(self.graph.degree()),"\n", str(self.get_piles())])
+
+    def __db_repr__(self):
         ### what about super when you inherit from 2 classes?
-        return super.__repr__()
+        return str(nx.incidence_matrix(self.graph))+str(self.get_piles())
+
+    def get_piles(self):
+        piles_dict=nx.nx.get_node_attributes(self.graph,'piles')
+        return [piles_dict[i] for i in range(self.graph.number_of_nodes())]
 
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
@@ -41,152 +45,74 @@ class SpokeAndHub(CombinatorialGame, Graph):
         moves=[]
         leaves = self.find_leaves()
         for leaf in leaves:
-            for i in range(self.vs['piles'][leaf]):
-                g=self.copy()
-                #g.add_vertices(len(self.vcount()))
-                #g.add_edges(self.get_edgelist())
-                g.vs['piles'][leaf]=i
+            for i in range(self.graph.node[leaf]['piles']):
+                edges=copy.deepcopy(self.graph.edges())
+                piles=copy.deepcopy(self.get_piles())
+                nodes=int(self.graph.number_of_nodes())
+                g=SpokeAndHub(nodes,edges,piles)
+                g.graph.node[leaf]['piles']=i
                 g.__validate__()
-                moves.append(g)
+                if g not in moves:
+                    moves.append(g)
         return moves
-
 
     def __validate__(self):
         ## make sure that no piles are zero.
         ## this needs to be tested.
         try:
-            newPiles = [i for i in self.vs['piles'] if i!=0]
-            while len(newPiles)>self.vcount:
-                ### remove the vertex... relabel the graph with smaller numbers
-                index=self.vs['piles'].index(0)
-                name=self.vs[index]['names']
-                self.delete_vertices(index)
-                fix_Names_Indices = [i for i in range(self.vcount()) if self.vs[i]['names']>=name]
-                for i in fix_Names_Indices:
-                    self.vs[i]['names']-=1
-                newPiles = [i for i in self.vs['piles'] if i!=0]
+            for node in self.graph.nodes():
+                if self.graph.node[node]['piles']==0:
+                    self.graph.remove_node(node)
         except:
             pass
         self.__rename_names__()
 
     def __eq__(self, other):
-        return self.__db_repr__()==other.__db_repr__()
+        nm = iso.categorical_node_match('piles',0)
+        return nx.is_isomorphic(self.graph, other.graph, node_match=nm)
 
-    # @property
-    # def nim_value(self):
-    #     '''Calculates the nim value of this game via a depth search
-    #     of possible moves.
-    #
-    #
-    #     :return: int that is the equivalent nim pile
-    #     '''
-    #     result=self.lookup_value()
-    #     if result<0:
-    #         ## Here will calculate the base cases by hand
-    #         if self.linear():
-    #             endnimgame=self.convert_To_EndNim()
-    #             result = endnimgame.nim_value
-    #         ## Here we will use a breadth search
-    #         else:
-    #             result = self.__tree_search__()
-    #         self.__record_value__(self.__db_repr__(),result)
-    #     return result
+    @property
+    def nim_value(self):
+        '''Calculates the nim value of this game via a depth search
+        of possible moves.
+
+
+        :return: int that is the equivalent nim pile
+        '''
+        result=self.lookup_value()
+        if result<0:
+            ## Here will calculate the base cases by hand
+            if self.graph.number_of_nodes()==2:
+                piles=self.get_piles()
+                result = piles[0]^piles[1]
+            ## Here we will use a breadth search
+            else:
+                result = self.__tree_search__()
+            self.__record_value__(self.__db_repr__(),result)
+        return result
 
     ##### Graph Algorithms #######
 
     def find_leaves(self):
-        return [i for i,val in enumerate(self.degree()) if val==1]
 
-    def find_leaf_with_minimum_label(self):
-        '''Returns the index of the vertex that is a leaf of minimal
-        label.'''
-        leaf_positions = self.find_leaves()
-        labels_of_leaves = [self.vs[i]['piles'] for i in leaf_positions]
-        return leaf_positions[labels_of_leaves.index(min(labels_of_leaves))]
+        degrees=self.graph.degree()
+        return [key for key in degrees.keys() if degrees[key]==1]
+
+    def degree(self):
+        return self.graph.degree()
 
     def __rename_names__(self):
         '''Changes the labelling of the vertices so that they correspond to
         smaller number indicate a leaf with small pile numbers.'''
-        g=self.copy()
-        #copy_g=mygraph.copy()
-        while g.vcount()>1:
-            leaf_position=g.find_leaf_with_minimum_label()
-            curname=g.vs[leaf_position]['names']
-            copy_g_leaf_position=self.vs['names'].index(curname)
-            min_name=min(g.vs['names'])
-            index_min=self.vs['names'].index(min_name)
-            #if g.vs[leaf_position]['piles']==copy_g.vs[index_min]['piles']:
+        self.graph = nx.convert_node_labels_to_integers(self.graph)
 
-            self.vs[index_min]['names']=curname
-            self.vs[copy_g_leaf_position]['names']=min_name
-            g.vs[index_min]['names']=curname
-            g.delete_vertices(leaf_position)
-        #return copy_g
 
-    def linear(self):
-        '''determine if the graph is a linear graph. Returns a boolean.'''
-        # this code is currently wrong.
-        #return self.degree()[1]==2 and self.degree()[2]==self.vcount()-2
-        return False
-
-    def convert_To_EndNim(self):
-        '''This method checks to see if a spoke and hub game is equivalent
-        to a linear game, and then returns the equivalent EndNim game.
-
-        '''
-        if self.linear():
-
-            current=self.find_leaves()[0];
-            last=None
-            ans=[current]
-            while len(ans)<self.vcount():
-                neigh=self.neighbors(current)
-                if neigh[0] in ans:
-                    ans.append(neigh[1])
-                else:
-                    ans.append(neigh[0])
-            piles=[self.vs[i]['piles'] for i in ans]
-            return EndNim(piles)
-
-        else:
-            return None
-
-    def __mod_prufer_code__(self):
-            """Returns with the Prufer code
-
-            Returns
-            -------
-            With a Prufer code as a list of vertex names if
-            the network is a tree, else with None.
-
-            """
-            #net = self.copy()
-            g=self.copy()
-            prufer_code = []
-            # Check if it is a tree
-            vc = g.vcount()
-            ec = g.ecount()
-            if ec == vc -1 and g.is_connected():
-                # Now that we know it is a tree.
-                while g.vcount() > 1:
-                    ## find a leaf with minimum label.
-                    # leaf = net.degree().index(1)
-                    leaf = g.find_leaf_with_minimum_label()
-                    neig = g.neighbors(leaf)[0]
-                    name = int(g.vs[neig]["names"])
-                    neig_info=(name,g.vs[neig]['piles'])
-                    leaf_info=(int(g.vs[leaf]["names"]), g.vs[leaf]['piles'])
-                    prufer_code.append((neig_info, leaf_info))
-                    g.delete_vertices(leaf)
-                return prufer_code
 
 def main():
-    x=SpokeAndHub()
-    x.add_vertices(4)
-    x.add_edges([(0,1),(0,2),(0,3)])
-    x.vs['piles']=[3,3,3,3]
-    x.vs['names']=[0,1,2,3]
-    x.nim_value()
+    x=SpokeAndHub(4, [(0,1),(0,2),(0,3)], [2,2,2,2] )
+    #x.nim_value()
+    print x.find_leaves()
+    print x.nim_value
 
 
 if __name__ == '__main__':
