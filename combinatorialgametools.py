@@ -82,7 +82,7 @@ class CombinatorialGame(object):
         if 'tinydb' in sys.modules:
             try:
                 self.__db__=TinyDB(self.__filename__)
-                print "Made a db"
+                #print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
         else:
@@ -113,17 +113,17 @@ class CombinatorialGame(object):
 
         """
         if 'tinydb' in sys.modules:
-            print 'tinydb lookup'
+            #print 'tinydb lookup'
             game_id=self.__db_repr__()
             #print game_id
             try:
                 record=Query()
                 result=self.__db__.search(record.id==game_id)
-                print result
+                #print result
             except:
                 result=[]
             if len(result)>0:
-                print("Found in db.")
+                #print("Found in db.")
                 return result[0]['value']
             else:
                 return -1
