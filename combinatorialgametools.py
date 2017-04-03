@@ -37,6 +37,49 @@ def mex(mylist):
         #print "step"+str(i)+" "+str(current)
     return current
 
+def simplest_number(move_dict):
+    right_min=min(move_dict['right'])
+    left_max=min(move_dict['left'])
+    simplest_between((right_min,left_max))
+
+def simplest_between(left,right):
+    if left is None:
+        if right<0:
+            return int(right)-1
+        else:
+            return 0
+    if right is None:
+        if left > 0:
+            return int(left)+1
+        else:
+            return 0
+    if left<0 and right>0:
+        return 0
+
+    if right<0:
+        right,left=-1*left,-1*right
+        sign=-1
+    else:
+        sign=1
+
+
+    if int(right)-int(left)>1:
+        return sign*(int(left)+1)
+    else:
+        current=1
+        power=2**(-current)
+        guess =int(left)+power
+        while (left>=guess) or (right<=guess):
+            #print guess
+            if int(guess+power)>=int(right):
+                current+=1
+                power=2**(-current)
+                guess = int(left)+power
+            else:
+                guess = guess+power
+        return sign * guess
+
+
 class CombinatorialGame(object):
     """A base class for investigating impartial combinatorial games.
 
@@ -249,5 +292,19 @@ class CombinatorialGame(object):
             return None
 
 
+def main():
+    """
+    :return None
+
+    """
+    print('3 and 8 '+ str(simplest_between(3,8)))
+    print('3 and 4 '+ str(simplest_between(3,4)))
+    print('2 and 2.25 '+ str(simplest_between(2,2.25)))
+    print('-9 and 4 '+ str(simplest_between(-9,4)))
+    print('-7 and -2 '+ str(simplest_between(-7,-2)))
+    print('-2.25 and -2 '+ str(simplest_between(-2.25,-2)))
 
 
+
+if __name__ == '__main__':
+    main()
