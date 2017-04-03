@@ -38,20 +38,28 @@ def mex(mylist):
     return current
 
 def simplest_number(move_dict):
-    right_min=min(move_dict['right'])
-    left_max=min(move_dict['left'])
-    simplest_between((right_min,left_max))
+    print move_dict
+    try:
+        right_min=min(move_dict['right'])
+    except:
+        right_min=None
+    try:
+        left_max=min(move_dict['left'])
+    except:
+        left_max=None
+    return simplest_between(left_max,right_min)
 
 def simplest_between(left,right):
+    print str(left) + ' ' +str(right)
     if left is None:
         if right is None:
             return 0
-        if right<0:
+        if right<=0:
             return int(right)-1
         else:
             return 0
     if right is None:
-        if left > 0:
+        if left >= 0:
             return int(left)+1
         else:
             return 0
