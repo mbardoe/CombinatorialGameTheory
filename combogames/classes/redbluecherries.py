@@ -1,4 +1,4 @@
-from combinatorialgametools import PartizanCombinatorialGame
+from partizangame import PartizanGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
@@ -10,7 +10,7 @@ except:
     except:
         pass
 
-class RedBlueCherries(PartizanCombinatorialGame):
+class RedBlueCherries(PartizanGame):
 
     def __init__(self, num_nodes, edges, piles, filename="redbluecherries.db"):
         self.__filename__=filename

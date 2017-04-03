@@ -1,7 +1,7 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 
-class Nim(CombinatorialGame):
+class Nim(ImpartialGame):
     def __init__(self, *args, **kwargs):
         if len(args)==1 and len(kwargs)==1:
             self.piles=list(args[0])

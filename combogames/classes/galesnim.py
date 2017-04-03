@@ -1,4 +1,4 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -9,7 +9,7 @@ except:
         pass
 
 
-class GalesNim(CombinatorialGame):
+class GalesNim(ImpartialGame):
     def __init__(self, *args, **kwargs):
         """
 

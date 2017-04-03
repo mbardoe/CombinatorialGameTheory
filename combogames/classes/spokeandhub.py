@@ -1,4 +1,4 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
@@ -10,7 +10,7 @@ except:
     except:
         pass
 
-class SpokeAndHub(CombinatorialGame):
+class SpokeAndHub(ImpartialGame):
 
     def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
         self.__filename__=filename

@@ -1,4 +1,4 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -9,7 +9,7 @@ except:
         pass
 
 
-class EndNim(CombinatorialGame):
+class EndNim(ImpartialGame):
     """A class that will represent an EndNim Game.
 	It has takes in an ordered list [a,b,c,...,z]
 	and makes it into a game of the form 
