@@ -10,7 +10,6 @@ except:
 
 class PartizanGame(CombinatorialGame):
     """A base class for investigating partizan combinatorial games.
-
     One goal of this class is create methods that allow for back searches
     of previously computed games. This class can utilize either tinyDB or
     sqlite3 to record the values of games that have been computed. The goal
@@ -41,7 +40,6 @@ class PartizanGame(CombinatorialGame):
 
     def __validate__(self):
         """This is make sure the form of the input is valid for this game.
-
         It also makes sure that the piles in a specific order.
         """
         pass
@@ -73,15 +71,12 @@ class PartizanGame(CombinatorialGame):
                 self.__db__.close()
     def lookup_value(self):
         """Looks up the value of a previously computed game.
-
         If the game has not been computed already, then the function returns
         -1.
-
         :rtype : int
         Returns:
             The value of the game that is list in the database or -1 if it
             can't be found in the database.
-
         """
         if 'tinydb' in sys.modules:
             #print 'tinydb lookup'
@@ -127,7 +122,6 @@ class PartizanGame(CombinatorialGame):
 
     def __record_value__(self, game_id, ans):
         """Store values in the database.
-
         Args:
             game_id: is a string that can be used to uniquely identify each game.
             ans: is an integer that represents its the nim value of the game.
@@ -161,10 +155,8 @@ class PartizanGame(CombinatorialGame):
     @property
     def value(self):
         """Utilize a database of previously constructed values to speed computation.
-
         When the database does not have the answer it uses a depth search of other games
         to compute the value of the game.
-
         Returns:
             Then nim value of the game. If it can't find the value in the database it
             tries to find the value by calculating the nim values of all possible moves
@@ -175,7 +167,6 @@ class PartizanGame(CombinatorialGame):
 
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
-
         Returns:
             A set of the games that are all the possible moves from the given
             game."""
@@ -185,11 +176,9 @@ class PartizanGame(CombinatorialGame):
     def __tree_search__(self):
         """A function that does the depth search when we are calculating nim
         values.
-
         Returns:
             Then nim value of the game, found by calculating the nim values of
             all possible moves.
-
         """
         moves=self.possible_moves() # return a dictionay with keys 'right' and 'left'
         move_values={}
@@ -236,5 +225,19 @@ class PartizanGame(CombinatorialGame):
             sign=-1
         else:
             sign=1
-
+        if int(right)-int(left)>1:
+            return sign*(int(left)+1)
+        else:
+            current=1
+            power=2**(-current)
+            guess =int(left)+power
+            while (left>=guess) or (right<=guess):
+                #print guess
+                if int(guess+power)>=int(right):
+                    current+=1
+                    power=2**(-current)
+                    guess = int(left)+power
+                else:
+                    guess = guess+power
+            return sign * guess
 
