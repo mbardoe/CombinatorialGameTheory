@@ -17,26 +17,6 @@ class PartizanGame(CombinatorialGame):
     base class is really a standard nim game.
     """
 
-    def __init__(self, **kwargs):
-        #def __init__(self, myfilename):
-        """
-        Args:
-            mylist: the list of piles sizes for the game
-            filename: the path for the database file. To be saved in
-            __filename__.
-        """
-        #self.piles=list(mylist)
-
-        if 'filename' in kwargs.keys():
-            self.__filename__=kwargs['filename']
-        else:
-            raise SyntaxError('Need at least a filename argument')
-
-
-        if 'tinydb' not in sys.modules:
-            self.__filename__=self.__filename__[:-3]+"SQL.db"
-        #self.__validate__()
-        self.__get_dictionary__()
 
     def __validate__(self):
         """This is make sure the form of the input is valid for this game.
@@ -48,10 +28,11 @@ class PartizanGame(CombinatorialGame):
         """Set up the database file for this game. The path is stored
         as __filename__.
         """
+        print 'filename: '+self.__filename__
         if 'tinydb' in sys.modules:
             try:
                 self.__db__=TinyDB(self.__filename__)
-                #print "Made a db"
+                print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
         else:

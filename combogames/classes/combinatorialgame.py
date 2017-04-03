@@ -29,7 +29,7 @@ class CombinatorialGame(object):
         #self.piles=list(mylist)
 
         if 'filename' in kwargs.keys():
-            self.__filename__=kwargs['filename']
+            self.__filename__='data/'+kwargs['filename']
         else:
             raise SyntaxError('Need at least a filename argument')
 
