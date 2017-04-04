@@ -1,5 +1,5 @@
 import sys #get rid of this...
-
+import os
 try:
     from tinydb import TinyDB, Query
 except:
@@ -29,7 +29,11 @@ class CombinatorialGame(object):
         #self.piles=list(mylist)
 
         if 'filename' in kwargs.keys():
-            self.__filename__='data/'+kwargs['filename']
+            basepath = os.path.dirname(os.getcwd())
+            parentpath =os.path.dirname(basepath)
+            #print 'parentpath= '+str(parentpath)
+            #self.__filename__='../data/'+kwargs['filename']
+            self.__filename__=parentpath+'/data/'+kwargs['filename']
         else:
             raise SyntaxError('Need at least a filename argument')
 
@@ -37,6 +41,7 @@ class CombinatorialGame(object):
         if 'tinydb' not in sys.modules:
             self.__filename__=self.__filename__[:-3]+"SQL.db"
         #self.__validate__()
+        #print os.path
         self.__get_dictionary__()
 
     def __get_dictionary__(self):

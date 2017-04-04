@@ -15,6 +15,7 @@ class SpokeAndHub(ImpartialGame):
     def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
         self.__filename__=filename
         super(SpokeAndHub,self).__init__(**{'filename': self.__filename__})
+        print self.__filename__
         self.graph=nx.Graph()
         self.graph.add_nodes_from(range(num_nodes))
         self.graph.add_edges_from(edges)

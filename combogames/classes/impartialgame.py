@@ -16,6 +16,8 @@ class ImpartialGame(CombinatorialGame):
         as __filename__.
         """
         if 'tinydb' in sys.modules:
+            #print "tinyDB"
+            #print self.__filename__
             try:
                 self.__db__=TinyDB(self.__filename__)
                 #print "Made a db"
