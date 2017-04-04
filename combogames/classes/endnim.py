@@ -100,6 +100,14 @@ class EndNim(ImpartialGame):
         return self.__repr__()
 
     def __eq__(self, other):
+        """Determine if to GalesNim games are equivalent.
+
+            Args:
+                other: Another GalesNim game.
+
+            Result:
+                This gives a boolean describing if the two games are equal.
+        """
         return (
             self.piles == other.piles or self.piles.reverse() == other.piles)
 
@@ -110,7 +118,8 @@ class EndNim(ImpartialGame):
             of possible moves.
 
 
-            :return: int that is the equivalent nim pile
+            Returns:
+                int: an integer that is the equivalent nim pile
             """
         result = self.lookup_value()
         if result < 0:

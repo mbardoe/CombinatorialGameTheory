@@ -11,7 +11,7 @@ except:
 
 class GalesNim(ImpartialGame):
     def __init__(self, *args, **kwargs):
-        """
+        """An object that Gale's Nim object.
 
         :param args: piles, num_zero_piles, k, filename
         :param kwargs: piles, num_zero_piles, k, filename
@@ -54,7 +54,10 @@ class GalesNim(ImpartialGame):
 
     @property
     def nim_value(self):
-        """A method to find the nim value of the game"""
+        """A method to find the nim value of the game
+
+        Returns:
+            int: An integer that represents the nim value of the game."""
         result = self.lookup_value()
         if result < 0:
             if len(self.piles) - self.k == 0:
@@ -68,7 +71,7 @@ class GalesNim(ImpartialGame):
         """Compute all other games that are possible moves from this position.
 
         Returns:
-            A set of the games that are all the possible moves from the given
+            set: A set of the games that are all the possible moves from the given
             game.
         """
         ans = set([])
@@ -81,6 +84,11 @@ class GalesNim(ImpartialGame):
 
 
     def __repr__(self):
+        """Creates a string to print out as a representation of the game.
+
+        Returns:
+            str: A string that describes the game.
+        """
         ans = "Game ends when all but " + str(self.k) + " are empty.\n"
         for i in range(len(self.piles)):
             ans += str(self.piles[i]) + "  "
@@ -90,6 +98,11 @@ class GalesNim(ImpartialGame):
 
 
     def __db_repr__(self):
+        """Creates the database representation of the game.
+
+        Returns:
+            str: A string that list the piles in increasing order.
+        """
         ans = str(self.k) + "_"
         new_Piles = list(self.piles)
         new_Piles.sort()
