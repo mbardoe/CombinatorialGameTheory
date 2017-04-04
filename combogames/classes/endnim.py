@@ -20,6 +20,15 @@ class EndNim(ImpartialGame):
 	"""
 
     def __init__(self, *args, **kwargs):
+        """ Generate a new game.
+
+        Arguments:
+            'piles': a list integers of sizes of piles
+            'filename': string of the path of the database
+
+        Returns:
+            An EndNim game object
+        """
         if args and len(kwargs) == 1:
             self.piles = list(args[0])
             self.__filename__ = str(kwargs['filename'])
@@ -44,12 +53,14 @@ class EndNim(ImpartialGame):
         newlist = [x for x in self.piles if x != 0]
         self.piles = newlist
 
-    def len(self):
-        '''How long is the strand.'''
+    def __len__(self):
         return len(self.piles)
 
     def possible_moves(self):
-        """Creates a list of possible moves from the given game."""
+        """Creates a list of possible moves from the given game.
+
+        Returns:
+            set: A set of the possible moves."""
         ans = set([])
 
         mylist = list(self.piles)
@@ -66,6 +77,11 @@ class EndNim(ImpartialGame):
         return ans
 
     def __repr__(self):
+        """Creates a string to print out as a representation of the game.
+
+        Returns:
+            str: A string that describes the game.
+        """
         ans = ""
         for i in range(len(self.piles) - 1):
             ans += str(self.piles[i])
@@ -74,6 +90,11 @@ class EndNim(ImpartialGame):
         return ans
 
     def __db_repr__(self):
+        """Creates the database representation of the game.
+
+        Returns:
+            str: A string that list the piles in increasing order.
+        """
         if self.piles[0] > self.piles[-1]:
             self.piles.reverse()
         return self.__repr__()
@@ -93,10 +114,10 @@ class EndNim(ImpartialGame):
             """
         result = self.lookup_value()
         if result < 0:
-            if self.len() == 1:
+            if len(self) == 1:
                 result = self.piles[0]
 
-            elif self.len() == 2:
+            elif len(self) == 2:
                 result = self.piles[0] ^ self.piles[1]
 
             else:
