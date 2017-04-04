@@ -110,9 +110,9 @@ class SpokeAndHub(ImpartialGame):
 
 
 def main():
-    x=SpokeAndHub(4, [(0,1),(0,2),(0,3)], [2,2,2,2] )
+    x=SpokeAndHub(3,[(0,1),(1,2)],[3,4,5] )
     #x.nim_value()
-    print x.find_leaves()
+    print x.possible_moves()
     print x.nim_value
 
 

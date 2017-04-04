@@ -164,6 +164,7 @@ class ImpartialGame(CombinatorialGame):
         current=0
         mylist=list(mylist)
         mylist=sorted(mylist)
+        mylist=[int(i) for i in mylist] # this helps sage do its thing
         #print str(mylist)
         for i in range(len(mylist)):
             if not isinstance(mylist[i],int):
