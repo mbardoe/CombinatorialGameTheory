@@ -25,6 +25,7 @@ class ImpartialGame(CombinatorialGame):
                 print("Get Dictionary. Looks like no database. :-(")
         else:
             try:
+                #print "filename: "+self.__filename__
                 self.__db__ = sqlite3.connect(self.__filename__)
                 self.cursor=self.__db__.cursor()
                 numTables=self.cursor.execute('''SELECT name FROM

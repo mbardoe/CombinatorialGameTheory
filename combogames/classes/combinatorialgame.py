@@ -27,10 +27,11 @@ class CombinatorialGame(object):
             __filename__.
         """
         #self.piles=list(mylist)
-
         if 'filename' in kwargs.keys():
-            basepath = os.path.dirname(os.getcwd())
-            parentpath =os.path.dirname(basepath)
+            basepath = os.path.dirname(os.path.abspath(__file__))
+            #print "combgame: "+path
+            #basepath = os.path.dirname(os.getcwd())
+            parentpath =os.path.dirname(os.path.dirname(basepath))
             #print 'parentpath= '+str(parentpath)
             #self.__filename__='../data/'+kwargs['filename']
             self.__filename__=parentpath+'/data/'+kwargs['filename']
