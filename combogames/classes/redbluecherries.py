@@ -112,7 +112,7 @@ class RedBlueCherries(PartizanGame):
 def main():
     x=RedBlueCherries(5, [(0,1),(1,2),(2,3),(3,4)], ['b','r','r','r','b'] )
     #x.nim_value()
-    print x.find_min_nodes()
+    #print x.find_min_nodes()
     print x.value
 
 
