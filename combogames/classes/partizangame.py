@@ -32,7 +32,7 @@ class PartizanGame(CombinatorialGame):
         if 'tinydb' in sys.modules:
             try:
                 self.__db__=TinyDB(self.__filename__)
-                print "Made a db"
+                #print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
         else:

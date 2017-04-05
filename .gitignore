@@ -2,3 +2,7 @@
 yourmom.db
 .idea
 .idea/*
+*.term
+*.sagews
+*.ipynb
+

@@ -16,6 +16,8 @@ class ImpartialGame(CombinatorialGame):
         as __filename__.
         """
         if 'tinydb' in sys.modules:
+            #print "tinyDB"
+            #print self.__filename__
             try:
                 self.__db__=TinyDB(self.__filename__)
                 #print "Made a db"
@@ -23,6 +25,7 @@ class ImpartialGame(CombinatorialGame):
                 print("Get Dictionary. Looks like no database. :-(")
         else:
             try:
+                #print "filename: "+self.__filename__
                 self.__db__ = sqlite3.connect(self.__filename__)
                 self.cursor=self.__db__.cursor()
                 numTables=self.cursor.execute('''SELECT name FROM
@@ -161,6 +164,7 @@ class ImpartialGame(CombinatorialGame):
         current=0
         mylist=list(mylist)
         mylist=sorted(mylist)
+        mylist=[int(i) for i in mylist] # this helps sage do its thing
         #print str(mylist)
         for i in range(len(mylist)):
             if not isinstance(mylist[i],int):

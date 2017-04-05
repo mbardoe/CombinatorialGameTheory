@@ -15,6 +15,7 @@ class SpokeAndHub(ImpartialGame):
     def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
         self.__filename__=filename
         super(SpokeAndHub,self).__init__(**{'filename': self.__filename__})
+        #print self.__filename__
         self.graph=nx.Graph()
         self.graph.add_nodes_from(range(num_nodes))
         self.graph.add_edges_from(edges)
@@ -137,9 +138,9 @@ class SpokeAndHub(ImpartialGame):
 
 
 def main():
-    x=SpokeAndHub(4, [(0,1),(0,2),(0,3)], [2,2,2,2] )
+    x=SpokeAndHub(3,[(0,1),(1,2)],[3,4,5] )
     #x.nim_value()
-    print x.find_leaves()
+    print x.possible_moves()
     print x.nim_value
 
 
