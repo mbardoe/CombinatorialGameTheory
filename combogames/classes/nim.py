@@ -3,6 +3,15 @@ from impartialgame import ImpartialGame
 
 class Nim(ImpartialGame):
     def __init__(self, *args, **kwargs):
+        """An object that gives a Nim Game.
+
+        Args:
+            piles (list): The first parameter which is a list of pile sizes.
+            filename (str): what filename would you like to store results.
+
+        Returns:
+            Nim (object)
+        """
         if len(args)==1 and len(kwargs)==1:
             self.piles=list(args[0])
             self.__filename__=str(kwargs['filename'])
@@ -81,6 +90,6 @@ class Nim(ImpartialGame):
             for j in range(self.piles[i]):
                 newPiles=list(self.piles)
                 newPiles[i]=j
-                ans.add(CombinatorialGame(newPiles))
+                ans.add(Nim(newPiles))
         return ans
 

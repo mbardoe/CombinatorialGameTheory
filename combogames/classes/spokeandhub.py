@@ -13,6 +13,20 @@ except:
 class SpokeAndHub(ImpartialGame):
 
     def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
+        """
+        Spoke and Hub Game object. It allows computations with this game.
+
+        Agrs:
+            num_nodes (int):    How many nodes will be in the graph.
+            edges (list):   A list of tuples that define the edges of the graph.
+            piles (list):   A list of integers that define the size of the pile at
+                each node of the graph.
+            filename (str):     The filename of the database file we use.
+
+        Returns:
+            SpokeAndHub object.
+        """
+
         self.__filename__=filename
         super(SpokeAndHub,self).__init__(**{'filename': self.__filename__})
         #print self.__filename__
@@ -73,6 +87,8 @@ class SpokeAndHub(ImpartialGame):
         return moves
 
     def __validate__(self):
+        """Makes sure that if the pile size is zero we remove that node.
+        """
         ## make sure that no piles are zero.
         ## this needs to be tested.
         try:
