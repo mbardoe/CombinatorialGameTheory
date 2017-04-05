@@ -54,10 +54,10 @@ class PartizanGame(CombinatorialGame):
         """Looks up the value of a previously computed game.
         If the game has not been computed already, then the function returns
         -1.
-        :rtype : int
+
         Returns:
-            The value of the game that is list in the database or -1 if it
-            can't be found in the database.
+            int: The value of the game that is list in the database or -1 if it
+                can't be found in the database.
         """
         if 'tinydb' in sys.modules:
             #print 'tinydb lookup'
@@ -127,9 +127,11 @@ class PartizanGame(CombinatorialGame):
                 self.__db__.close()
 
     def __db_repr__(self):
-        """A string representation that will be unique and used as the lookup in the database.
+        """A string representation that will be unique and used as the
+        lookup in the database.
         Returns:
-            A unique string that identifies the game as an identification in the database
+            str: A unique string that identifies the game as an
+                identification in the database
         """
         pass
 
@@ -138,8 +140,9 @@ class PartizanGame(CombinatorialGame):
         """Utilize a database of previously constructed values to speed computation.
         When the database does not have the answer it uses a depth search of other games
         to compute the value of the game.
+
         Returns:
-            Then nim value of the game. If it can't find the value in the database it
+            int: Then nim value of the game. If it can't find the value in the database it
             tries to find the value by calculating the nim values of all possible moves
             from the given game.
         """
@@ -148,18 +151,20 @@ class PartizanGame(CombinatorialGame):
 
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
+
         Returns:
-            A set of the games that are all the possible moves from the given
-            game."""
+            dict: A dictionary of move values for left and right.
+        """
 
         return {'left':[None], 'right':[None]}
 
     def __tree_search__(self):
-        """A function that does the depth search when we are calculating nim
+        """A function that does the depth search when we are calculating game
         values.
+
         Returns:
-            Then nim value of the game, found by calculating the nim values of
-            all possible moves.
+            int: Then value of the game, found by calculating the values of
+                all possible moves.
         """
         moves=self.possible_moves() # return a dictionay with keys 'right' and 'left'
         move_values={}
@@ -173,6 +178,17 @@ class PartizanGame(CombinatorialGame):
         return str(self.__db_repr__())
 
     def simplest_number(self, move_dict):
+        """A function that finds the simplest number between the left game
+        values and the right game values.
+
+        Args:
+            move_dict {dict}: A dictionary that contains a list of moves for
+                'right' and moves for 'left'
+
+        Returns:
+            int: Value of the game.
+
+        """
         #print move_dict
         try:
             right_min=min(move_dict['right'])
@@ -185,6 +201,15 @@ class PartizanGame(CombinatorialGame):
         return self.simplest_between(left_max,right_min)
 
     def simplest_between(self, left,right):
+        """Calculates the simplest number between two given numbers.
+
+        Args:
+            left (int): an integer that is smaller than right, Can also be
+                None.
+            right(int): an integer that is larger than left. Can also be
+                None.
+
+        """
         #print str(left) + ' ' +str(right)
         if left is None:
             if right is None:

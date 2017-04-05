@@ -11,8 +11,25 @@ except:
         pass
 
 class RedBlueCherries(PartizanGame):
-
     def __init__(self, num_nodes, edges, piles, filename="redbluecherries.db"):
+        """Creates an instance of a game of Red Blue Cherries. Red Blue Cherries
+        is played by defining a graph where the nodes are either red or blue. One
+        player is red the other is blue. A player may move by removing a node of
+        smallest degree that is their color. The game is over when one player
+        does not have a move. That player is the loser.
+
+        Agrs:
+            num_nodes (int):    How many nodes will be in the graph.
+            edges (list):   A list of tuples that define the edges of the graph.
+            piles (list):   A list of strings ('r' and 'b') that define
+                            the value of each node of the graph.
+            filename (str):     The filename of the database file we use.
+
+        Returns:
+            RedBlueCherries object.
+
+        """
+
         self.__filename__=filename
         super(RedBlueCherries,self).__init__(**{'filename': self.__filename__})
         self.graph=nx.Graph()
@@ -24,13 +41,29 @@ class RedBlueCherries(PartizanGame):
 
 
     def __repr__(self):
+        """Creates a string to print out as a representation of the game.
+
+        Returns:
+            str: A string that describes the game.
+        """
         return "".join([str(self.graph.degree()),"\n", str(self.get_piles())])
 
     def __db_repr__(self):
+        """Creates the database representation of the game.
+
+        Returns:
+            str: A string that list the piles in increasing order.
+        """
         ### what about super when you inherit from 2 classes?
         return str(nx.incidence_matrix(self.graph))+str(self.get_piles())
 
     def get_piles(self):
+        """Returns a list indicating the value of each node.
+
+        Returns:
+            list: A list of strings ('r' and 'b').
+
+        """
         piles_dict=nx.nx.get_node_attributes(self.graph,'piles')
         return [piles_dict[i] for i in range(self.graph.number_of_nodes())]
 
@@ -57,25 +90,41 @@ class RedBlueCherries(PartizanGame):
         return moves
 
     def remove_node(self, node):
+        """Removes a node from the graph. The graph is also re-indexed.
+
+         Args:
+            node (int): The index of the node that needs to be removed.
+        """
         self.graph.remove_node(node)
         self.__validate__()
 
     def __validate__(self):
+        """Makes sure the graph is indexed from 0 to n-1. Where n is the number
+         of nodes.
+        """
         ## make sure that no piles are zero.
         ## this needs to be tested.
         self.__rename_names__()
 
     def __eq__(self, other):
+        """ Determines if two redbluecherry games are equal.
+
+        Args:
+            other (RedBlueCherries object): Another Red Blue Cherries game.
+
+        Returns:
+            bool: True if the graphs are isomorphic and the labels are the same.
+        """
         nm = iso.categorical_node_match('piles',0)
         return nx.is_isomorphic(self.graph, other.graph, node_match=nm)
 
     @property
     def value(self):
-        '''Calculates the nim value of this game via a depth search
+        '''Calculates the value of this game via a depth search
         of possible moves.
 
 
-        :return: int that is the equivalent nim pile
+        :return: int that is the equivalent game.
         '''
         result=self.lookup_value()
         if result<0:
@@ -94,17 +143,30 @@ class RedBlueCherries(PartizanGame):
     ##### Graph Algorithms #######
 
     def find_min_nodes(self):
+        """Finds the nodes of minimal degree.
+
+         Returns:
+            list: A list of integers which are the indexes of nodes of minimal
+                    degree.
+        """
 
         degrees=self.graph.degree()
         min_degree=min(degrees.values())
         return [key for key in degrees.keys() if degrees[key]==min_degree]
 
     def degree(self):
+        """ Returns the degrees of each node.
+
+        Returns:
+            dict: A dictionary index by node indexes and whose values are the
+                degree of that node.
+        """
         return self.graph.degree()
 
     def __rename_names__(self):
-        '''Changes the labelling of the vertices so that they correspond to
-        smaller number indicate a leaf with small pile numbers.'''
+        """Changes the labelling of the vertices so that they correspond to
+        smaller number indicate a leaf with small pile numbers.
+        """
         self.graph = nx.convert_node_labels_to_integers(self.graph)
 
 

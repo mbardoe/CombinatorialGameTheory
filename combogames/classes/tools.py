@@ -29,6 +29,17 @@ def mex(mylist):
     return current
 
 def simplest_number(move_dict):
+    """A function that finds the simplest number between the left game
+        values and the right game values.
+
+        Args:
+            move_dict {dict}: A dictionary that contains a list of moves for
+                'right' and moves for 'left'
+
+        Returns:
+            int: Value of the game.
+
+    """
     print move_dict
     try:
         right_min=min(move_dict['right'])
@@ -41,6 +52,15 @@ def simplest_number(move_dict):
     return simplest_between(left_max,right_min)
 
 def simplest_between(left,right):
+    """Calculates the simplest number between two given numbers.
+
+        Args:
+            left (int): an integer that is smaller than right, Can also be
+                None.
+            right(int): an integer that is larger than left. Can also be
+                None.
+
+     """
     print str(left) + ' ' +str(right)
     if left is None:
         if right is None:

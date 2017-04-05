@@ -10,6 +10,10 @@ except:
 
 
 class ImpartialGame(CombinatorialGame):
+    """A base class for impartial games. Currently sets up the database, but
+    we should move this functionality back to CombinatorialGame. Includes
+    calculation tools like mex function to make nim calculation easier.
+    """
 
     def __get_dictionary__(self):
         """Set up the database file for this game. The path is stored
@@ -45,10 +49,9 @@ class ImpartialGame(CombinatorialGame):
         If the game has not been computed already, then the function returns
         -1.
 
-        :rtype : int
         Returns:
-            The value of the game that is list in the database or -1 if it
-            can't be found in the database.
+            int: The value of the game that is list in the database or -1 if it
+                can't be found in the database.
 
         """
         if 'tinydb' in sys.modules:
@@ -97,8 +100,8 @@ class ImpartialGame(CombinatorialGame):
         """Store values in the database.
 
         Args:
-            game_id: is a string that can be used to uniquely identify each game.
-            ans: is an integer that represents its the nim value of the game.
+            game_id (str): is a string that can be used to uniquely identify each game.
+            ans (int): is an integer that represents its the nim value of the game.
         """
         #game_id=self.__db_repr__()
         if 'tinydb' in sys.modules:
@@ -128,9 +131,9 @@ class ImpartialGame(CombinatorialGame):
         to compute the value of the game.
 
         Returns:
-            Then nim value of the game. If it can't find the value in the database it
-            tries to find the value by calculating the nim values of all possible moves
-            from the given game.
+            int: Then nim value of the game. If it can't find the value in the database it
+                tries to find the value by calculating the nim values of all possible moves
+                from the given game.
         """
         # look up in db
         return  -1
@@ -140,8 +143,8 @@ class ImpartialGame(CombinatorialGame):
         values.
 
         Returns:
-            Then nim value of the game, found by calculating the nim values of
-            all possible moves.
+            int: Then nim value of the game, found by calculating the nim values of
+                all possible moves.
 
         """
         moves=self.possible_moves()
@@ -155,11 +158,16 @@ class ImpartialGame(CombinatorialGame):
         mex is essential to calculations with impartial games. By finding the
         smallest excluded value it is possible to find the equivalent nim stack.
 
-        :list mylist: a list of of values of positive integers
-        :returns: int the smallest positive integer that is missing from the
-                        list
-        :raises: ValueError or TypeError if you don't give it a list of
-                    positive integers
+        Args:
+            mylist (list): a list of of values of positive integers
+
+        Returns:
+            int: the smallest positive integer that is missing from the
+                list
+
+        Raises:
+            ValueError: If the list is not all positive integers.
+            TypeError: if you don't give it a list of integers
         """
         current=0
         mylist=list(mylist)
