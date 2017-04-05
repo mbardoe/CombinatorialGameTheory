@@ -10,24 +10,25 @@ except:
 
 
 class EndNim(ImpartialGame):
-    """A class that will represent an EndNim Game.
-	It has takes in an ordered list [a,b,c,...,z]
-	and makes it into a game of the form 
-			a--b--c---...---z. 
+    """
 	Methods:
 		possible_moves - finds the list of possible moves
 		find_nim_value - finds the nim Value of the position
 	"""
 
     def __init__(self, *args, **kwargs):
-        """ Generate a new game.
+        """ A class that will represent an EndNim Game.
+	    It has takes in an ordered list [a,b,c,...,z]
+	    and makes it into a game of the form
+			a--b--c---...---z.
+
 
         Arguments:
-            'piles': a list integers of sizes of piles
-            'filename': string of the path of the database
+            piles (list): a list integers of sizes of piles
+            filename (str): string of the path of the database
 
         Returns:
-            An EndNim game object
+            ImpartialGame: An EndNim game object
         """
         if args and len(kwargs) == 1:
             self.piles = list(args[0])
@@ -54,13 +55,19 @@ class EndNim(ImpartialGame):
         self.piles = newlist
 
     def __len__(self):
+        """ Calculates the number of piles.
+
+        Returns:
+            (int): the number of piles.
+        """
         return len(self.piles)
 
     def possible_moves(self):
         """Creates a list of possible moves from the given game.
 
         Returns:
-            set: A set of the possible moves."""
+            set: A set of the possible moves.
+        """
         ans = set([])
 
         mylist = list(self.piles)
@@ -106,7 +113,7 @@ class EndNim(ImpartialGame):
                 other: Another GalesNim game.
 
             Result:
-                This gives a boolean describing if the two games are equal.
+                bool: This gives a boolean describing if the two games are equal.
         """
         return (
             self.piles == other.piles or self.piles.reverse() == other.piles)

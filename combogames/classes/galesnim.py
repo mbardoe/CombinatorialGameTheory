@@ -13,8 +13,14 @@ class GalesNim(ImpartialGame):
     def __init__(self, *args, **kwargs):
         """An object that Gale's Nim object.
 
-        :param args: piles, num_zero_piles, k, filename
-        :param kwargs: piles, num_zero_piles, k, filename
+        Args:
+            piles (list): The first parameter which is a list of pile sizes.
+            num_zero_piles (int): How many piles are zero already.
+            k (int): How many piles can be zero.
+            filename (str): what filename would you like to store results.
+
+        Returns:
+            GalesNim (object)
         """
         self.number_Of_zero_piles = 0
         self.k = 1
@@ -46,8 +52,9 @@ class GalesNim(ImpartialGame):
         #self.__get_dictionary__()
 
     def __validate__(self):
-        """__validate is designed to take the zeroes out of the piles. Should we
-		keep the zeroes, or keep track of how many zero piles there are."""
+        """__validate__ is designed to take the zeroes out of the piles.
+        Should we keep the zeroes, or keep track of how many zero
+        piles there are?"""
         newPiles = [x for x in self.piles if x != 0]
         self.number_Of_zero_piles += len(self.piles) - len(newPiles)
         self.piles = newPiles
@@ -116,11 +123,11 @@ class GalesNim(ImpartialGame):
     def __eq__(self, other):
         """Determine if to GalesNim games are equivalent.
 
-            Args:
-                other: Another GalesNim game.
+        Args:
+            other: Another GalesNim game.
 
-            Result:
-                This gives a boolean describing if the two games are equal.
+        Result:
+            This gives a boolean describing if the two games are equal.
             """
         myPiles = list(self.piles)
         theirPiles = list(other.piles)
