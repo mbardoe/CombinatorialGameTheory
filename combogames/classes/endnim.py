@@ -1,4 +1,4 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -9,17 +9,25 @@ except:
         pass
 
 
-class EndNim(CombinatorialGame):
-    """A class that will represent an EndNim Game.
+class EndNim(ImpartialGame):
+    """ A class that will represent an EndNim Game.
 	It has takes in an ordered list [a,b,c,...,z]
-	and makes it into a game of the form 
-			a--b--c---...---z. 
-	Methods:
-		possible_moves - finds the list of possible moves
-		find_nim_value - finds the nim Value of the position
-	"""
+	and makes it into a game of the form
+	a--b--c---...---z.
+
+
+    Arguments:
+
+        piles (list): a list integers of sizes of piles
+
+        filename (str): string of the path of the database
+
+    Returns:
+        ImpartialGame: An EndNim game object
+    """
 
     def __init__(self, *args, **kwargs):
+
         if args and len(kwargs) == 1:
             self.piles = list(args[0])
             self.__filename__ = str(kwargs['filename'])
@@ -44,12 +52,20 @@ class EndNim(CombinatorialGame):
         newlist = [x for x in self.piles if x != 0]
         self.piles = newlist
 
-    def len(self):
-        '''How long is the strand.'''
+    def __len__(self):
+        """ Calculates the number of piles.
+
+        Returns:
+            (int): the number of piles.
+        """
         return len(self.piles)
 
     def possible_moves(self):
-        """Creates a list of possible moves from the given game."""
+        """Creates a list of possible moves from the given game.
+
+        Returns:
+            set: A set of the possible moves.
+        """
         ans = set([])
 
         mylist = list(self.piles)
@@ -66,6 +82,11 @@ class EndNim(CombinatorialGame):
         return ans
 
     def __repr__(self):
+        """Creates a string to print out as a representation of the game.
+
+        Returns:
+            str: A string that describes the game.
+        """
         ans = ""
         for i in range(len(self.piles) - 1):
             ans += str(self.piles[i])
@@ -74,11 +95,24 @@ class EndNim(CombinatorialGame):
         return ans
 
     def __db_repr__(self):
+        """Creates the database representation of the game.
+
+        Returns:
+            str: A string that list the piles in increasing order.
+        """
         if self.piles[0] > self.piles[-1]:
             self.piles.reverse()
         return self.__repr__()
 
     def __eq__(self, other):
+        """Determine if to GalesNim games are equivalent.
+
+            Args:
+                other: Another GalesNim game.
+
+            Result:
+                bool: This gives a boolean describing if the two games are equal.
+        """
         return (
             self.piles == other.piles or self.piles.reverse() == other.piles)
 
@@ -89,14 +123,15 @@ class EndNim(CombinatorialGame):
             of possible moves.
 
 
-            :return: int that is the equivalent nim pile
+            Returns:
+                int: an integer that is the equivalent nim pile
             """
         result = self.lookup_value()
         if result < 0:
-            if self.len() == 1:
+            if len(self) == 1:
                 result = self.piles[0]
 
-            elif self.len() == 2:
+            elif len(self) == 2:
                 result = self.piles[0] ^ self.piles[1]
 
             else:

@@ -1,7 +1,20 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 
-class Nim(CombinatorialGame):
+class Nim(ImpartialGame):
+    """An object that gives a Nim Game. Nim is a piles game where players
+    alternate moves. Each player can take as much as they want from any one
+    pile. The game is over when there are no piles left. The winner is the
+    player that removes the last pile.
+
+    Args:
+        piles (list): The first parameter which is a list of pile sizes.
+
+        filename (str): what filename would you like to store results.
+
+    Returns:
+        Nim (object)
+        """
     def __init__(self, *args, **kwargs):
         if len(args)==1 and len(kwargs)==1:
             self.piles=list(args[0])
@@ -81,6 +94,6 @@ class Nim(CombinatorialGame):
             for j in range(self.piles[i]):
                 newPiles=list(self.piles)
                 newPiles[i]=j
-                ans.add(CombinatorialGame(newPiles))
+                ans.add(Nim(newPiles))
         return ans
 

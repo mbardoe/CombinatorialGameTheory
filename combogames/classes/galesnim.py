@@ -1,4 +1,4 @@
-from combinatorialgametools import CombinatorialGame
+from impartialgame import ImpartialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -9,13 +9,24 @@ except:
         pass
 
 
-class GalesNim(CombinatorialGame):
-    def __init__(self, *args, **kwargs):
-        """
+class GalesNim(ImpartialGame):
+    """An object that Gale's Nim object. Gale's Nim is a pile game where
+        you play like a standard nim game, but the game ends when only 1 (or more)
+        piles is not empty. Players alternate moves.
 
-        :param args: piles, num_zero_piles, k, filename
-        :param kwargs: piles, num_zero_piles, k, filename
-        """
+        Args:
+            piles (list): The first parameter which is a list of pile sizes.
+
+            num_zero_piles (int): How many piles are zero already.
+
+            k (int): How many piles can be zero.
+
+            filename (str): what filename would you like to store results.
+
+        Returns:
+            GalesNim (object)
+    """
+    def __init__(self, *args, **kwargs):
         self.number_Of_zero_piles = 0
         self.k = 1
         self.__filename__ = 'galesnim.db'
@@ -46,15 +57,19 @@ class GalesNim(CombinatorialGame):
         #self.__get_dictionary__()
 
     def __validate__(self):
-        """__validate is designed to take the zeroes out of the piles. Should we
-		keep the zeroes, or keep track of how many zero piles there are."""
+        """__validate__ is designed to take the zeroes out of the piles.
+        Should we keep the zeroes, or keep track of how many zero
+        piles there are?"""
         newPiles = [x for x in self.piles if x != 0]
         self.number_Of_zero_piles += len(self.piles) - len(newPiles)
         self.piles = newPiles
 
     @property
     def nim_value(self):
-        """A method to find the nim value of the game"""
+        """A method to find the nim value of the game
+
+        Returns:
+            int: An integer that represents the nim value of the game."""
         result = self.lookup_value()
         if result < 0:
             if len(self.piles) - self.k == 0:
@@ -68,7 +83,7 @@ class GalesNim(CombinatorialGame):
         """Compute all other games that are possible moves from this position.
 
         Returns:
-            A set of the games that are all the possible moves from the given
+            set: A set of the games that are all the possible moves from the given
             game.
         """
         ans = set([])
@@ -81,6 +96,11 @@ class GalesNim(CombinatorialGame):
 
 
     def __repr__(self):
+        """Creates a string to print out as a representation of the game.
+
+        Returns:
+            str: A string that describes the game.
+        """
         ans = "Game ends when all but " + str(self.k) + " are empty.\n"
         for i in range(len(self.piles)):
             ans += str(self.piles[i]) + "  "
@@ -90,6 +110,11 @@ class GalesNim(CombinatorialGame):
 
 
     def __db_repr__(self):
+        """Creates the database representation of the game.
+
+        Returns:
+            str: A string that list the piles in increasing order.
+        """
         ans = str(self.k) + "_"
         new_Piles = list(self.piles)
         new_Piles.sort()
@@ -103,11 +128,11 @@ class GalesNim(CombinatorialGame):
     def __eq__(self, other):
         """Determine if to GalesNim games are equivalent.
 
-            Args:
-                other: Another GalesNim game.
+        Args:
+            other: Another GalesNim game.
 
-            Result:
-                This gives a boolean describing if the two games are equal.
+        Result:
+            This gives a boolean describing if the two games are equal.
             """
         myPiles = list(self.piles)
         theirPiles = list(other.piles)
