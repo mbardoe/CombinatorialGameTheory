@@ -1,0 +1,747 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>classes package &#8212; Combinatorial Games 1.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="classes" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="classes-package">
+<h1>classes package<a class="headerlink" href="#classes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-combinatorialgame">
+<span id="combinatorialgame-module"></span><h2>combinatorialgame module<a class="headerlink" href="#module-combinatorialgame" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="combinatorialgame.CombinatorialGame">
+<em class="property">class </em><code class="descclassname">combinatorialgame.</code><code class="descname">CombinatorialGame</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#combinatorialgame.CombinatorialGame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A base class for investigating impartial combinatorial games.</p>
+<p>One goal of this class is create methods that allow for back searches
+of previously computed games. This class can utilize either tinyDB or
+sqlite3 to record the values of games that have been computed. The goal
+is to make the computation of larger games much faster.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">mylist: the list of integer piles sizes for the game</p>
+<p class="last">filename: the path for the database file. To be saved in
+__filename__.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="combinatorialgame.CombinatorialGame.lookup_value">
+<code class="descname">lookup_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#combinatorialgame.CombinatorialGame.lookup_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the value of a previously computed game.</p>
+<p>If the game has not been computed already, then the function may return
+None or -1. (Probably need to fix this in the future.)</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>The value of the game that is list in the database or -1 if it
+can&#8217;t be found in the database.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="combinatorialgame.CombinatorialGame.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#combinatorialgame.CombinatorialGame.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>set: A set of the games that are all the possible moves from the</dt>
+<dd>given game.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-endnim">
+<span id="endnim-module"></span><h2>endnim module<a class="headerlink" href="#module-endnim" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="endnim.EndNim">
+<em class="property">class </em><code class="descclassname">endnim.</code><code class="descname">EndNim</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#endnim.EndNim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#impartialgame.ImpartialGame" title="impartialgame.ImpartialGame"><code class="xref py py-class docutils literal"><span class="pre">impartialgame.ImpartialGame</span></code></a></p>
+<dl class="docutils">
+<dt>A class that will represent an EndNim Game.</dt>
+<dd>It has takes in an ordered list [a,b,c,...,z]
+and makes it into a game of the form
+a&#8211;b&#8211;c&#8212;...&#8212;z.</dd>
+</dl>
+<p>Arguments:</p>
+<blockquote>
+<div><p>piles (list): a list integers of sizes of piles</p>
+<p>filename (str): string of the path of the database</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>ImpartialGame: An EndNim game object</dd>
+</dl>
+<dl class="attribute">
+<dt id="endnim.EndNim.nim_value">
+<code class="descname">nim_value</code><a class="headerlink" href="#endnim.EndNim.nim_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the nim value of this game via a depth search
+of possible moves.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: an integer that is the equivalent nim pile</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="endnim.EndNim.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#endnim.EndNim.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of possible moves from the given game.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>set: A set of the possible moves.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="endnim.main">
+<code class="descclassname">endnim.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#endnim.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-galesnim">
+<span id="galesnim-module"></span><h2>galesnim module<a class="headerlink" href="#module-galesnim" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="galesnim.GalesNim">
+<em class="property">class </em><code class="descclassname">galesnim.</code><code class="descname">GalesNim</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#galesnim.GalesNim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#impartialgame.ImpartialGame" title="impartialgame.ImpartialGame"><code class="xref py py-class docutils literal"><span class="pre">impartialgame.ImpartialGame</span></code></a></p>
+<p>An object that Gale&#8217;s Nim object. Gale&#8217;s Nim is a pile game where
+you play like a standard nim game, but the game ends when only 1 (or more)
+piles is not empty. Players alternate moves.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">piles (list): The first parameter which is a list of pile sizes.</p>
+<p>num_zero_piles (int): How many piles are zero already.</p>
+<p>k (int): How many piles can be zero.</p>
+<p class="last">filename (str): what filename would you like to store results.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>GalesNim (object)</dd>
+</dl>
+<dl class="attribute">
+<dt id="galesnim.GalesNim.nim_value">
+<code class="descname">nim_value</code><a class="headerlink" href="#galesnim.GalesNim.nim_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to find the nim value of the game</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: An integer that represents the nim value of the game.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galesnim.GalesNim.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#galesnim.GalesNim.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>set: A set of the games that are all the possible moves from the given
+game.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="galesnim.main">
+<code class="descclassname">galesnim.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#galesnim.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-impartialgame">
+<span id="impartialgame-module"></span><h2>impartialgame module<a class="headerlink" href="#module-impartialgame" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="impartialgame.ImpartialGame">
+<em class="property">class </em><code class="descclassname">impartialgame.</code><code class="descname">ImpartialGame</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#impartialgame.ImpartialGame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#combinatorialgame.CombinatorialGame" title="combinatorialgame.CombinatorialGame"><code class="xref py py-class docutils literal"><span class="pre">combinatorialgame.CombinatorialGame</span></code></a></p>
+<p>A base class for impartial games. Currently sets up the database, but
+we should move this functionality back to CombinatorialGame. Includes
+calculation tools like mex function to make nim calculation easier.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filename (str): The filename of the database.</dd>
+<dt>Returns:</dt>
+<dd>Impartial Game Object</dd>
+</dl>
+<dl class="method">
+<dt id="impartialgame.ImpartialGame.find_move_with_value">
+<code class="descname">find_move_with_value</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#impartialgame.ImpartialGame.find_move_with_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Look at the possible moves of this move, and find a move that has value</dt>
+<dd>equal to n.</dd>
+<dt>Args:</dt>
+<dd>n (int): is the nim value we are interested in finding a move from the
+current game.</dd>
+<dt>Returns:</dt>
+<dd>A game of the that has the given value.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="impartialgame.ImpartialGame.lookup_value">
+<code class="descname">lookup_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#impartialgame.ImpartialGame.lookup_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the value of a previously computed game.</p>
+<p>If the game has not been computed already, then the function returns
+-1.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>int: The value of the game that is list in the database or -1 if it</dt>
+<dd>can&#8217;t be found in the database.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="impartialgame.ImpartialGame.mex">
+<code class="descname">mex</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="headerlink" href="#impartialgame.ImpartialGame.mex" title="Permalink to this definition">¶</a></dt>
+<dd><p>mex computes the smallest positive integer that is missing from a list.</p>
+<p>mex is essential to calculations with impartial games. By finding the
+smallest excluded value it is possible to find the equivalent nim stack.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>mylist (list): a list of of values of positive integers</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>int: the smallest positive integer that is missing from the</dt>
+<dd>list</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd>ValueError: If the list is not all positive integers.
+TypeError: if you don&#8217;t give it a list of integers</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="impartialgame.ImpartialGame.nim_value">
+<code class="descname">nim_value</code><a class="headerlink" href="#impartialgame.ImpartialGame.nim_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utilize a database of previously constructed values to speed computation.</p>
+<p>When the database does not have the answer it uses a depth search of other games
+to compute the value of the game.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>int: Then nim value of the game. If it can&#8217;t find the value in the database it</dt>
+<dd>tries to find the value by calculating the nim values of all possible moves
+from the given game.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nim">
+<span id="nim-module"></span><h2>nim module<a class="headerlink" href="#module-nim" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nim.Nim">
+<em class="property">class </em><code class="descclassname">nim.</code><code class="descname">Nim</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nim.Nim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#impartialgame.ImpartialGame" title="impartialgame.ImpartialGame"><code class="xref py py-class docutils literal"><span class="pre">impartialgame.ImpartialGame</span></code></a></p>
+<p>An object that gives a Nim Game. Nim is a piles game where players
+alternate moves. Each player can take as much as they want from any one
+pile. The game is over when there are no piles left. The winner is the
+player that removes the last pile.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">piles (list): The first parameter which is a list of pile sizes.</p>
+<p class="last">filename (str): what filename would you like to store results.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>Nim (object)</dd>
+</dl>
+<dl class="attribute">
+<dt id="nim.Nim.nim_value">
+<code class="descname">nim_value</code><a class="headerlink" href="#nim.Nim.nim_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utilize a database of previously constructed values to speed computation.</p>
+<p>When the database does not have the answer it uses a depth search of other games
+to compute the value of the game.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Then nim value of the game. If it can&#8217;t find the value in the database it
+tries to find the value by calculating the nim values of all possible moves
+from the given game.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nim.Nim.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nim.Nim.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A set of the games that are all the possible moves from the given
+game.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-partizangame">
+<span id="partizangame-module"></span><h2>partizangame module<a class="headerlink" href="#module-partizangame" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="partizangame.PartizanGame">
+<em class="property">class </em><code class="descclassname">partizangame.</code><code class="descname">PartizanGame</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#partizangame.PartizanGame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#combinatorialgame.CombinatorialGame" title="combinatorialgame.CombinatorialGame"><code class="xref py py-class docutils literal"><span class="pre">combinatorialgame.CombinatorialGame</span></code></a></p>
+<p>A base class for investigating partizan combinatorial games.
+One goal of this class is create methods that allow for back searches
+of previously computed games. This class can utilize either tinyDB or
+sqlite3 to record the values of games that have been computed. The goal
+is to make the computation of larger games much faster. This particular
+base class is really a standard nim game.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filename (str): The filename where the database is.</dd>
+</dl>
+<dl class="method">
+<dt id="partizangame.PartizanGame.lookup_value">
+<code class="descname">lookup_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#partizangame.PartizanGame.lookup_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the value of a previously computed game.
+If the game has not been computed already, then the function returns
+-1.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>int: The value of the game that is list in the database or -1 if it</dt>
+<dd>can&#8217;t be found in the database.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="partizangame.PartizanGame.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#partizangame.PartizanGame.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>dict: A dictionary of move values for left and right.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="partizangame.PartizanGame.simplest_between">
+<code class="descname">simplest_between</code><span class="sig-paren">(</span><em>left</em>, <em>right</em><span class="sig-paren">)</span><a class="headerlink" href="#partizangame.PartizanGame.simplest_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the simplest number between two given numbers.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>left (int): an integer that is smaller than right, Can also be</dt>
+<dd>None.</dd>
+<dt>right(int): an integer that is larger than left. Can also be</dt>
+<dd>None.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="partizangame.PartizanGame.simplest_number">
+<code class="descname">simplest_number</code><span class="sig-paren">(</span><em>move_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#partizangame.PartizanGame.simplest_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that finds the simplest number between the left game
+values and the right game values.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>move_dict {dict}: A dictionary that contains a list of moves for</dt>
+<dd>&#8216;right&#8217; and moves for &#8216;left&#8217;</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>int: Value of the game.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="partizangame.PartizanGame.value">
+<code class="descname">value</code><a class="headerlink" href="#partizangame.PartizanGame.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utilize a database of previously constructed values to speed computation.
+When the database does not have the answer it uses a depth search of other games
+to compute the value of the game.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: Then nim value of the game. If it can&#8217;t find the value in the database it
+tries to find the value by calculating the nim values of all possible moves
+from the given game.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-redbluecherries">
+<span id="redbluecherries-module"></span><h2>redbluecherries module<a class="headerlink" href="#module-redbluecherries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="redbluecherries.RedBlueCherries">
+<em class="property">class </em><code class="descclassname">redbluecherries.</code><code class="descname">RedBlueCherries</code><span class="sig-paren">(</span><em>num_nodes</em>, <em>edges</em>, <em>piles</em>, <em>filename='redbluecherries.db'</em><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#partizangame.PartizanGame" title="partizangame.PartizanGame"><code class="xref py py-class docutils literal"><span class="pre">partizangame.PartizanGame</span></code></a></p>
+<p>Creates an instance of a game of Red Blue Cherries. Red Blue Cherries
+is played by defining a graph where the nodes are either red or blue. One
+player is red the other is blue. A player may move by removing a node of
+smallest degree that is their color. The game is over when one player
+does not have a move. That player is the loser.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>num_nodes (int):    How many nodes will be in the graph.</p>
+<p>edges (list):   A list of tuples that define the edges of the graph.</p>
+<dl class="docutils">
+<dt>piles (list):   A list of strings (&#8216;r&#8217; and &#8216;b&#8217;) that define</dt>
+<dd>the value of each node of the graph.</dd>
+</dl>
+<p>filename (str):     The filename of the database file we use.</p>
+<p>Returns:</p>
+<blockquote>
+<div>RedBlueCherries object.</div></blockquote>
+</div></blockquote>
+<dl class="method">
+<dt id="redbluecherries.RedBlueCherries.degree">
+<code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the degrees of each node.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>dict: A dictionary index by node indexes and whose values are the</dt>
+<dd>degree of that node.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="redbluecherries.RedBlueCherries.find_min_nodes">
+<code class="descname">find_min_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries.find_min_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the nodes of minimal degree.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list: A list of integers which are the indexes of nodes of minimal</dt>
+<dd>degree.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="redbluecherries.RedBlueCherries.get_piles">
+<code class="descname">get_piles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries.get_piles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list indicating the value of each node.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list: A list of strings (&#8216;r&#8217; and &#8216;b&#8217;).</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="redbluecherries.RedBlueCherries.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A list of the games that are all the possible moves from the given
+game.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="redbluecherries.RedBlueCherries.remove_node">
+<code class="descname">remove_node</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.RedBlueCherries.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a node from the graph. The graph is also re-indexed.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>node (int): The index of the node that needs to be removed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="redbluecherries.RedBlueCherries.value">
+<code class="descname">value</code><a class="headerlink" href="#redbluecherries.RedBlueCherries.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the value of this game via a depth search
+of possible moves.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int that is the equivalent game.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="redbluecherries.main">
+<code class="descclassname">redbluecherries.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#redbluecherries.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-spokeandhub">
+<span id="spokeandhub-module"></span><h2>spokeandhub module<a class="headerlink" href="#module-spokeandhub" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="spokeandhub.SpokeAndHub">
+<em class="property">class </em><code class="descclassname">spokeandhub.</code><code class="descname">SpokeAndHub</code><span class="sig-paren">(</span><em>num_nodes</em>, <em>edges</em>, <em>piles</em>, <em>filename='spokeandhub.db'</em><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.SpokeAndHub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#impartialgame.ImpartialGame" title="impartialgame.ImpartialGame"><code class="xref py py-class docutils literal"><span class="pre">impartialgame.ImpartialGame</span></code></a></p>
+<p>Spoke and Hub Game object. It allows computations with this game.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>num_nodes (int):    How many nodes will be in the graph.</p>
+<p>edges (list):   A list of tuples that define the edges of the graph.</p>
+<dl class="docutils">
+<dt>piles (list):   A list of integers that define the size of the pile at</dt>
+<dd>each node of the graph.</dd>
+</dl>
+<p>filename (str):     The filename of the database file we use.</p>
+<p>Returns:</p>
+<blockquote>
+<div>SpokeAndHub object.</div></blockquote>
+</div></blockquote>
+<dl class="method">
+<dt id="spokeandhub.SpokeAndHub.degree">
+<code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.SpokeAndHub.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the dictionary of degrees of the various vertices of the
+graph.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>dict: A dictionary of the degrees of the nodes.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="spokeandhub.SpokeAndHub.find_leaves">
+<code class="descname">find_leaves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.SpokeAndHub.find_leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the leaves of the graph. A leaf is a node with degree 1.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list: A list of integers which are labels of nodes that are leaves.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="spokeandhub.SpokeAndHub.get_piles">
+<code class="descname">get_piles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.SpokeAndHub.get_piles" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to report the size of the pile for each node of the graph.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list: A list of integers with the pile sizes.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="spokeandhub.SpokeAndHub.nim_value">
+<code class="descname">nim_value</code><a class="headerlink" href="#spokeandhub.SpokeAndHub.nim_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the nim value of this game via a depth search
+of possible moves.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: An integer that is the equivalent nim pile.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="spokeandhub.SpokeAndHub.possible_moves">
+<code class="descname">possible_moves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.SpokeAndHub.possible_moves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute all other games that are possible moves from this position.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A list of the games that are all the possible moves from the given
+game.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="spokeandhub.main">
+<code class="descclassname">spokeandhub.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spokeandhub.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-tools">
+<span id="tools-module"></span><h2>tools module<a class="headerlink" href="#module-tools" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="tools.main">
+<code class="descclassname">tools.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tools.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tools.mex">
+<code class="descclassname">tools.</code><code class="descname">mex</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.mex" title="Permalink to this definition">¶</a></dt>
+<dd><p>mex computes the smallest positive integer that is missing from a list.</p>
+<p>mex is essential to calculations with impartial games. By finding the
+smallest excluded value it is possible to find the equivalent nim stack.</p>
+<p>Args:</p>
+<blockquote>
+<div>mylist (list): a list of of values of positive integers</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>int: the smallest positive integer that is missing from the</dt>
+<dd>list</dd>
+</dl>
+</div></blockquote>
+<p>Raises:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>ValueError or TypeError if you don&#8217;t give it a list of</dt>
+<dd>positive integers</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="tools.simplest_between">
+<code class="descclassname">tools.</code><code class="descname">simplest_between</code><span class="sig-paren">(</span><em>left</em>, <em>right</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.simplest_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the simplest number between two given numbers.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>left (int): an integer that is smaller than right, Can also be</dt>
+<dd>None.</dd>
+<dt>right(int): an integer that is larger than left. Can also be</dt>
+<dd>None.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tools.simplest_number">
+<code class="descclassname">tools.</code><code class="descname">simplest_number</code><span class="sig-paren">(</span><em>move_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.simplest_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that finds the simplest number between the left game
+values and the right game values.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>move_dict (dict): A dictionary that contains a list of moves for</dt>
+<dd>&#8216;right&#8217; and moves for &#8216;left&#8217;</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>int: Value of the game.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">classes package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-combinatorialgame">combinatorialgame module</a></li>
+<li><a class="reference internal" href="#module-endnim">endnim module</a></li>
+<li><a class="reference internal" href="#module-galesnim">galesnim module</a></li>
+<li><a class="reference internal" href="#module-impartialgame">impartialgame module</a></li>
+<li><a class="reference internal" href="#module-nim">nim module</a></li>
+<li><a class="reference internal" href="#module-partizangame">partizangame module</a></li>
+<li><a class="reference internal" href="#module-redbluecherries">redbluecherries module</a></li>
+<li><a class="reference internal" href="#module-spokeandhub">spokeandhub module</a></li>
+<li><a class="reference internal" href="#module-tools">tools module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">classes</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/classes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Matthew Bardoe.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/classes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

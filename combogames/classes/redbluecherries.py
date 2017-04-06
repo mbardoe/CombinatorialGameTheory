@@ -11,24 +11,30 @@ except:
         pass
 
 class RedBlueCherries(PartizanGame):
-    def __init__(self, num_nodes, edges, piles, filename="redbluecherries.db"):
-        """Creates an instance of a game of Red Blue Cherries. Red Blue Cherries
-        is played by defining a graph where the nodes are either red or blue. One
-        player is red the other is blue. A player may move by removing a node of
-        smallest degree that is their color. The game is over when one player
-        does not have a move. That player is the loser.
+    """Creates an instance of a game of Red Blue Cherries. Red Blue Cherries
+    is played by defining a graph where the nodes are either red or blue. One
+    player is red the other is blue. A player may move by removing a node of
+    smallest degree that is their color. The game is over when one player
+    does not have a move. That player is the loser.
 
-        Agrs:
-            num_nodes (int):    How many nodes will be in the graph.
-            edges (list):   A list of tuples that define the edges of the graph.
-            piles (list):   A list of strings ('r' and 'b') that define
-                            the value of each node of the graph.
-            filename (str):     The filename of the database file we use.
+    Args:
+
+        num_nodes (int):    How many nodes will be in the graph.
+
+        edges (list):   A list of tuples that define the edges of the graph.
+
+        piles (list):   A list of strings ('r' and 'b') that define
+                the value of each node of the graph.
+
+        filename (str):     The filename of the database file we use.
 
         Returns:
+
             RedBlueCherries object.
 
         """
+    def __init__(self, num_nodes, edges, piles, filename="redbluecherries.db"):
+
 
         self.__filename__=filename
         super(RedBlueCherries,self).__init__(**{'filename': self.__filename__})

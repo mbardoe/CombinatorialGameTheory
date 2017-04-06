@@ -13,6 +13,12 @@ class ImpartialGame(CombinatorialGame):
     """A base class for impartial games. Currently sets up the database, but
     we should move this functionality back to CombinatorialGame. Includes
     calculation tools like mex function to make nim calculation easier.
+
+    Args:
+        filename (str): The filename of the database.
+
+    Returns:
+        Impartial Game Object
     """
 
     def __get_dictionary__(self):
@@ -187,5 +193,24 @@ class ImpartialGame(CombinatorialGame):
             #print "step"+str(i)+" "+str(current)
         return current
 
+    def find_move_with_value(self, n):
+        """Look at the possible moves of this move, and find a move that has value
+            equal to n.
 
+        Args:
+            n (int): is the nim value we are interested in finding a move from the
+            current game.
+
+        Returns:
+            A game of the that has the given value.
+        """
+        if n < self.nim_value:
+
+            moves=self.possible_moves()
+            for move in moves:
+                if move.nim_value == n:
+                    assert isinstance(move, CombinatorialGame)
+                    return move
+        else:
+            return None
 

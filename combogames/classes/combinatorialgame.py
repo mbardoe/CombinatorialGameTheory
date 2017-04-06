@@ -9,22 +9,22 @@ except:
         pass
 
 class CombinatorialGame(object):
-
-    def __init__(self, **kwargs):
-        #def __init__(self, myfilename):
-        """A base class for investigating impartial combinatorial games.
+    """A base class for investigating impartial combinatorial games.
 
         One goal of this class is create methods that allow for back searches
         of previously computed games. This class can utilize either tinyDB or
         sqlite3 to record the values of games that have been computed. The goal
-        is to make the computation of larger games much faster. This particular
-        base class is really a standard nim game.
+        is to make the computation of larger games much faster. 
 
         Args:
-            mylist: the list of piles sizes for the game
+            mylist: the list of integer piles sizes for the game
+
             filename: the path for the database file. To be saved in
             __filename__.
         """
+
+    def __init__(self, **kwargs):
+
         #self.piles=list(mylist)
         if 'filename' in kwargs.keys():
             basepath = os.path.dirname(os.path.abspath(__file__))
@@ -106,23 +106,6 @@ class CombinatorialGame(object):
         '''How the game will be represented in python print statements.'''
         return str(self.__db_repr__())
 
-    def find_move_with_value(self, n):
-        """Look at the possible moves of this move, and find a move that has value
-        equal to n.
-        Args:
-            n: is the nim value we are interested in finding a move from the
-                current game.
-        Returns:
-            A game of the that has the given value.
-        """
-        if n < self.nim_value:
 
-            moves=self.possible_moves()
-            for move in moves:
-                if move.nim_value == n:
-                    assert isinstance(move, CombinatorialGame)
-                    return move
-        else:
-            return None
 
 
