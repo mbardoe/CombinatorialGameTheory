@@ -2,16 +2,20 @@ from impartialgame import ImpartialGame
 
 
 class Nim(ImpartialGame):
-    def __init__(self, *args, **kwargs):
-        """An object that gives a Nim Game.
+    """An object that gives a Nim Game. Nim is a piles game where players
+    alternate moves. Each player can take as much as they want from any one
+    pile. The game is over when there are no piles left. The winner is the
+    player that removes the last pile.
 
-        Args:
-            piles (list): The first parameter which is a list of pile sizes.
-            filename (str): what filename would you like to store results.
+    Args:
+        piles (list): The first parameter which is a list of pile sizes.
 
-        Returns:
-            Nim (object)
+        filename (str): what filename would you like to store results.
+
+    Returns:
+        Nim (object)
         """
+    def __init__(self, *args, **kwargs):
         if len(args)==1 and len(kwargs)==1:
             self.piles=list(args[0])
             self.__filename__=str(kwargs['filename'])

@@ -10,18 +10,23 @@ except:
 
 
 class GalesNim(ImpartialGame):
-    def __init__(self, *args, **kwargs):
-        """An object that Gale's Nim object.
+    """An object that Gale's Nim object. Gale's Nim is a pile game where
+        you play like a standard nim game, but the game ends when only 1 (or more)
+        piles is not empty. Players alternate moves.
 
         Args:
             piles (list): The first parameter which is a list of pile sizes.
+
             num_zero_piles (int): How many piles are zero already.
+
             k (int): How many piles can be zero.
+
             filename (str): what filename would you like to store results.
 
         Returns:
             GalesNim (object)
-        """
+    """
+    def __init__(self, *args, **kwargs):
         self.number_Of_zero_piles = 0
         self.k = 1
         self.__filename__ = 'galesnim.db'

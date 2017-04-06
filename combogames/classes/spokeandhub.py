@@ -11,21 +11,25 @@ except:
         pass
 
 class SpokeAndHub(ImpartialGame):
+    """Spoke and Hub Game object. It allows computations with this game.
 
-    def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
-        """
-        Spoke and Hub Game object. It allows computations with this game.
+    Args:
 
-        Agrs:
-            num_nodes (int):    How many nodes will be in the graph.
-            edges (list):   A list of tuples that define the edges of the graph.
-            piles (list):   A list of integers that define the size of the pile at
+        num_nodes (int):    How many nodes will be in the graph.
+
+        edges (list):   A list of tuples that define the edges of the graph.
+
+        piles (list):   A list of integers that define the size of the pile at
                 each node of the graph.
-            filename (str):     The filename of the database file we use.
+
+        filename (str):     The filename of the database file we use.
 
         Returns:
+
             SpokeAndHub object.
         """
+    def __init__(self, num_nodes, edges, piles, filename="spokeandhub.db"):
+
 
         self.__filename__=filename
         super(SpokeAndHub,self).__init__(**{'filename': self.__filename__})

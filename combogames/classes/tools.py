@@ -5,10 +5,18 @@ def mex(mylist):
     mex is essential to calculations with impartial games. By finding the
     smallest excluded value it is possible to find the equivalent nim stack.
 
-    :list mylist: a list of of values of positive integers
-    :returns: int the smallest positive integer that is missing from the
-                    list
-    :raises: ValueError or TypeError if you don't give it a list of
+    Args:
+
+        mylist (list): a list of of values of positive integers
+
+    Returns:
+
+        int: the smallest positive integer that is missing from the
+                list
+
+    Raises:
+
+        ValueError or TypeError if you don't give it a list of
                 positive integers
     """
     current=0
@@ -33,10 +41,12 @@ def simplest_number(move_dict):
         values and the right game values.
 
         Args:
-            move_dict {dict}: A dictionary that contains a list of moves for
+
+            move_dict (dict): A dictionary that contains a list of moves for
                 'right' and moves for 'left'
 
         Returns:
+
             int: Value of the game.
 
     """

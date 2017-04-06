@@ -15,6 +15,9 @@ class PartizanGame(CombinatorialGame):
     sqlite3 to record the values of games that have been computed. The goal
     is to make the computation of larger games much faster. This particular
     base class is really a standard nim game.
+
+    Args:
+        filename (str): The filename where the database is.
     """
 
 

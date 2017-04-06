@@ -10,26 +10,24 @@ except:
 
 
 class EndNim(ImpartialGame):
+    """ A class that will represent an EndNim Game.
+	It has takes in an ordered list [a,b,c,...,z]
+	and makes it into a game of the form
+	a--b--c---...---z.
+
+
+    Arguments:
+
+        piles (list): a list integers of sizes of piles
+
+        filename (str): string of the path of the database
+
+    Returns:
+        ImpartialGame: An EndNim game object
     """
-	Methods:
-		possible_moves - finds the list of possible moves
-		find_nim_value - finds the nim Value of the position
-	"""
 
     def __init__(self, *args, **kwargs):
-        """ A class that will represent an EndNim Game.
-	    It has takes in an ordered list [a,b,c,...,z]
-	    and makes it into a game of the form
-			a--b--c---...---z.
 
-
-        Arguments:
-            piles (list): a list integers of sizes of piles
-            filename (str): string of the path of the database
-
-        Returns:
-            ImpartialGame: An EndNim game object
-        """
         if args and len(kwargs) == 1:
             self.piles = list(args[0])
             self.__filename__ = str(kwargs['filename'])
