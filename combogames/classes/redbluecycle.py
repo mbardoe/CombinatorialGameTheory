@@ -1,4 +1,5 @@
 from redbluecherries import RedBlueCherries
+import itertools
 
 
 class RedBlueCycle(RedBlueCherries):
@@ -37,7 +38,7 @@ class RedBlueCycle(RedBlueCherries):
             ans[n]=g.value
         return ans
 
-    
+
 
     @property
     def value(self):
@@ -61,6 +62,28 @@ class RedBlueCycle(RedBlueCherries):
             #self.__record_value__(self.__db_repr__(),result)
         return result
 
+    @staticmethod
+    def all_games(n):
+        piles=['b' for i in xrange(n)]
+        games=[RedBlueCycle(*piles)]
+        piles[-1]='r'
+        new_piles=n*['b']
+        for num_red in xrange(n/2):
+            places=itertools.combinations(xrange(1,n-1),num_red)
+            for spots in places:
+                #print spots
+                for i in xrange(n):
+                    if i in spots or i==n-1:
+                        new_piles[i]='r'
+                    else:
+                        new_piles[i]='b'
+                g=RedBlueCycle(*new_piles)
+                #print("Trying "+str(g))
+                if g not in games:
+                    #print('adding')
+                    games.append(g)
+        return games
+
 def main():
     x=RedBlueCycle('b','b','b','r','r','r')
     #x.nim_value()
@@ -74,6 +97,10 @@ def main():
     for g in y['left']:
         print(g.value)
     print(x.simplest_between(0,0))
-
+    y=RedBlueCycle('b','b','r','r','r','b')
+    print (x==y)
+    for g in RedBlueCycle.all_games(12):
+        print(g)
+        print('\n')
 if __name__ == '__main__':
     main()
