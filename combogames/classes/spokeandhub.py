@@ -158,10 +158,10 @@ class SpokeAndHub(ImpartialGame):
 
 
 def main():
-    x=SpokeAndHub(3,[(0,1),(1,2)],[3,4,5] )
+    g = SpokeAndHub(6, [(0,1),(1,2),(2,3),(3,4),(3,5)],[1,1,1,1,1,1])
     #x.nim_value()
-    print x.possible_moves()
-    print x.nim_value
+    print g.possible_moves()
+    print g.nim_value
 
 
 if __name__ == '__main__':

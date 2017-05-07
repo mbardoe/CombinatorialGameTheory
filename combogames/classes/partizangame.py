@@ -31,7 +31,7 @@ class PartizanGame(CombinatorialGame):
         """Set up the database file for this game. The path is stored
         as __filename__.
         """
-        print 'filename: '+self.__filename__
+        #print 'filename: '+self.__filename__
         if 'tinydb' in sys.modules:
             try:
                 self.__db__=TinyDB(self.__filename__)
@@ -46,8 +46,8 @@ class PartizanGame(CombinatorialGame):
                     sqlite_master WHERE type='table' ''')
                 record=numTables.fetchall()
                 newRecord=[str(x[0]) for x in record]
-                if 'values' not in newRecord:
-                    sqlstr='CREATE TABLE values(id text, value int)'
+                if 'gameValues' not in newRecord:
+                    sqlstr="CREATE TABLE gameValues(id text, value text)"
                     self.cursor.execute(sqlstr)
             except:
                 print("Get Dictionary. Looks like no database. :-(")
@@ -56,10 +56,10 @@ class PartizanGame(CombinatorialGame):
     def lookup_value(self):
         """Looks up the value of a previously computed game.
         If the game has not been computed already, then the function returns
-        -1.
+        None.
 
         Returns:
-            int: The value of the game that is list in the database or -1 if it
+            int: The value of the game that is list in the database or None if it
                 can't be found in the database.
         """
         if 'tinydb' in sys.modules:
@@ -76,7 +76,7 @@ class PartizanGame(CombinatorialGame):
                 #print("Found in db.")
                 return result[0]['value']
             else:
-                return -1
+                return None
         else: #sqlite3
             game_id=self.__db_repr__()
             gamelookup={"id":game_id}
@@ -85,7 +85,7 @@ class PartizanGame(CombinatorialGame):
                 self.__db__ = sqlite3.connect(self.__filename__)
                 #print self.__db__
                 self.cursor=self.__db__.cursor()
-                query=self.cursor.execute("SELECT value FROM values WHERE id=:id", gamelookup)
+                query=self.cursor.execute("SELECT value FROM gameValues WHERE id=:id", gamelookup)
                 #print query
                 self.__db__.commit()
                 record = query.fetchone()
@@ -102,7 +102,7 @@ class PartizanGame(CombinatorialGame):
                 #print("Found in db.")
                 return result[0]
             else:
-                return -1
+                return None
 
     def __record_value__(self, game_id, ans):
         """Store values in the database.
@@ -121,7 +121,7 @@ class PartizanGame(CombinatorialGame):
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
                 self.cursor=self.__db__.cursor()
-                sqlstring="INSERT INTO values VALUES('"+str(game_id)+"', "+str(ans)+")"
+                sqlstring="INSERT INTO gameValues VALUES('"+str(game_id)+"', "+str(ans)+")"
                 self.cursor.execute(sqlstring)
                 self.__db__.commit()
             except:
@@ -173,7 +173,10 @@ class PartizanGame(CombinatorialGame):
         move_values={}
         move_values['right']=[i.value for i in moves['right']]
         move_values['left']=[i.value for i in moves['left']]
+        #print("looking for value of: \n")
+        #print(self)
         result=self.simplest_number(move_values)
+        #print result
         return result
 
     def __repr__(self):
@@ -198,7 +201,7 @@ class PartizanGame(CombinatorialGame):
         except:
             right_min=None
         try:
-            left_max=min(move_dict['left'])
+            left_max=max(move_dict['left'])
         except:
             left_max=None
         return self.simplest_between(left_max,right_min)
@@ -213,6 +216,8 @@ class PartizanGame(CombinatorialGame):
                 None.
 
         """
+        #if left>right:
+        #    raise ValueError
         #print str(left) + ' ' +str(right)
         if left is None:
             if right is None:
@@ -221,6 +226,7 @@ class PartizanGame(CombinatorialGame):
                 return int(right)-1
             else:
                 return 0
+
         if right is None:
             if left >= 0:
                 return int(left)+1
@@ -229,7 +235,10 @@ class PartizanGame(CombinatorialGame):
         if left<0 and right>0:
             return 0
 
-        if right<0:
+        if left>=right:
+            return '{ '+str(left)+' | '+str(right)+' }'
+
+        if right<=0:
             right,left=-1*left,-1*right
             sign=-1
         else:
