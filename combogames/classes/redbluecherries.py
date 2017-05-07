@@ -84,16 +84,20 @@ class RedBlueCherries(PartizanGame):
         moves={'left':[], 'right':[]}
         nodes = self.find_min_nodes()
         for node in nodes:
-            edges=copy.deepcopy(self.graph.edges())
-            piles=copy.deepcopy(self.get_piles())
-            nodes=int(self.graph.number_of_nodes())
-            g=RedBlueCherries(nodes,edges,piles)
+            g=self.make_copy()
             g.remove_node(node)
             if self.graph.node[node]['piles']=='r':
                 moves['right'].append(g)
             else:
                 moves['left'].append(g)
         return moves
+
+    def make_copy(self):
+        edges=copy.deepcopy(self.graph.edges())
+        piles=copy.deepcopy(self.get_piles())
+        nodes=int(self.graph.number_of_nodes())
+        return RedBlueCherries(nodes,edges,piles)
+
 
     def remove_node(self, node):
         """Removes a node from the graph. The graph is also re-indexed.
@@ -133,7 +137,7 @@ class RedBlueCherries(PartizanGame):
         :return: int that is the equivalent game.
         '''
         result=self.lookup_value()
-        if result<0:
+        if result is None:
             ## Here will calculate the base cases by hand
             if self.graph.number_of_nodes()==1:
                 if self.graph.node[0]['piles']=='r':
@@ -178,9 +182,9 @@ class RedBlueCherries(PartizanGame):
 
 
 def main():
-    x=RedBlueCherries(5, [(0,1),(1,2),(2,3),(3,4)], ['b','r','r','r','b'] )
+    x=RedBlueCherries(6, [(0,1),(1,2),(0,2),(3,4),(4,5),(3,5)], ['b','b','b','r','r','r'] )
     #x.nim_value()
-    #print x.find_min_nodes()
+    print x.find_min_nodes()
     print x.value
 
 
