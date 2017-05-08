@@ -4,11 +4,19 @@ import itertools
 
 class RedBlueCycle(RedBlueCherries):
     ''' This class represents a Red-Blue Cherries where the structure of the
-    graph is a cycle.
+    graph is a cycle. When calculations are made sub-games are of the
+    RedBlueCherries type.
+
+    Example:
+    g=RedBlueCycle('r','r','r','b','b','b')
+    g.value
+    { 0 | 0 }
+    print(g)
+    ---b---b---b---r---r---r---
+      -1   0  -1   1   0   1           { 0 | 0 }
     '''
 
     def __init__(self, *args):
-
         cycle_length=len(args)
         cycle_edges=[]
         for i in xrange(cycle_length-1):
@@ -19,6 +27,8 @@ class RedBlueCycle(RedBlueCherries):
 
 
     def __str__(self):
+        '''This string method displays the cycle and the value of the entire
+        game, and the value of each game formed by taking any node.'''
         ans='---'
         moves_dict=self.move_dict()
         for node in self.get_piles():
@@ -30,6 +40,13 @@ class RedBlueCycle(RedBlueCherries):
         return ans
 
     def move_dict(self):
+        '''Returns a dictionary keyed on the number of each node and the value
+        of the game that is returned by removing that node.
+
+        Returns:
+            dictionary: a dictionary keyed on the labelling of the node with
+                        the value of the game formed by returning that node.
+        '''
         ans={}
         for n in xrange(len(self.graph.node)):
             g=self.make_copy()
@@ -38,32 +55,19 @@ class RedBlueCycle(RedBlueCherries):
             ans[n]=g.value
         return ans
 
-
-
-    @property
-    def value(self):
-        '''Calculates the value of this game via a depth search
-        of possible moves.
-
-
-        :return: int that is the equivalent game.
-        '''
-        result=self.lookup_value()
-        if result is None:
-            ## Here will calculate the base cases by hand
-            if self.graph.number_of_nodes()==1:
-                if self.graph.node[0]['piles']=='r':
-                    return -1
-                else:
-                    return 1
-            ## Here we will use a breadth search
-            else:
-                result = self.__tree_search__()
-            #self.__record_value__(self.__db_repr__(),result)
-        return result
-
     @staticmethod
     def all_games(n):
+        '''Static method that creates a list of games of particular length. Not
+        a very efficient algorithm. Tests about 2^(n-3) options to find all the
+        various possibilities.
+
+        Args:
+            n (int): The length of the cycle.
+
+        Returns:
+            list: A list of of all games of the given size.
+
+        '''
         piles=['b' for i in xrange(n)]
         games=[RedBlueCycle(*piles)]
         piles[-1]='r'
