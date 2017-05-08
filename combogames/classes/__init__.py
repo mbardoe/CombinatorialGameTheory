@@ -2,6 +2,7 @@ from .combinatorialgame import CombinatorialGame
 # Partizan Games
 from .partizangame import PartizanGame
 from .redbluecherries import RedBlueCherries
+from .redbluecycle import RedBlueCycle
 #Impartial Games
 from .impartialgame import ImpartialGame
 from .endnim import  EndNim
