@@ -162,6 +162,9 @@ def main():
     #x.nim_value()
     print g.possible_moves()
     print g.nim_value
+    g = SpokeAndHub(4, [(0,1),(0,2),(0,3)],[9,1,6,7])
+    print(g)
+    print g.nim_value
 
 
 if __name__ == '__main__':

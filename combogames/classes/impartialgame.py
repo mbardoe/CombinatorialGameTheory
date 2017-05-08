@@ -72,7 +72,7 @@ class ImpartialGame(CombinatorialGame):
                 result=[]
             if len(result)>0:
                 #print("Found in db.")
-                return result[0]['value']
+                return int(result[0]['value'])
             else:
                 return -1
         else: #sqlite3
@@ -98,7 +98,7 @@ class ImpartialGame(CombinatorialGame):
                 self.__db__.close()
             if len(result)>0:
                 #print("Found in db.")
-                return result[0]
+                return int(result[0])
             else:
                 return -1
 
@@ -112,7 +112,7 @@ class ImpartialGame(CombinatorialGame):
         #game_id=self.__db_repr__()
         if 'tinydb' in sys.modules:
             #try:
-            self.__db__.insert({'id': game_id, 'value':ans})
+            self.__db__.insert({'id': game_id, 'value':str(ans)})
             #except Exception:
             #    print Exception
             #   pass
