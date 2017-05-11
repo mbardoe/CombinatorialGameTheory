@@ -103,7 +103,7 @@ def main():
     print(x.simplest_between(0,0))
     y=RedBlueCycle('b','b','r','r','r','b')
     print (x==y)
-    for g in RedBlueCycle.all_games(12):
+    for g in RedBlueCycle.all_games(11):
         print(g)
         print('\n')
 if __name__ == '__main__':
