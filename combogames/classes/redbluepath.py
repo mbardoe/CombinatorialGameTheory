@@ -4,16 +4,16 @@ import itertools
 
 class RedBluePath(RedBlueCherries):
     ''' This class represents a Red-Blue Cherries where the structure of the
-    graph is a cycle. When calculations are made sub-games are of the
+    graph is a path. When calculations are made sub-games are of the
     RedBlueCherries type.
 
     Example:
-    g=RedBlueCycle('r','r','r','b','b','b')
+    g=RedBluePath('r','r','r','b','b','b')
     g.value
-    { 0 | 0 }
+    0
     print(g)
-    ---b---b---b---r---r---r---
-      -1   0  -1   1   0   1           { 0 | 0 }
+    b---b---b---r---r---r
+    -1  0   -1  1   0   1           0
     '''
 
     def __init__(self, *args):
@@ -27,7 +27,7 @@ class RedBluePath(RedBlueCherries):
 
 
     def __str__(self):
-        '''This string method displays the cycle and the value of the entire
+        '''This string method displays the path and the value of the entire
         game, and the value of each game formed by taking any node.'''
         ans=''
         moves_dict=self.move_dict()
@@ -35,8 +35,11 @@ class RedBluePath(RedBlueCherries):
             ans+='{:-<5}'.format(node)
         ans=ans[:-4]
         ans+='\n'
-        for n in xrange(len(self.get_piles())):
-            ans+='{:<5}'.format(moves_dict[n])
+        end_node=len(self.get_piles())-1
+        # for n in [0,end_node]:
+        #     ans+='{:<'+str(end_node*5)+'}'.format(moves_dict[n])
+        ans+=str(moves_dict[0]).ljust(5*end_node)+str(moves_dict[end_node])
+        #ans+=str(moves_dict[0]+'{:<')
         ans+='{:>20}'.format(self.value)
         return ans
 
@@ -49,11 +52,15 @@ class RedBluePath(RedBlueCherries):
                         the value of the game formed by returning that node.
         '''
         ans={}
-        for n in xrange(len(self.graph.node)):
-            g=self.make_copy()
-            g.remove_node(n)
+        g=self.make_copy()
+        g.remove_node(0)
             #print(g.value)
-            ans[n]=g.value
+        ans[0]=g.value
+        end_node=len(self.graph.node)-1
+        g=self.make_copy()
+        g.remove_node(end_node)
+            #print(g.value)
+        ans[end_node]=g.value
         return ans
 
     # @staticmethod
@@ -63,7 +70,7 @@ class RedBluePath(RedBlueCherries):
     #     various possibilities.
     #
     #     Args:
-    #         n (int): The length of the cycle.
+    #         n (int): The length of the path.
     #
     #     Returns:
     #         list: A list of of all games of the given size.
@@ -82,7 +89,7 @@ class RedBluePath(RedBlueCherries):
     #                     new_piles[i]='r'
     #                 else:
     #                     new_piles[i]='b'
-    #             g=RedBlueCycle(*new_piles)
+    #             g=RedBluePath(*new_piles)
     #             #print("Trying "+str(g))
     #             if g not in games:
     #                 #print('adding')
