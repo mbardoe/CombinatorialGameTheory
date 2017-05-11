@@ -22,12 +22,12 @@ The package defaults to TinyDB, but will also uses sqlite3 if available.
 
 You can access Gale's Nim calculations by
 
-'''
+```python
 from combogames import *
 g=GalesNim([3,4,5,8])
 g.nim_value
 17
-'''
+```
 
 ### Gale's Nim Conjectures
  #### Two Pile games
@@ -88,12 +88,12 @@ The nodes they take should only be of their own color. It was thought that
 every game of this type had an integers, switch, or star value, but Scott Herman
 discovered games with values that were half integers.
 
-'''
+```python
 from combogames import *
 redblue = RedBlueCherries(6, [(0,1),(1,2),(2,3),(3,4),(4,5),(0,5)],['b','r','b','r','b','b'])
 redblue.value
 2
-'''
+```
 
 There are also special classes for RedBlueCycle and RedBluePath.
 
