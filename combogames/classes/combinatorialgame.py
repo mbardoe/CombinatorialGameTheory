@@ -1,5 +1,6 @@
-import sys #get rid of this...
+import sys  #get rid of this...
 import os
+
 try:
     from tinydb import TinyDB, Query
 except:
@@ -7,6 +8,7 @@ except:
         import sqlite3
     except:
         pass
+
 
 class CombinatorialGame(object):
     """A base class for investigating impartial combinatorial games.
@@ -30,16 +32,15 @@ class CombinatorialGame(object):
             basepath = os.path.dirname(os.path.abspath(__file__))
             #print "combgame: "+path
             #basepath = os.path.dirname(os.getcwd())
-            parentpath =os.path.dirname(os.path.dirname(basepath))
+            parentpath = os.path.dirname(os.path.dirname(basepath))
             #print 'parentpath= '+str(parentpath)
             #self.__filename__='../data/'+kwargs['filename']
-            self.__filename__=parentpath+'/data/'+kwargs['filename']
+            self.__filename__ = parentpath + '/data/' + kwargs['filename']
         else:
             raise SyntaxError('Need at least a filename argument')
 
-
         if 'tinydb' not in sys.modules:
-            self.__filename__=self.__filename__[:-3]+"SQL.db"
+            self.__filename__ = self.__filename__[:-3] + "SQL.db"
         #self.__validate__()
         #print os.path
         self.__get_dictionary__()
@@ -99,7 +100,6 @@ class CombinatorialGame(object):
                 given game."""
 
         return set([])
-
 
 
     def __repr__(self):

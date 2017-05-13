@@ -1,5 +1,6 @@
 import sys
 from combinatorialgame import CombinatorialGame
+
 try:
     from tinydb import TinyDB, Query
 except:
@@ -29,7 +30,7 @@ class ImpartialGame(CombinatorialGame):
             #print "tinyDB"
             #print self.__filename__
             try:
-                self.__db__=TinyDB(self.__filename__)
+                self.__db__ = TinyDB(self.__filename__)
                 #print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
@@ -37,18 +38,19 @@ class ImpartialGame(CombinatorialGame):
             try:
                 #print "filename: "+self.__filename__
                 self.__db__ = sqlite3.connect(self.__filename__)
-                self.cursor=self.__db__.cursor()
-                numTables=self.cursor.execute('''SELECT name FROM
+                self.cursor = self.__db__.cursor()
+                numTables = self.cursor.execute('''SELECT name FROM
                     sqlite_master WHERE type='table' ''')
-                record=numTables.fetchall()
-                newRecord=[str(x[0]) for x in record]
+                record = numTables.fetchall()
+                newRecord = [str(x[0]) for x in record]
                 if 'nimValues' not in newRecord:
-                    sqlstr='CREATE TABLE nimValues(id text, value int)'
+                    sqlstr = 'CREATE TABLE nimValues(id text, value int)'
                     self.cursor.execute(sqlstr)
             except:
                 print("Get Dictionary. Looks like no database. :-(")
             finally:
                 self.__db__.close()
+
     def lookup_value(self):
         """Looks up the value of a previously computed game.
 
@@ -62,28 +64,29 @@ class ImpartialGame(CombinatorialGame):
         """
         if 'tinydb' in sys.modules:
             #print 'tinydb lookup'
-            game_id=self.__db_repr__()
+            game_id = self.__db_repr__()
             #print game_id
             try:
-                record=Query()
-                result=self.__db__.search(record.id==game_id)
+                record = Query()
+                result = self.__db__.search(record.id == game_id)
                 #print result
             except:
-                result=[]
-            if len(result)>0:
+                result = []
+            if len(result) > 0:
                 #print("Found in db.")
                 return int(result[0]['value'])
             else:
                 return -1
-        else: #sqlite3
-            game_id=self.__db_repr__()
-            gamelookup={"id":game_id}
+        else:  #sqlite3
+            game_id = self.__db_repr__()
+            gamelookup = {"id": game_id}
             #print gamelookup
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
                 #print self.__db__
-                self.cursor=self.__db__.cursor()
-                query=self.cursor.execute("SELECT value FROM nimValues WHERE id=:id", gamelookup)
+                self.cursor = self.__db__.cursor()
+                query = self.cursor.execute(
+                    "SELECT value FROM nimValues WHERE id=:id", gamelookup)
                 #print query
                 self.__db__.commit()
                 record = query.fetchone()
@@ -93,10 +96,10 @@ class ImpartialGame(CombinatorialGame):
                 #result=self.__db__.search(record.id==game_id)
                 #print result
             except:
-                result=[]
+                result = []
             finally:
                 self.__db__.close()
-            if len(result)>0:
+            if len(result) > 0:
                 #print("Found in db.")
                 return int(result[0])
             else:
@@ -112,15 +115,16 @@ class ImpartialGame(CombinatorialGame):
         #game_id=self.__db_repr__()
         if 'tinydb' in sys.modules:
             #try:
-            self.__db__.insert({'id': game_id, 'value':str(ans)})
+            self.__db__.insert({'id': game_id, 'value': str(ans)})
             #except Exception:
             #    print Exception
             #   pass
-        else: #sqlite3
+        else:  #sqlite3
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
-                self.cursor=self.__db__.cursor()
-                sqlstring="INSERT INTO nimValues VALUES('"+str(game_id)+"', "+str(ans)+")"
+                self.cursor = self.__db__.cursor()
+                sqlstring = "INSERT INTO nimValues VALUES('" + str(
+                    game_id) + "', " + str(ans) + ")"
                 self.cursor.execute(sqlstring)
                 self.__db__.commit()
             except:
@@ -142,7 +146,7 @@ class ImpartialGame(CombinatorialGame):
                 from the given game.
         """
         # look up in db
-        return  -1
+        return -1
 
     def __tree_search__(self):
         """A function that does the depth search when we are calculating nim
@@ -153,9 +157,9 @@ class ImpartialGame(CombinatorialGame):
                 all possible moves.
 
         """
-        moves=self.possible_moves()
-        values=[i.nim_value for i in moves]
-        result=self.mex(values)
+        moves = self.possible_moves()
+        values = [i.nim_value for i in moves]
+        result = self.mex(values)
         return result
 
     def mex(self, mylist):
@@ -175,22 +179,22 @@ class ImpartialGame(CombinatorialGame):
             ValueError: If the list is not all positive integers.
             TypeError: if you don't give it a list of integers
         """
-        current=0
-        mylist=list(mylist)
-        mylist=sorted(mylist)
-        mylist=[int(i) for i in mylist] # this helps sage do its thing
+        current = 0
+        mylist = list(mylist)
+        mylist = sorted(mylist)
+        mylist = [int(i) for i in mylist]  # this helps sage do its thing
         #print str(mylist)
         for i in range(len(mylist)):
-            if not isinstance(mylist[i],int):
+            if not isinstance(mylist[i], int):
                 raise TypeError("Has to be a list of integers.")
-            if mylist[i]<0:
+            if mylist[i] < 0:
                 raise ValueError("Must be all positive integers.")
-            if mylist[i]==current:
-                current+=1
-            if mylist[i]>current:
+            if mylist[i] == current:
+                current += 1
+            if mylist[i] > current:
                 return current
 
-            #print "step"+str(i)+" "+str(current)
+                #print "step"+str(i)+" "+str(current)
         return current
 
     def find_move_with_value(self, n):
@@ -206,7 +210,7 @@ class ImpartialGame(CombinatorialGame):
         """
         if n < self.nim_value:
 
-            moves=self.possible_moves()
+            moves = self.possible_moves()
             for move in moves:
                 if move.nim_value == n:
                     assert isinstance(move, CombinatorialGame)

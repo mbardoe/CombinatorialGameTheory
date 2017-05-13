@@ -26,6 +26,7 @@ class GalesNim(ImpartialGame):
         Returns:
             GalesNim (object)
     """
+
     def __init__(self, *args, **kwargs):
         self.number_Of_zero_piles = 0
         self.k = 1
@@ -40,7 +41,6 @@ class GalesNim(ImpartialGame):
         if len(args) > 3:
             self.__filename__ = str(args[3])
 
-
         if 'piles' in kwargs.keys():
             self.piles = kwargs['piles']
         if 'num_zero_piles' in kwargs.keys():
@@ -51,7 +51,7 @@ class GalesNim(ImpartialGame):
         #self.piles = list(mylist)
         #self.number_Of_zero_piles = number_of_zero_piles
         #self.k = k
-        super(GalesNim, self).__init__(**{'filename':self.__filename__})
+        super(GalesNim, self).__init__(**{'filename': self.__filename__})
         self.__validate__()
         #self.__filename__ = "galesnim.db"
         #self.__get_dictionary__()
@@ -139,7 +139,7 @@ class GalesNim(ImpartialGame):
         myPiles.sort()
         theirPiles.sort()
         return self.k == other.k and self.number_Of_zero_piles == \
-                        other.number_Of_zero_piles and myPiles == theirPiles
+               other.number_Of_zero_piles and myPiles == theirPiles
 
 
 def main():

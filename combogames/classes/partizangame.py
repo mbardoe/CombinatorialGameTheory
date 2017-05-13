@@ -1,5 +1,6 @@
 import sys
 from combinatorialgame import CombinatorialGame
+
 try:
     from tinydb import TinyDB, Query
 except:
@@ -7,6 +8,7 @@ except:
         import sqlite3
     except:
         pass
+
 
 class PartizanGame(CombinatorialGame):
     """A base class for investigating partizan combinatorial games.
@@ -34,25 +36,26 @@ class PartizanGame(CombinatorialGame):
         #print 'filename: '+self.__filename__
         if 'tinydb' in sys.modules:
             try:
-                self.__db__=TinyDB(self.__filename__)
+                self.__db__ = TinyDB(self.__filename__)
                 #print "Made a db"
             except:
                 print("Get Dictionary. Looks like no database. :-(")
         else:
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
-                self.cursor=self.__db__.cursor()
-                numTables=self.cursor.execute('''SELECT name FROM
+                self.cursor = self.__db__.cursor()
+                numTables = self.cursor.execute('''SELECT name FROM
                     sqlite_master WHERE type='table' ''')
-                record=numTables.fetchall()
-                newRecord=[str(x[0]) for x in record]
+                record = numTables.fetchall()
+                newRecord = [str(x[0]) for x in record]
                 if 'gameValues' not in newRecord:
-                    sqlstr="CREATE TABLE gameValues(id text, value text)"
+                    sqlstr = "CREATE TABLE gameValues(id text, value text)"
                     self.cursor.execute(sqlstr)
             except:
                 print("Get Dictionary. Looks like no database. :-(")
             finally:
                 self.__db__.close()
+
     def lookup_value(self):
         """Looks up the value of a previously computed game.
         If the game has not been computed already, then the function returns
@@ -64,28 +67,29 @@ class PartizanGame(CombinatorialGame):
         """
         if 'tinydb' in sys.modules:
             #print 'tinydb lookup'
-            game_id=self.__db_repr__()
+            game_id = self.__db_repr__()
             #print game_id
             try:
-                record=Query()
-                result=self.__db__.search(record.id==game_id)
+                record = Query()
+                result = self.__db__.search(record.id == game_id)
                 #print result
             except:
-                result=[]
-            if len(result)>0:
+                result = []
+            if len(result) > 0:
                 #print("Found in db.")
                 return result[0]['value']
             else:
                 return None
-        else: #sqlite3
-            game_id=self.__db_repr__()
-            gamelookup={"id":game_id}
+        else:  #sqlite3
+            game_id = self.__db_repr__()
+            gamelookup = {"id": game_id}
             #print gamelookup
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
                 #print self.__db__
-                self.cursor=self.__db__.cursor()
-                query=self.cursor.execute("SELECT value FROM gameValues WHERE id=:id", gamelookup)
+                self.cursor = self.__db__.cursor()
+                query = self.cursor.execute(
+                    "SELECT value FROM gameValues WHERE id=:id", gamelookup)
                 #print query
                 self.__db__.commit()
                 record = query.fetchone()
@@ -95,10 +99,10 @@ class PartizanGame(CombinatorialGame):
                 #result=self.__db__.search(record.id==game_id)
                 #print result
             except:
-                result=[]
+                result = []
             finally:
                 self.__db__.close()
-            if len(result)>0:
+            if len(result) > 0:
                 #print("Found in db.")
                 return result[0]
             else:
@@ -113,15 +117,16 @@ class PartizanGame(CombinatorialGame):
         #game_id=self.__db_repr__()
         if 'tinydb' in sys.modules:
             #try:
-            self.__db__.insert({'id': game_id, 'value':ans})
+            self.__db__.insert({'id': game_id, 'value': ans})
             #except Exception:
             #    print Exception
             #   pass
-        else: #sqlite3
+        else:  #sqlite3
             try:
                 self.__db__ = sqlite3.connect(self.__filename__)
-                self.cursor=self.__db__.cursor()
-                sqlstring="INSERT INTO gameValues VALUES('"+str(game_id)+"', "+str(ans)+")"
+                self.cursor = self.__db__.cursor()
+                sqlstring = "INSERT INTO gameValues VALUES('" + str(
+                    game_id) + "', " + str(ans) + ")"
                 self.cursor.execute(sqlstring)
                 self.__db__.commit()
             except:
@@ -150,7 +155,7 @@ class PartizanGame(CombinatorialGame):
             from the given game.
         """
         # look up in db
-        return  None
+        return None
 
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
@@ -159,7 +164,7 @@ class PartizanGame(CombinatorialGame):
             dict: A dictionary of move values for left and right.
         """
 
-        return {'left':[None], 'right':[None]}
+        return {'left': [None], 'right': [None]}
 
     def __tree_search__(self):
         """A function that does the depth search when we are calculating game
@@ -169,13 +174,13 @@ class PartizanGame(CombinatorialGame):
             int: Then value of the game, found by calculating the values of
                 all possible moves.
         """
-        moves=self.possible_moves() # return a dictionay with keys 'right' and 'left'
-        move_values={}
-        move_values['right']=[i.value for i in moves['right']]
-        move_values['left']=[i.value for i in moves['left']]
+        moves = self.possible_moves()  # return a dictionay with keys 'right' and 'left'
+        move_values = {}
+        move_values['right'] = [i.value for i in moves['right']]
+        move_values['left'] = [i.value for i in moves['left']]
         #print("looking for value of: \n")
         #print(self)
-        result=self.simplest_number(move_values)
+        result = self.simplest_number(move_values)
         #print result
         return result
 
@@ -197,16 +202,16 @@ class PartizanGame(CombinatorialGame):
         """
         #print move_dict
         try:
-            right_min=min(move_dict['right'])
+            right_min = min(move_dict['right'])
         except:
-            right_min=None
+            right_min = None
         try:
-            left_max=max(move_dict['left'])
+            left_max = max(move_dict['left'])
         except:
-            left_max=None
-        return self.simplest_between(left_max,right_min)
+            left_max = None
+        return self.simplest_between(left_max, right_min)
 
-    def simplest_between(self, left,right):
+    def simplest_between(self, left, right):
         """Calculates the simplest number between two given numbers.
 
         Args:
@@ -222,40 +227,40 @@ class PartizanGame(CombinatorialGame):
         if left is None:
             if right is None:
                 return 0
-            if right<=0:
-                return int(right)-1
+            if right <= 0:
+                return int(right) - 1
             else:
                 return 0
 
         if right is None:
             if left >= 0:
-                return int(left)+1
+                return int(left) + 1
             else:
                 return 0
-        if left<0 and right>0:
+        if left < 0 and right > 0:
             return 0
 
-        if left>=right:
-            return '{ '+str(left)+' | '+str(right)+' }'
+        if left >= right:
+            return '{ ' + str(left) + ' | ' + str(right) + ' }'
 
-        if right<=0:
-            right,left=-1*left,-1*right
-            sign=-1
+        if right <= 0:
+            right, left = -1 * left, -1 * right
+            sign = -1
         else:
-            sign=1
-        if int(right)-int(left)>1:
-            return sign*(int(left)+1)
+            sign = 1
+        if int(right) - int(left) > 1:
+            return sign * (int(left) + 1)
         else:
-            current=1
-            power=2**(-current)
-            guess =int(left)+power
-            while (left>=guess) or (right<=guess):
+            current = 1
+            power = 2 ** (-current)
+            guess = int(left) + power
+            while (left >= guess) or (right <= guess):
                 #print guess
-                if int(guess+power)>=int(right):
-                    current+=1
-                    power=2**(-current)
-                    guess = int(left)+power
+                if int(guess + power) >= int(right):
+                    current += 1
+                    power = 2 ** (-current)
+                    guess = int(left) + power
                 else:
-                    guess = guess+power
+                    guess = guess + power
             return sign * guess
 

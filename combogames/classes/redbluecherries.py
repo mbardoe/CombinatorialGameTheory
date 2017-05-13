@@ -2,6 +2,7 @@ from partizangame import PartizanGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
+
 try:
     from tinydb import TinyDB, Query
 except:
@@ -9,6 +10,7 @@ except:
         import sqlite3
     except:
         pass
+
 
 class RedBlueCherries(PartizanGame):
     """Creates an instance of a game of Red Blue Cherries. Red Blue Cherries
@@ -33,17 +35,17 @@ class RedBlueCherries(PartizanGame):
             RedBlueCherries object.
 
         """
+
     def __init__(self, num_nodes, edges, piles, filename="redbluecherries.db"):
 
 
-        self.__filename__=filename
-        super(RedBlueCherries,self).__init__(**{'filename': self.__filename__})
-        self.graph=nx.Graph()
+        self.__filename__ = filename
+        super(RedBlueCherries, self).__init__(**{'filename': self.__filename__})
+        self.graph = nx.Graph()
         self.graph.add_nodes_from(range(num_nodes))
         self.graph.add_edges_from(edges)
         for i in range(num_nodes):
-            self.graph.node[i]['piles']=piles[i]
-
+            self.graph.node[i]['piles'] = piles[i]
 
 
     def __repr__(self):
@@ -52,7 +54,7 @@ class RedBlueCherries(PartizanGame):
         Returns:
             str: A string that describes the game.
         """
-        return "".join([str(self.graph.degree()),"\n", str(self.get_piles())])
+        return "".join([str(self.graph.degree()), "\n", str(self.get_piles())])
 
     def __db_repr__(self):
         """Creates the database representation of the game.
@@ -61,7 +63,7 @@ class RedBlueCherries(PartizanGame):
             str: A string that list the piles in increasing order.
         """
         ### what about super when you inherit from 2 classes?
-        return str(nx.incidence_matrix(self.graph))+str(self.get_piles())
+        return str(nx.incidence_matrix(self.graph)) + str(self.get_piles())
 
     def get_piles(self):
         """Returns a list indicating the value of each node.
@@ -70,7 +72,7 @@ class RedBlueCherries(PartizanGame):
             list: A list of strings ('r' and 'b').
 
         """
-        piles_dict=nx.nx.get_node_attributes(self.graph,'piles')
+        piles_dict = nx.nx.get_node_attributes(self.graph, 'piles')
         return [piles_dict[i] for i in range(self.graph.number_of_nodes())]
 
     def possible_moves(self):
@@ -81,22 +83,45 @@ class RedBlueCherries(PartizanGame):
             game.
         """
         ## this needs to be tested
-        moves={'left':[], 'right':[]}
+        moves = {'left': [], 'right': []}
         nodes = self.find_min_nodes()
         for node in nodes:
-            g=self.make_copy()
+            g = self.copy()
             g.remove_node(node)
-            if self.graph.node[node]['piles']=='r':
+            if self.graph.node[node]['piles'] == 'r':
                 moves['right'].append(g)
             else:
                 moves['left'].append(g)
         return moves
 
-    def make_copy(self):
-        edges=copy.deepcopy(self.graph.edges())
-        piles=copy.deepcopy(self.get_piles())
-        nodes=int(self.graph.number_of_nodes())
-        return RedBlueCherries(nodes,edges,piles)
+    def copy(self):
+        '''This method returns a copy of the current game.
+
+        Returns:
+            RedBlueCherries object with the same attributes as the current one.
+        '''
+
+        edges = copy.deepcopy(self.graph.edges())
+        piles = copy.deepcopy(self.get_piles())
+        nodes = int(self.graph.number_of_nodes())
+        return RedBlueCherries(nodes, edges, piles)
+
+    def sub_values(self):
+        '''This method prints out the values that can be found at various nodes
+        that represent the possible moves from this position. This is helpful
+        when trying to calculate a value of game.
+
+        Returns:
+            A print out of the nodes that can be possible moves and the value
+            of the game if that move is taken.
+        '''
+        moves = self.possible_moves()
+        print('left:\n')
+        for move in moves['left']:
+            print(move + ' ' + move.value)
+        print('right:\n')
+        for move in moves['right']:
+            print(move + ' ' + move.value)
 
 
     def remove_node(self, node):
@@ -125,7 +150,7 @@ class RedBlueCherries(PartizanGame):
         Returns:
             bool: True if the graphs are isomorphic and the labels are the same.
         """
-        nm = iso.categorical_node_match('piles',0)
+        nm = iso.categorical_node_match('piles', 0)
         return nx.is_isomorphic(self.graph, other.graph, node_match=nm)
 
     @property
@@ -136,18 +161,18 @@ class RedBlueCherries(PartizanGame):
 
         :return: int that is the equivalent game.
         '''
-        result=self.lookup_value()
+        result = self.lookup_value()
         if result is None:
             ## Here will calculate the base cases by hand
-            if self.graph.number_of_nodes()==1:
-                if self.graph.node[0]['piles']=='r':
+            if self.graph.number_of_nodes() == 1:
+                if self.graph.node[0]['piles'] == 'r':
                     return -1
                 else:
                     return 1
             ## Here we will use a breadth search
             else:
                 result = self.__tree_search__()
-            self.__record_value__(self.__db_repr__(),result)
+            self.__record_value__(self.__db_repr__(), result)
         return result
 
     ##### Graph Algorithms #######
@@ -160,9 +185,9 @@ class RedBlueCherries(PartizanGame):
                     degree.
         """
 
-        degrees=self.graph.degree()
-        min_degree=min(degrees.values())
-        return [key for key in degrees.keys() if degrees[key]==min_degree]
+        degrees = self.graph.degree()
+        min_degree = min(degrees.values())
+        return [key for key in degrees.keys() if degrees[key] == min_degree]
 
     def degree(self):
         """ Returns the degrees of each node.
@@ -180,9 +205,9 @@ class RedBlueCherries(PartizanGame):
         self.graph = nx.convert_node_labels_to_integers(self.graph)
 
 
-
 def main():
-    x=RedBlueCherries(6, [(0,1),(1,2),(0,2),(3,4),(4,5),(3,5)], ['b','b','b','r','r','r'] )
+    x = RedBlueCherries(6, [(0, 1), (1, 2), (0, 2), (3, 4), (4, 5), (3, 5)],
+                        ['b', 'b', 'b', 'r', 'r', 'r'])
     #x.nim_value()
     print x.find_min_nodes()
     print x.value

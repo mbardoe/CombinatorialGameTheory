@@ -15,22 +15,23 @@ class Nim(ImpartialGame):
     Returns:
         Nim (object)
         """
+
     def __init__(self, *args, **kwargs):
-        if len(args)==1 and len(kwargs)==1:
-            self.piles=list(args[0])
-            self.__filename__=str(kwargs['filename'])
-        elif len(args)==2:
-            self.piles=list(args[0])
-            self.__filename__=str(args[1])
+        if len(args) == 1 and len(kwargs) == 1:
+            self.piles = list(args[0])
+            self.__filename__ = str(kwargs['filename'])
+        elif len(args) == 2:
+            self.piles = list(args[0])
+            self.__filename__ = str(args[1])
         elif 'filename' in kwargs.keys() and 'piles' in kwargs.keys():
-            self.__filename__=str(kwargs['filename'])
+            self.__filename__ = str(kwargs['filename'])
             self.piles = list(kwargs['piles'])
-        elif len(args)==1 and len(kwargs.keys())==0:
-            self.piles=list(args[0])
-            self.__filename__="nim.db"
+        elif len(args) == 1 and len(kwargs.keys()) == 0:
+            self.piles = list(args[0])
+            self.__filename__ = "nim.db"
         kwargs = {'filename': self.__filename__}
-        args=[]
-        super(Nim,self).__init__( **kwargs)
+        args = []
+        super(Nim, self).__init__(**kwargs)
         self.__validate__()
 
     def __validate__(self):
@@ -70,16 +71,16 @@ class Nim(ImpartialGame):
 		"""
 
         game_id = self.__db_repr__()
-        result=self.lookup_value()
-        if result>0:
+        result = self.lookup_value()
+        if result > 0:
             #print("Used database")
-            ans=result
+            ans = result
         else:
 
-            ans=0
+            ans = 0
             for i in self.piles:
-                ans=ans^i
-            self.__record_value__(game_id,ans)
+                ans = ans ^ i
+            self.__record_value__(game_id, ans)
         return ans
 
     def possible_moves(self):
@@ -89,11 +90,11 @@ class Nim(ImpartialGame):
 			A set of the games that are all the possible moves from the given
 			game."""
 
-        ans=set([])
+        ans = set([])
         for i in range(len(self.piles)):
             for j in range(self.piles[i]):
-                newPiles=list(self.piles)
-                newPiles[i]=j
+                newPiles = list(self.piles)
+                newPiles[i] = j
                 ans.add(Nim(newPiles))
         return ans
 
