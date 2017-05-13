@@ -57,6 +57,42 @@ class RedBlueCherries(PartizanGame):
         """
         return "".join([str(self.graph.degree()), "\n", str(self.get_piles())])
 
+    def __neg__(self):
+        edges = copy.deepcopy(self.graph.edges())
+        piles = copy.deepcopy(self.get_piles())
+        new_piles = []
+        for label in piles:
+            if label == 'r':
+                new_piles.append('b')
+            else:
+                new_piles.append('r')
+        nodes = int(self.graph.number_of_nodes())
+        return RedBlueCherries(nodes, edges, new_piles)
+
+    def add_vertex(self, adjacent, vertex_type):
+        """This method adds a vertex to the graph which is adjacent to a list of
+        vertices that are given.
+
+        Args:
+            adjacent (list): A list of integers that indicate the other nodes
+                             that are adjacent to this new vertex.
+            vertex_type (str): Either 'r' or 'b' to indicate the type of vertex
+
+        Returns:
+            RedBlueCherries: a game with the previous structure plus this new
+                            vertex and its edges.
+        """
+        if vertex_type not in ['r', 'b']:
+            raise ValueError('Needs to be a red or blue vertex')
+        edges = copy.deepcopy(self.graph.edges())
+        piles = copy.deepcopy(self.get_piles())
+        num_nodes = int(self.graph.number_of_nodes())
+        piles.append(vertex_type)
+        for neighbor in adjacent:
+            edges.append((num_nodes, neighbor))
+        return RedBlueCherries(num_nodes + 1, edges, piles)
+
+
     def __db_repr__(self):
         """Creates the database representation of the game.
 
@@ -263,9 +299,13 @@ class RedBlueCherries(PartizanGame):
                                node_color='b',
                                node_size=700,
                                alpha=0.8)
+        # more labels
+        nx.draw_networkx_labels(G, pos, font_color='w',
+                                font_family='sans-serif')
+
         #edges
         nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
-
+        plt.axis('off')
         plt.show()  # display
 
 
