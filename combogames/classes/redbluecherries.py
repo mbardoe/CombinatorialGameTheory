@@ -2,6 +2,7 @@ from partizangame import PartizanGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
+import matplotlib.pyplot as plt
 
 try:
     from tinydb import TinyDB, Query
@@ -95,26 +96,26 @@ class RedBlueCherries(PartizanGame):
         return moves
 
     def copy(self):
-        '''This method returns a copy of the current game.
+        """This method returns a copy of the current game.
 
         Returns:
             RedBlueCherries object with the same attributes as the current one.
-        '''
+        """
 
         edges = copy.deepcopy(self.graph.edges())
         piles = copy.deepcopy(self.get_piles())
         nodes = int(self.graph.number_of_nodes())
         return RedBlueCherries(nodes, edges, piles)
 
-    def sub_values(self):
-        '''This method prints out the values that can be found at various nodes
+    def sub_values_by_player(self):
+        """This method prints out the values that can be found at various nodes
         that represent the possible moves from this position. This is helpful
         when trying to calculate a value of game.
 
         Returns:
             A print out of the nodes that can be possible moves and the value
             of the game if that move is taken.
-        '''
+        """
         moves = self.possible_moves()
         print('left:\n')
         for move in moves['left']:
@@ -123,6 +124,22 @@ class RedBlueCherries(PartizanGame):
         for move in moves['right']:
             print(move + ' ' + move.value)
 
+    def sub_values_by_node(self):
+        """Returns a dictionary of the which nodes are associated with which
+        values of the corresponding subgame. Only minimal vertex nodes are part
+        of the keys.
+
+        Returns:
+            (dict): The keys are the minimal degree nodes. The values are the
+                    the values of the game formed by removing that node.
+        """
+        ans = {}
+        nodes = self.find_min_nodes()
+        for node in nodes:
+            g = self.copy()
+            g.remove_node(node)
+            ans[node] = g.value
+        return ans
 
     def remove_node(self, node):
         """Removes a node from the graph. The graph is also re-indexed.
@@ -155,12 +172,12 @@ class RedBlueCherries(PartizanGame):
 
     @property
     def value(self):
-        '''Calculates the value of this game via a depth search
+        """Calculates the value of this game via a depth search
         of possible moves.
 
 
         :return: int that is the equivalent game.
-        '''
+        """
         result = self.lookup_value()
         if result is None:
             ## Here will calculate the base cases by hand
@@ -198,11 +215,58 @@ class RedBlueCherries(PartizanGame):
         """
         return self.graph.degree()
 
+
+    def color_dictionary(self):
+        """Returns a dictionary with two keys, 'right' and 'left'. Allows us to
+        know which nodes are right nodes and which are left nodes.
+
+        Returns:
+            (dict):     A dictionary with keys 'left' and 'right'. The values
+                        of this these keys are lists of integers.
+        """
+        ans = {'right': [], 'left': []}
+        for n in xrange(len(self.graph.node)):
+            if self.graph.node[n]['piles'] == 'r':
+                ans['right'].append(n)
+            else:
+                ans['left'].append(n)
+        return ans
+
     def __rename_names__(self):
         """Changes the labelling of the vertices so that they correspond to
         smaller number indicate a leaf with small pile numbers.
         """
         self.graph = nx.convert_node_labels_to_integers(self.graph)
+
+    def show_graph(self):
+        """For use with Sage Math Cloud. Allows the creation of a
+        matplotlib.pyplot object that is shown.
+        """
+        #labels
+        labels = self.sub_values_by_node()
+        G = self.graph
+        pos = nx.spring_layout(G)  # positions for all nodes
+        pos_higher = {}
+        y_off = .1  # offset on the y axis
+        for k, v in pos.items():
+            pos_higher[k] = (v[0], v[1] + y_off)
+        nx.draw_networkx_labels(G, pos_higher, labels, font_color='k')
+        # nodes
+        colors = self.color_dictionary()
+        nx.draw_networkx_nodes(G, pos,
+                               nodelist=colors['right'],
+                               node_color='r',
+                               node_size=700,
+                               alpha=0.8)
+        nx.draw_networkx_nodes(G, pos,
+                               nodelist=colors['left'],
+                               node_color='b',
+                               node_size=700,
+                               alpha=0.8)
+        #edges
+        nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
+
+        plt.show()  # display
 
 
 def main():
