@@ -2,6 +2,7 @@ from impartialgame import ImpartialGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
+import matplotlib.pyplot as plt
 
 try:
     from tinydb import TinyDB, Query
@@ -77,7 +78,6 @@ class SpokeAndHub(ImpartialGame):
             A list of the games that are all the possible moves from the given
             game.
         """
-        ## this needs to be tested
         moves = []
         leaves = self.find_leaves()
         for leaf in leaves:
@@ -156,6 +156,29 @@ class SpokeAndHub(ImpartialGame):
         0 to n-1. Where n is the number of nodes.
         """
         self.graph = nx.convert_node_labels_to_integers(self.graph)
+
+    def show_graph(self):
+        labels={}
+        piles=self.get_piles()
+        G = self.graph
+        pos = nx.spring_layout(G)  # positions for all nodes
+        for i in xrange(len(piles)):
+            labels[i]=str(piles[i])
+
+        pos_higher = {}
+        # y_off = .1  # offset on the y axis
+        # for k, v in pos.items():
+        #     pos_higher[k] = (v[0], v[1] + y_off)
+        nx.draw_networkx_labels(G, pos, labels, font_color='k')
+        # nodes
+        nx.draw_networkx_nodes(G, pos,
+                               node_size=700,
+                               alpha=0.8)
+        #edges
+        nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
+        plt.axis('off')
+        plt.show()  # display
+
 
 
 def main():
