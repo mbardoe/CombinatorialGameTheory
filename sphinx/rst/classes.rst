@@ -60,6 +60,22 @@ redbluecherries module
     :undoc-members:
     :show-inheritance:
 
+redbluecycle module
+-------------------------------
+
+.. automodule:: redbluecycle
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+redbluepath module
+-------------------------------
+
+.. automodule:: redbluepath
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 spokeandhub module
 ---------------------------
 

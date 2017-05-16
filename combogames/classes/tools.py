@@ -72,7 +72,7 @@ def simplest_between(left, right):
                 None.
 
      """
-    print str(left) + ' ' + str(right)
+    #print str(left) + ' ' + str(right)
     if left is None:
         if right is None:
             return 0
@@ -94,7 +94,8 @@ def simplest_between(left, right):
     else:
         sign = 1
 
-    if int(right) - int(left) > 1:
+    if right - left > 1:
+        #print('Here')
         return sign * (int(left) + 1)
     else:
         current = 1
@@ -118,7 +119,7 @@ def main():
     """
     print('3 and 8 ' + str(simplest_between(3, 8)))
     print('3 and 4 ' + str(simplest_between(3, 4)))
-    print('2 and 2.25 ' + str(simplest_between(2, 2.25)))
+    print('0 and 1.5 ' + str(simplest_between(0, 1.5)))
     print('-9 and 4 ' + str(simplest_between(-9, 4)))
     print('-7 and -2 ' + str(simplest_between(-7, -2)))
     print('-2.25 and -2 ' + str(simplest_between(-2.25, -2)))

@@ -53,6 +53,7 @@ class RedBlueCherries(PartizanGame):
         """Creates a string to print out as a representation of the game.
 
         Returns:
+
             str: A string that describes the game.
         """
         return "".join([str(self.graph.degree()), "\n", str(self.get_piles())])
@@ -74,13 +75,14 @@ class RedBlueCherries(PartizanGame):
         vertices that are given.
 
         Args:
+
             adjacent (list): A list of integers that indicate the other nodes
                              that are adjacent to this new vertex.
             vertex_type (str): Either 'r' or 'b' to indicate the type of vertex
 
         Returns:
-            RedBlueCherries: a game with the previous structure plus this new
-                            vertex and its edges.
+
+           A game with the previous structure plus this new vertex and its edges.
         """
         if vertex_type not in ['r', 'b']:
             raise ValueError('Needs to be a red or blue vertex')

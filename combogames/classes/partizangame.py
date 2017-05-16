@@ -248,7 +248,7 @@ class PartizanGame(CombinatorialGame):
             sign = -1
         else:
             sign = 1
-        if int(right) - int(left) > 1:
+        if right - left > 1:
             return sign * (int(left) + 1)
         else:
             current = 1
