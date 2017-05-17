@@ -115,7 +115,7 @@ class RedBlueCherries(PartizanGame):
            A game with the previous structure plus this new edge.
 
         """
-        new_edge=(int(edge[0], int(edge[1])))
+        new_edge=(int(edge[0]), int(edge[1]))
         if edge[0]>=self.number_of_nodes() or edge[1]>=self.number_of_nodes():
             raise ValueError("Those vertices don't exist.")
         edges = copy.deepcopy(self.graph.edges())
