@@ -102,6 +102,28 @@ class RedBlueCherries(PartizanGame):
             edges.append((num_nodes, neighbor))
         return RedBlueCherries(num_nodes + 1, edges, piles)
 
+    def add_edge(self, edge):
+        """Create a new game from the current one with one more edge.
+
+        Args:
+
+            edge (tuple): A tuple of numbers that designate particular nodes of
+                        the graph
+
+        Returns:
+
+           A game with the previous structure plus this new edge.
+
+        """
+        new_edge=(int(edge[0], int(edge[1])))
+        if edge[0]>=self.number_of_nodes() or edge[1]>=self.number_of_nodes():
+            raise ValueError("Those vertices don't exist.")
+        edges = copy.deepcopy(self.graph.edges())
+        piles = copy.deepcopy(self.get_piles())
+        num_nodes = int(self.number_of_nodes())
+        edges.append(new_edge)
+        return RedBlueCherries(num_nodes, edges, piles)
+
     def add_vertex_on_edge(self, edge, vertex_type):
         """ A method to break an a given edge and placing another vertex
         on that edge.
@@ -116,7 +138,7 @@ class RedBlueCherries(PartizanGame):
 
         Returns:
 
-            A new RedBlueCherries game with one more 
+            A new RedBlueCherries game with one more
 
         """
         if vertex_type not in ['b','r']:
