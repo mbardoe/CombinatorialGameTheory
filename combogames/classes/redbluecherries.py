@@ -48,6 +48,12 @@ class RedBlueCherries(PartizanGame):
         for i in range(num_nodes):
             self.graph.node[i]['piles'] = piles[i]
 
+    def number_of_nodes(self):
+        return self.graph.number_of_nodes()
+
+    def edge_list(self):
+        return self.graph.edges()
+
 
     def __repr__(self):
         """Creates a string to print out as a representation of the game.
@@ -67,7 +73,7 @@ class RedBlueCherries(PartizanGame):
                 new_piles.append('b')
             else:
                 new_piles.append('r')
-        nodes = int(self.graph.number_of_nodes())
+        nodes = int(self.number_of_nodes())
         return RedBlueCherries(nodes, edges, new_piles)
 
     def add_vertex(self, adjacent, vertex_type):
@@ -78,22 +84,53 @@ class RedBlueCherries(PartizanGame):
 
             adjacent (list): A list of integers that indicate the other nodes
                              that are adjacent to this new vertex.
+
             vertex_type (str): Either 'r' or 'b' to indicate the type of vertex
 
         Returns:
 
-           A game with the previous structure plus this new vertex and its edges.
+           A game with the previous structure plus this new vertex and
+           connected to the vertices given.
         """
         if vertex_type not in ['r', 'b']:
             raise ValueError('Needs to be a red or blue vertex')
         edges = copy.deepcopy(self.graph.edges())
         piles = copy.deepcopy(self.get_piles())
-        num_nodes = int(self.graph.number_of_nodes())
+        num_nodes = int(self.number_of_nodes())
         piles.append(vertex_type)
         for neighbor in adjacent:
             edges.append((num_nodes, neighbor))
         return RedBlueCherries(num_nodes + 1, edges, piles)
 
+    def add_vertex_on_edge(self, edge, vertex_type):
+        """ A method to break an a given edge and placing another vertex
+        on that edge.
+
+        Args:
+            edge (tuple): A tuple indicating the edge that we will be adding a
+                        node to. The numbers indicate which nodes the edge is
+                        between.
+
+            vertex_type (str): A string that indicates if the vertex is blue or
+                                red.
+
+        Returns:
+
+            A new RedBlueCherries game with one more 
+
+        """
+        if vertex_type not in ['b','r']:
+            raise ValueError('Needs to be a "r"ed or "b"lue vertex')
+        edges = copy.deepcopy(self.graph.edges())
+        piles = copy.deepcopy(self.get_piles())
+        num_nodes = int(self.number_of_nodes())
+        if tuple(edge) not in edges:
+            raise ValueError('The given edge is not part of the graph.')
+        edges.remove(tuple(edge))
+        edges.append((edge[0],num_nodes))
+        edges.append((edge[1],num_nodes))
+        piles.append(vertex_type)
+        return RedBlueCherries(num_nodes + 1, edges, piles)
 
     def __db_repr__(self):
         """Creates the database representation of the game.
@@ -112,7 +149,7 @@ class RedBlueCherries(PartizanGame):
 
         """
         piles_dict = nx.nx.get_node_attributes(self.graph, 'piles')
-        return [piles_dict[i] for i in range(self.graph.number_of_nodes())]
+        return [piles_dict[i] for i in range(self.number_of_nodes())]
 
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
@@ -142,7 +179,7 @@ class RedBlueCherries(PartizanGame):
 
         edges = copy.deepcopy(self.graph.edges())
         piles = copy.deepcopy(self.get_piles())
-        nodes = int(self.graph.number_of_nodes())
+        nodes = int(self.number_of_nodes())
         return RedBlueCherries(nodes, edges, piles)
 
     def sub_values_by_player(self):
@@ -219,7 +256,7 @@ class RedBlueCherries(PartizanGame):
         result = self.lookup_value()
         if result is None:
             ## Here will calculate the base cases by hand
-            if self.graph.number_of_nodes() == 1:
+            if self.number_of_nodes() == 1:
                 if self.graph.node[0]['piles'] == 'r':
                     return -1
                 else:
@@ -315,8 +352,8 @@ def main():
     x = RedBlueCherries(6, [(0, 1), (1, 2), (0, 2), (3, 4), (4, 5), (3, 5)],
                         ['b', 'b', 'b', 'r', 'r', 'r'])
     #x.nim_value()
-    print x.find_min_nodes()
-    print x.value
+    print x.number_of_nodes()
+    print x.edge_list()
 
 
 if __name__ == '__main__':
