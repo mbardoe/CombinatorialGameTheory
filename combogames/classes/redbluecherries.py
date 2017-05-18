@@ -124,6 +124,24 @@ class RedBlueCherries(PartizanGame):
         edges.append(new_edge)
         return RedBlueCherries(num_nodes, edges, piles)
 
+    def add_edges(self,edge_list):
+        """Given a list of edges returns a new game with those edges add in to
+         the graph.
+
+         Args:
+
+            edge_list (list): A list of tuples that are the edges that will be
+                            added to the game.
+
+        Returns:
+
+            A RedBlueCherries game with the given edges added.
+        """
+        g=self
+        for edge in edge_list:
+            g=g.add_edge(edge)
+        return g
+
     def add_vertex_on_edge(self, edge, vertex_type):
         """ A method to break an a given edge and placing another vertex
         on that edge.
@@ -138,7 +156,7 @@ class RedBlueCherries(PartizanGame):
 
         Returns:
 
-            A new RedBlueCherries game with one more
+            A new RedBlueCherries game with one more vertex on the given edge.
 
         """
         if vertex_type not in ['b','r']:
@@ -158,6 +176,7 @@ class RedBlueCherries(PartizanGame):
         """Creates the database representation of the game.
 
         Returns:
+
             str: A string that list the piles in increasing order.
         """
         ### what about super when you inherit from 2 classes?
@@ -167,6 +186,7 @@ class RedBlueCherries(PartizanGame):
         """Returns a list indicating the value of each node.
 
         Returns:
+
             list: A list of strings ('r' and 'b').
 
         """
@@ -177,6 +197,7 @@ class RedBlueCherries(PartizanGame):
         """Compute all other games that are possible moves from this position.
 
         Returns:
+
             A list of the games that are all the possible moves from the given
             game.
         """
@@ -210,6 +231,7 @@ class RedBlueCherries(PartizanGame):
         when trying to calculate a value of game.
 
         Returns:
+
             A print out of the nodes that can be possible moves and the value
             of the game if that move is taken.
         """
@@ -227,6 +249,7 @@ class RedBlueCherries(PartizanGame):
         of the keys.
 
         Returns:
+
             (dict): The keys are the minimal degree nodes. The values are the
                     the values of the game formed by removing that node.
         """
@@ -259,9 +282,11 @@ class RedBlueCherries(PartizanGame):
         """ Determines if two redbluecherry games are equal.
 
         Args:
+
             other (RedBlueCherries object): Another Red Blue Cherries game.
 
         Returns:
+
             bool: True if the graphs are isomorphic and the labels are the same.
         """
         nm = iso.categorical_node_match('piles', 0)
@@ -273,7 +298,8 @@ class RedBlueCherries(PartizanGame):
         of possible moves.
 
 
-        :return: int that is the equivalent game.
+        Returns:
+            A surreal number that is the value of the game.
         """
         result = self.lookup_value()
         if result is None:
@@ -307,7 +333,8 @@ class RedBlueCherries(PartizanGame):
         """ Returns the degrees of each node.
 
         Returns:
-            dict: A dictionary index by node indexes and whose values are the
+
+           A dictionary index by node indexes and whose values are the
                 degree of that node.
         """
         return self.graph.degree()
@@ -318,7 +345,8 @@ class RedBlueCherries(PartizanGame):
         know which nodes are right nodes and which are left nodes.
 
         Returns:
-            (dict):     A dictionary with keys 'left' and 'right'. The values
+
+             A dictionary with keys 'left' and 'right'. The values
                         of this these keys are lists of integers.
         """
         ans = {'right': [], 'left': []}
