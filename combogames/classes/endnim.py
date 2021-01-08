@@ -1,12 +1,6 @@
 from impartialgame import ImpartialGame
+import sqlite3
 
-try:
-    from tinydb import TinyDB, Query
-except:
-    try:
-        import sqlite3
-    except:
-        pass
 
 
 class EndNim(ImpartialGame):
@@ -144,7 +138,7 @@ def main():
     m = 15
     for i in range(10):
         x = EndNim([1, m, i + 1])
-        print str(x) + "  " + str(x.nim_value)
+        print(str(x) + "  " + str(x.nim_value))
 
 
 if __name__ == '__main__':

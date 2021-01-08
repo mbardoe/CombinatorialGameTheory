@@ -1,13 +1,7 @@
 import sys  #get rid of this...
 import os
+import sqlite3
 
-try:
-    from tinydb import TinyDB, Query
-except:
-    try:
-        import sqlite3
-    except:
-        pass
 
 
 class CombinatorialGame(object):
@@ -39,8 +33,6 @@ class CombinatorialGame(object):
         else:
             raise SyntaxError('Need at least a filename argument')
 
-        if 'tinydb' not in sys.modules:
-            self.__filename__ = self.__filename__[:-3] + "SQL.db"
         #self.__validate__()
         #print os.path
         self.__get_dictionary__()

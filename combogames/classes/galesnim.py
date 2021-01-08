@@ -1,12 +1,6 @@
 from impartialgame import ImpartialGame
 
-try:
-    from tinydb import TinyDB, Query
-except:
-    try:
-        import sqlite3
-    except:
-        pass
+import sqlite3
 
 
 class GalesNim(ImpartialGame):
@@ -144,10 +138,10 @@ class GalesNim(ImpartialGame):
 
 def main():
     game = GalesNim([3, 4, 5], 0, 1)
-    print game
+    print(game)
     possMoves = game.possible_moves()
     for mygame in possMoves:
-        print mygame
+        print(mygame)
 
 
 if __name__ == '__main__':

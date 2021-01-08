@@ -1,3 +1,5 @@
+import math
+
 def mex(mylist):
     """mex computes the smallest positive integer that is missing from a list.
 
@@ -50,7 +52,7 @@ def simplest_number(move_dict):
             int: Value of the game.
 
     """
-    print move_dict
+    print(move_dict)
     try:
         right_min = min(move_dict['right'])
     except:
@@ -63,53 +65,38 @@ def simplest_number(move_dict):
 
 
 def simplest_between(left, right):
-    """Calculates the simplest number between two given numbers.
+    """Calculates the simplest number between two given numbers. Implementing the algorithm from Max Fan.
 
         Args:
-            left (int): an integer that is smaller than right, Can also be
+            left (float): an integer that is smaller than right, Can also be
                 None.
-            right(int): an integer that is larger than left. Can also be
+            right(float): an integer that is larger than left. Can also be
                 None.
 
      """
-    #print str(left) + ' ' + str(right)
-    if left is None:
-        if right is None:
-            return 0
-        if right <= 0:
-            return int(right) - 1
-        else:
-            return 0
-    if right is None:
-        if left >= 0:
-            return int(left) + 1
-        else:
-            return 0
-    if left < 0 and right > 0:
-        return 0
+    positive_difference = right - left
 
-    if right < 0:
-        right, left = -1 * left, -1 * right
-        sign = -1
-    else:
-        sign = 1
+    if 0 > left and 0 < right:
+        return 0.0
 
-    if right - left > 1:
-        #print('Here')
-        return sign * (int(left) + 1)
+    power = 0
+    while pow(2, power) <= 1 / (positive_difference):
+        power += 1
+
+    if abs(right) > abs(left):
+        number = math.floor(left)
+        while number <= left:
+            number += 1 / pow(2, power)
+
+    elif abs(right) < abs(left):
+        number = math.ceil(right)
+        while number >= right:
+            number -= 1 / pow(2, power)
+
     else:
-        current = 1
-        power = 2 ** (-current)
-        guess = int(left) + power
-        while (left >= guess) or (right <= guess):
-            #print guess
-            if int(guess + power) >= int(right):
-                current += 1
-                power = 2 ** (-current)
-                guess = int(left) + power
-            else:
-                guess = guess + power
-        return sign * guess
+        raise ValueError
+
+    return float(number)
 
 
 def main():

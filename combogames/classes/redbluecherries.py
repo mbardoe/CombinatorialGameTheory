@@ -3,14 +3,7 @@ import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
 import matplotlib.pyplot as plt
-
-try:
-    from tinydb import TinyDB, Query
-except:
-    try:
-        import sqlite3
-    except:
-        pass
+import sqlite3
 
 
 class RedBlueCherries(PartizanGame):
@@ -350,7 +343,7 @@ class RedBlueCherries(PartizanGame):
                         of this these keys are lists of integers.
         """
         ans = {'right': [], 'left': []}
-        for n in xrange(len(self.graph.node)):
+        for n in range(len(self.graph.node)):
             if self.graph.node[n]['piles'] == 'r':
                 ans['right'].append(n)
             else:
@@ -402,8 +395,8 @@ def main():
     x = RedBlueCherries(6, [(0, 1), (1, 2), (0, 2), (3, 4), (4, 5), (3, 5)],
                         ['b', 'b', 'b', 'r', 'r', 'r'])
     #x.nim_value()
-    print x.number_of_nodes()
-    print x.edge_list()
+    print(x.number_of_nodes())
+    print(x.edge_list())
 
 
 if __name__ == '__main__':
