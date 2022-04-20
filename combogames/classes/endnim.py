@@ -144,7 +144,7 @@ def main():
     m = 15
     for i in range(10):
         x = EndNim([1, m, i + 1])
-        print str(x) + "  " + str(x.nim_value)
+        print(str(x) + "  " + str(x.nim_value))
 
 
 if __name__ == '__main__':

@@ -120,34 +120,34 @@ class GalesNim(ImpartialGame):
         new_Piles.sort()
         for value in new_Piles:
             ans += str(value) + "_"
-        #for i in range(self.number_Of_Zero_Piles):
+        # for i in range(self.number_Of_Zero_Piles):
         #	ans+="0 "
         return ans.strip()
 
-
-    def __eq__(self, other):
-        """Determine if to GalesNim games are equivalent.
-
-        Args:
-            other: Another GalesNim game.
-
-        Result:
-            This gives a boolean describing if the two games are equal.
-            """
-        myPiles = list(self.piles)
-        theirPiles = list(other.piles)
-        myPiles.sort()
-        theirPiles.sort()
-        return self.k == other.k and self.number_Of_zero_piles == \
-               other.number_Of_zero_piles and myPiles == theirPiles
+    # def __eq__(self, other):
+    #     """Determine if to GalesNim games are equivalent.
+    #
+    #     Args:
+    #         other: Another GalesNim game.
+    #
+    #     Result:
+    #         This gives a boolean describing if the two games are equal.
+    #         """
+    #     myPiles = list(self.piles)
+    #     theirPiles = list(other.piles)
+    #     myPiles.sort()
+    #     theirPiles.sort()
+    #     return self.k == other.k and self.number_Of_zero_piles == \
+    #            other.number_Of_zero_piles and myPiles == theirPiles
 
 
 def main():
     game = GalesNim([3, 4, 5], 0, 1)
-    print game
+    print(dir(game))
+    print(game.__hash__())
     possMoves = game.possible_moves()
     for mygame in possMoves:
-        print mygame
+        print(mygame)
 
 
 if __name__ == '__main__':

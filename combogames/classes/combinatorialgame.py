@@ -10,7 +10,7 @@ except:
         pass
 
 
-class CombinatorialGame(object):
+class CombinatorialGame:
     """A base class for investigating impartial combinatorial games.
 
         One goal of this class is create methods that allow for back searches
@@ -101,11 +101,12 @@ class CombinatorialGame(object):
 
         return set([])
 
-
     def __repr__(self):
         '''How the game will be represented in python print statements.'''
         return str(self.__db_repr__())
 
+    def __hash__(self):
+        return hash(self.__db_repr__())
 
-
-
+    def __eq__(self, other):
+        return self.possible_moves() == other.possible_moves()
