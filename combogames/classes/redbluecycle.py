@@ -1,4 +1,4 @@
-from redbluecherries import RedBlueCherries
+from combogames.classes.redbluecherries import RedBlueCherries
 import itertools
 
 
@@ -91,10 +91,10 @@ class RedBlueCycle(RedBlueCherries):
 
 def main():
     x = RedBlueCycle('b', 'b', 'b', 'r', 'r', 'r')
-    #x.nim_value()
-    print( x)
-    print x.move_dict()
-    print x.value
+    # x.nim_value()
+    print(x)
+    print(x.move_dict())
+    print(x.value)
     y = x.possible_moves()
     for g in y['right']:
         print(g.value)
@@ -103,7 +103,7 @@ def main():
         print(g.value)
     print(x.simplest_between(0, 0))
     y = RedBlueCycle('b', 'b', 'r', 'r', 'r', 'b')
-    print (x == y)
+    print(x == y)
     for g in RedBlueCycle.all_games(11):
         print(g)
         print('\n')

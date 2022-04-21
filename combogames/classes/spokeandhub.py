@@ -1,4 +1,4 @@
-from impartialgame import ImpartialGame
+from combogames.classes.impartialgame import ImpartialGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
@@ -184,12 +184,12 @@ class SpokeAndHub(ImpartialGame):
 def main():
     g = SpokeAndHub(6, [(0, 1), (1, 2), (2, 3), (3, 4), (3, 5)],
                     [1, 1, 1, 1, 1, 1])
-    #x.nim_value()
-    print g.possible_moves()
-    print g.nim_value
+    # x.nim_value()
+    print(g.possible_moves())
+    print(g.nim_value)
     g = SpokeAndHub(4, [(0, 1), (0, 2), (0, 3)], [9, 1, 6, 7])
     print(g)
-    print g.nim_value
+    print(g.nim_value)
 
 
 if __name__ == '__main__':

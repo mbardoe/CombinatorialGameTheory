@@ -1,5 +1,5 @@
 import sys
-from combinatorialgame import CombinatorialGame
+from combogames.classes.combinatorialgame import CombinatorialGame
 
 try:
     from tinydb import TinyDB, Query
@@ -179,23 +179,21 @@ class ImpartialGame(CombinatorialGame):
             ValueError: If the list is not all positive integers.
             TypeError: if you don't give it a list of integers
         """
-        current = 0
-        mylist = list(mylist)
-        mylist = sorted(mylist)
-        mylist = [int(i) for i in mylist]  # this helps sage do its thing
-        #print str(mylist)
-        for i in range(len(mylist)):
-            if not isinstance(mylist[i], int):
-                raise TypeError("Has to be a list of integers.")
-            if mylist[i] < 0:
-                raise ValueError("Must be all positive integers.")
-            if mylist[i] == current:
-                current += 1
-            if mylist[i] > current:
-                return current
+        if len(mylist) == 0:
+            return 0
+        else:
+            for i in range(len(mylist)):
+                if not isinstance(mylist[i], int):
+                    raise TypeError("Has to be a list of integers.")
+                if mylist[i] < 0:
+                    raise ValueError("Must be all positive integers.")
 
-                #print "step"+str(i)+" "+str(current)
-        return current
+            for i in range(len(mylist)):
+                if i not in mylist:
+                    return i
+        return len(mylist)
+
+
 
     def find_move_with_value(self, n):
         """Look at the possible moves of this move, and find a move that has value
@@ -212,7 +210,7 @@ class ImpartialGame(CombinatorialGame):
 
             moves = self.possible_moves()
             for move in moves:
-                if move.nim_value == n:
+                if move._value == n:
                     assert isinstance(move, CombinatorialGame)
                     return move
         else:

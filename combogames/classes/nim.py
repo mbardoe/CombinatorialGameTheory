@@ -1,4 +1,4 @@
-from impartialgame import ImpartialGame
+from combogames.classes.impartialgame import ImpartialGame
 
 
 class Nim(ImpartialGame):

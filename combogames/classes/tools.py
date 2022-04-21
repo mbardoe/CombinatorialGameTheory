@@ -50,7 +50,7 @@ def simplest_number(move_dict):
             int: Value of the game.
 
     """
-    print move_dict
+    print(move_dict)
     try:
         right_min = min(move_dict['right'])
     except:
