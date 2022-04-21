@@ -6,6 +6,9 @@ yourmom.db
 *.sagews
 *.ipynb
 
+data/endNimSQL.db
+data/galesnimSQL.db
+data/twodimtopplingdominoesSQL.db
 data/twodimtopplingdominoesSQL.db
 data/galesnimSQL.db
 data/endNimSQL.db

@@ -1,4 +1,4 @@
-from combogames.classes.impartialgame import ImpartialGame
+from impartialgame import ImpartialGame
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import copy
