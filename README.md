@@ -1,5 +1,5 @@
 # Combinatorial Game Theory
-Programs to help compute Nim values for Spoke and Hub Nim, End Nim and Gales Nim.
+Programs to help compute Nim values for Spoke and Hub Nim, End Nim, Gales Nim, Two Dimensional Toppling Dominoes.
 
 The storage mechanisms require TinyDB. You can download and install it here: https://tinydb.readthedocs.io/en/latest/index.html
 
@@ -12,13 +12,31 @@ The package defaults to TinyDB, but will also uses sqlite3 if available.
     * End-Nim
     * Gale's Nim
     * Spoke and Hub Nim
+    * Two Dimensional Toppling Dominoes
 
 * Partizan Games
     * Red-Blue Cherries
 
+## Two Dimensional Toppling Dominoes
 
+Here are the values of L-shaped formations. Then up value is the number of dominoes going up along the L 
+and the right is number going to the right. So a up=2 and right=3 looks like 
 
-## Gale's Nim
++
++ + + + 
+
+| row/col | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 |
+|---------|----|----|----|----|----|----|----|----|----|----|
+| 1       | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 |
+| 2       | 3  | 4  | 1  | 6  | 7  | 8  | 5  | 10 | 11 | 12 |
+| 3       | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 | 12 | 13 |
+| 4       | 5  | 6  | 7  | 8  | 1  | 2  | 3  | 12 | 13 | 14 |
+| 5       | 6  | 7  | 8  | 9  | 2  | 3  | 12 | 13 | 14 | 15 |
+| 6       | 7  | 8  | 5  | 10 | 3  | 12 | 1  | 14 | 15 | 16 |
+| 7       | 8  | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 |
+| 8       | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 1  | 2  |
+| 9       | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 2  | 3  |
+| 10      | 11 | 12 | 9  | 14 | 15 | 16 | 13 | 18 | 3  | 4  |## Gale's Nim
 
 You can access Gale's Nim calculations by
 

@@ -166,15 +166,27 @@ class TwoDimTopplingDominoes(ImpartialGame):
 
 
 if __name__ == "__main__":
-    # for i in range(1,11):
-    #     for j in range(1,11):
-    #
-    #         x = TwoDimTopplingDominoes.generateL(i,j)
+    ans=[]
+    for i in range(1,11):
+        ans.append([])
+        for j in range(1,11):
+            x = TwoDimTopplingDominoes.generateL(i,j)
     #         print(x)
     #         print(f"{i}, {j}, {x.nim_value})
-    x = TwoDimTopplingDominoes.generateL(3, 2)
+            ans[i-1].append(x.nim_value)
+    result="| |"
+    for i in range(1,11):
+        result+=f" {i} |"
+    result+="\n"
+    for i in range(1, 11):
+        result+=f"| {i} |"
+        for j in range(1,11):
+            result+=f" {ans[j-1][i-1]}|"
+        result+="\n"
+    print(result)
+    x=TwoDimTopplingDominoes.generateL(1,1)
     print(x)
-    for move in x.possible_moves():
-        print(move)
-        print(move.nim_value)
+    #for move in x.possible_moves():
+    #    print(move)
+    #    print(move.nim_value)
     # print(x.nim_value)
