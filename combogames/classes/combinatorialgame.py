@@ -109,4 +109,7 @@ class CombinatorialGame:
         return hash(self.__db_repr__())
 
     def __eq__(self, other):
-        return self.possible_moves() == other.possible_moves()
+        return set(self.moves) == set(other.moves)
+
+    def __str__(self):
+        return str(self.moves)

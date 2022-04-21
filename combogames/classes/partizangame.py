@@ -1,5 +1,5 @@
 import sys
-from combinatorialgame import CombinatorialGame
+from combogames.classes.combinatorialgame import CombinatorialGame
 
 try:
     from tinydb import TinyDB, Query

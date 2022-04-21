@@ -1,4 +1,4 @@
-from redbluecherries import RedBlueCherries
+from combogames.classes.redbluecherries import RedBlueCherries
 import itertools
 
 
