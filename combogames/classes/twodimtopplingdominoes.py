@@ -1,4 +1,5 @@
 from combogames.classes.impartialgame import ImpartialGame
+from combogames.classes.tools import mdGridMaker
 
 try:
     from tinydb import TinyDB, Query
@@ -39,13 +40,9 @@ class TwoDimTopplingDominoes(ImpartialGame):
         """__reduce__ is designed to reduce the numbers of the moves so that they are as small as possible but
         positive."""
         # self._repr=self.moves.copy()
-        if len(self.moves) > 0:
-            x_s = [s[0] for s in self.moves]
-            y_s = [s[1] for s in self.moves]
-            min_x = min(x_s)
-            min_y = min(y_s)
-            for move in self.moves:
-                move = (move[0] - min_x, move[1] - min_y)
+        min_x, min_y, max_x, max_y = self.boundingBox()
+        for move in self.moves:
+            move = (move[0] - min_x, move[1] - min_y)
 
     def find_connected_components(self):
         """find_connected_components used to find connected components of the game."""
@@ -109,6 +106,25 @@ class TwoDimTopplingDominoes(ImpartialGame):
             self.__record_value__(self.__db_repr__(), result)
         return result
 
+    def __str__(self) -> str:
+        result = ""
+        minx, miny, maxx, maxy = self.boundingBox()
+        for height in range(maxy, miny - 1, -1):
+            for width in range(minx, maxx + 1, 1):
+                if (width, height) in self.moves:
+                    result += "\u20DE"
+                else:
+                    result += " "
+            result += "\n"
+        return result
+
+    def boundingBox(self):
+        if len(self.moves) == 0:
+            return 0, 0, 0, 0
+        xes = [x[0] for x in self.moves]
+        yes = [x[1] for x in self.moves]
+        return min(xes), min(yes), max(xes), max(yes)
+
     def possible_moves(self):
         """Compute all other games that are possible moves from this position.
 
@@ -168,26 +184,33 @@ class TwoDimTopplingDominoes(ImpartialGame):
 if __name__ == "__main__":
     ans = []
     max_size = 6
-    for i in range(1, max_size):
-        ans.append([])
-        for j in range(1, max_size):
-            x = TwoDimTopplingDominoes.generateRect((i, j))
-            #         print(x)
-            #         print(f"{i}, {j}, {x.nim_value})
-            ans[i - 1].append(x.nim_value)
-    result = "| row/col |"
-    for i in range(1, max_size):
-        result += f" {i} |"
-    result += "\n"
-    for i in range(1, max_size):
-        result += f"| {i} |"
-        for j in range(1, max_size):
-            result += f" {ans[j - 1][i - 1]}|"
-        result += "\n"
-    print(result)
-    # x=TwoDimTopplingDominoes.generateL(3,6)
-    # print(x)
-    # for move in x.possible_moves():
-    #     print(move)
-    #     print(move.nim_value)
-    #     #print(x.nim_value)
+    for j in range(1, max_size):
+        ans.append([TwoDimTopplingDominoes.generateL(i, j).nim_value for i in range(1, max_size)])
+    print(mdGridMaker(range(1, max_size), range(1, max_size), ans))
+    x = TwoDimTopplingDominoes.generateL(2, 3)
+    print(x)
+    print(x.nim_value)
+
+    # for i in range(1, max_size):
+    #     ans.append([])
+    #     for j in range(1, max_size):
+    #         x = TwoDimTopplingDominoes.generateRect((i, j))
+    #         #         print(x)
+    #         #         print(f"{i}, {j}, {x.nim_value})
+    #         ans[i - 1].append(x.nim_value)
+    # result = "| row/col |"
+    # for i in range(1, max_size):
+    #     result += f" {i} |"
+    # result += "\n"
+    # for i in range(1, max_size):
+    #     result += f"| {i} |"
+    #     for j in range(1, max_size):
+    #         result += f" {ans[j - 1][i - 1]}|"
+    #     result += "\n"
+    # print(result)
+    # # x=TwoDimTopplingDominoes.generateL(3,6)
+    # # print(x)
+    # # for move in x.possible_moves():
+    # #     print(move)
+    # #     print(move.nim_value)
+    # #     #print(x.nim_value)

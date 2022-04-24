@@ -111,6 +111,20 @@ def simplest_between(left, right):
                 guess = guess + power
         return sign * guess
 
+def mdGridMaker(xlabels, ylabels, content):
+    result = "| row/col |"
+    secondline = "|-----|"
+    for xlabel in xlabels:
+        result += f" {xlabel} |"
+        secondline += "-------|"
+    result += "\n" + secondline + "\n"
+
+    for ylabelIndex in range(len(ylabels)):
+        result += f"| {ylabels[ylabelIndex]} |"
+        for contentValue in content[ylabelIndex]:
+            result += f" {contentValue}|"
+        result += "\n"
+    return result
 
 def main():
     """
@@ -123,6 +137,7 @@ def main():
     print('-9 and 4 ' + str(simplest_between(-9, 4)))
     print('-7 and -2 ' + str(simplest_between(-7, -2)))
     print('-2.25 and -2 ' + str(simplest_between(-2.25, -2)))
+    print(mdGridMaker([1, 2, 3], [1, 2, 3], [[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
 
 
 if __name__ == '__main__':
